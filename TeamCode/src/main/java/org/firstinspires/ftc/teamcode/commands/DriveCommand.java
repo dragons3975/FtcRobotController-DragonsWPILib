@@ -30,8 +30,8 @@ public class DriveCommand extends CommandBase {
     public void execute() {
         double axeX = -mGamepad.left_stick_x;
         double axeY = mGamepad.left_stick_y;
-        //double axeZ = mGamepad.right_stick_x;
-        mDriveSubsystem.drive(axeX, axeY);// use a gyro in paramater, TO DO********
+        double axeZ = mGamepad.right_stick_x;
+        mDriveSubsystem.drive(axeX, axeY, axeZ);
     }
 
     // Called once the command ends or is interrupted.
