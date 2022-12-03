@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import androidx.annotation.VisibleForTesting;
+
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -9,6 +11,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaCurrentGame;
 import org.firstinspires.ftc.teamcode.commandGroups.AutonomousCommandGroup;
 import org.firstinspires.ftc.teamcode.commands.DriveCommand;
+import org.firstinspires.ftc.teamcode.commands.GoToAngleCommand;
 import org.firstinspires.ftc.teamcode.commands.TestMotorCommand;
 import org.firstinspires.ftc.teamcode.subsystems.BrasSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
@@ -29,6 +32,10 @@ public class RobotContainer {
     private final TestMotorSubsystem mTestMotorSubsystem;
     private final TestMotorCommand mTestMotorCommand;
     private final AutonomousCommandGroup mAutonomousCommandGroup;
+    private final GoToAngleCommand mGoStraight;
+    private final GoToAngleCommand mGoLeft;
+    private final GoToAngleCommand mGoRight;
+    private final GoToAngleCommand mGoBack;
 
     public RobotContainer(Gamepad gamepad1, Gamepad gamepad2, Telemetry telemetry, HardwareMap hardwareMap){
         mGamepad1 = gamepad1;
@@ -47,6 +54,10 @@ public class RobotContainer {
         mDriveCommand = new DriveCommand(mTelemetry, mDriveSubsystem, mGamepad1);
         mTestMotorCommand = new TestMotorCommand(mTelemetry, mTestMotorSubsystem, mHardwareMap);
         mAutonomousCommandGroup = new AutonomousCommandGroup(mTelemetry, mDriveSubsystem);
+        mGoStraight = new GoToAngleCommand(mTelemetry, mDriveSubsystem, mGamepad1, 0);
+        mGoLeft = new GoToAngleCommand(mTelemetry,mDriveSubsystem,mGamepad1, 270);
+        mGoRight = new GoToAngleCommand(mTelemetry, mDriveSubsystem, mGamepad1, 90);
+        mGoBack = new GoToAngleCommand(mTelemetry, mDriveSubsystem, mGamepad1, 180);
 
         configureButtonBindings();
         configureDefaultCommands();
@@ -58,11 +69,19 @@ public class RobotContainer {
     }
 
     private void configureButtonBindings() {
-        JoystickButton DPadUp = new JoystickButton(mGamepad1, GenericHID.XboxControllerConstants.kDpadUp);
-        DPadUp.onTrue(mAutonomousCommandGroup);
+        JoystickButton start = new JoystickButton(mGamepad1, GenericHID.XboxControllerConstants.kStart);
+        start.onTrue(mAutonomousCommandGroup);
 
         JoystickButton buttonY = new JoystickButton(mGamepad1, GenericHID.XboxControllerConstants.kY);
-        buttonY.onTrue(mTestMotorCommand);
+        buttonY.onTrue(mGoStraight);
+
+        JoystickButton buttonX = new JoystickButton(mGamepad1, GenericHID.XboxControllerConstants.kX);
+        buttonX.onTrue(mGoLeft);
+        JoystickButton buttonB = new JoystickButton(mGamepad1, GenericHID.XboxControllerConstants.kB);
+        buttonB.onTrue(mGoRight);
+        JoystickButton buttonA = new JoystickButton(mGamepad1, GenericHID.XboxControllerConstants.kA);
+        buttonA.onTrue(mGoBack);
+
     }
 
     private void configureDefaultCommands(){

@@ -1,18 +1,35 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.dragonswpilib.command.SubsystemBase;
 import org.firstinspires.ftc.dragonswpilib.drive.MecanumDrive;
+import org.firstinspires.ftc.dragonswpilib.math.controller.PIDController;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaBase;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaCurrentGame;
+import org.firstinspires.ftc.teamcode.Constants;
 
 public class DriveSubsystem extends SubsystemBase {
 
     private Telemetry mTelemetry;
     private HardwareMap mHardwareMap;
+
+    private final PIDController mPIDz = new PIDController(Constants.PIDConstants.kP, Constants.PIDConstants.kI,Constants.PIDConstants.kD);
+
+    private double mSetPointZ = 0;
+
+    private final BNO055IMU mImu;
+
+    private Orientation mAngles = new Orientation();
+
+    private int mMode = 1;
 
     private final DcMotor mFrontLeftMotor;
     private final DcMotor mFrontRightMotor;
@@ -37,11 +54,16 @@ public class DriveSubsystem extends SubsystemBase {
         mTelemetry = telemetry;
         mHardwareMap = hardwareMap;
         mVuforiaPOWERPLAY = vuforiaPOWERPLAY;
-
+        setZ(270);
         mFrontLeftMotor = mHardwareMap.get(DcMotor.class, "Front left");
         mBackLeftMotor = mHardwareMap.get(DcMotor.class, "Front right");
         mBackRightMotor = mHardwareMap.get(DcMotor.class, "Back right");
         mFrontRightMotor = mHardwareMap.get(DcMotor.class, "Back left");
+
+        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+
+        mImu = mHardwareMap.get(BNO055IMU.class, "imu");
+        mImu.initialize(parameters);
 
         mFrontLeftMotor.setDirection(DcMotor.Direction.REVERSE);
         mBackLeftMotor.setDirection(DcMotor.Direction.REVERSE);
@@ -60,23 +82,75 @@ public class DriveSubsystem extends SubsystemBase {
 
         mRobotDrive = new MecanumDrive(mFrontLeftMotor, mBackLeftMotor, mFrontRightMotor, mBackRightMotor);
 
+
     }
 
 
 
     @Override
     public void periodic() {
-        mRobotDrive.driveCartesian(mX, mY, mZ);
+
+        mAngles = mImu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        double angleActuel = mAngles.firstAngle;
+        if(mSetPointZ == 180) {
+            if (angleActuel < 0) {
+                angleActuel += 360;
+            }
+        }
+        mTelemetry.addData("angleActuel", angleActuel);
+        mZ = mPIDz.calculate(angleActuel);
+
+        mRobotDrive.driveCartesian(mX, mY, -mZ);
+
+
     }
 
-    public void drive(double x, double y, double z){
-            mX = x;
-            mY = y;
-            mZ = z;
+    public void drive(double x, double y/*, double z*/){
+        switch (mMode) {
+            case 1:
+                mX = x;
+                mY = y;
+                break;
+            case 2:
+                mX = y;
+                mY = -x;
+                break;
+            case 3:
+                mX = -y;
+                mY = x;
+                break;
+            case 4:
+                mX = -x;
+                mY = -y;
+        }
+            //mZ = z;
+
     }
+
+    public void setZ (double z) {
+        mSetPointZ = z;
+        if(mSetPointZ < -180) {
+            mSetPointZ = mSetPointZ + 360;
+        } else if (mSetPointZ > 180) {
+            mSetPointZ = mSetPointZ - 360;
+        }
+        mPIDz.setSetpoint(mSetPointZ);
+
+        switch ((int)z) {
+            case 0 : mMode = 1;
+            break;
+            case 90 : mMode = 2;
+            break;
+            case 180: mMode = 3;
+            break;
+            case 270: mMode = 4;
+            break;
+        }
+    }
+
 
     public void stop () {
-        drive(0, 0, 0);
+        drive(0, 0);
     }
 
 }
