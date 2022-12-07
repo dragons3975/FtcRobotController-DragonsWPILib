@@ -5,7 +5,6 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import org.firstinspires.ftc.dragonswpilib.command.CommandBase;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.subsystems.BrasSubsystem;
-import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
 
 public class BrasCommand extends CommandBase {
 
@@ -34,7 +33,6 @@ public class BrasCommand extends CommandBase {
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-
         mBrasSubsystem.stop();
     }
 

@@ -1,21 +1,19 @@
 package org.firstinspires.ftc.teamcode.commands;
 
-import com.qualcomm.robotcore.hardware.Gamepad;
-
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.dragonswpilib.command.CommandBase;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
 
-public class DriveCommand extends CommandBase {
+public class HoverAutoCommand extends CommandBase {
 
     private final DriveSubsystem mDriveSubsystem;
     private final Telemetry mTelemetry;
-    private final Gamepad mGamepad;
+    private int mConsigneY;
 
-    public DriveCommand(Telemetry telemetry, DriveSubsystem driveSubsystem, Gamepad gamepad){
+    public HoverAutoCommand(Telemetry telemetry, DriveSubsystem driveSubsystem, int consigneY){
         mTelemetry = telemetry;
         mDriveSubsystem = driveSubsystem;
-        mGamepad = gamepad;
+        mConsigneY = consigneY;
 
         addRequirements(driveSubsystem);
     }
@@ -28,10 +26,7 @@ public class DriveCommand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        double axeX = -mGamepad.left_stick_x;
-        double axeY = mGamepad.left_stick_y;
-        double axeZ = mGamepad.right_stick_x;
-        mDriveSubsystem.drive(axeX, axeY);
+        mDriveSubsystem.drive(0, 0.5);
     }
 
     // Called once the command ends or is interrupted.
@@ -43,6 +38,7 @@ public class DriveCommand extends CommandBase {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return false;
+
+        return mDriveSubsystem.getEncoderY() >= mConsigneY;
     }
 }

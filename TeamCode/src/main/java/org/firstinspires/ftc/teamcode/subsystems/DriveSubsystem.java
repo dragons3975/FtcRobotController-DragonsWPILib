@@ -1,23 +1,15 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
-import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.dragonswpilib.command.FTC_Gyro;
 import org.firstinspires.ftc.dragonswpilib.command.SubsystemBase;
 import org.firstinspires.ftc.dragonswpilib.drive.MecanumDrive;
-import org.firstinspires.ftc.dragonswpilib.interfaces.Gyro;
 import org.firstinspires.ftc.dragonswpilib.math.controller.PIDController;
-import org.firstinspires.ftc.dragonswpilib.math.geometry.Rotation2d;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaBase;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaCurrentGame;
 import org.firstinspires.ftc.teamcode.Constants;
+
 
 public class DriveSubsystem extends SubsystemBase {
 
@@ -25,11 +17,9 @@ public class DriveSubsystem extends SubsystemBase {
     private HardwareMap mHardwareMap;
     private FTC_Gyro mGYRO;
 
-    private final PIDController mPIDz = new PIDController(Constants.PIDConstants.kP, Constants.PIDConstants.kI,Constants.PIDConstants.kD);
-
-    private double mSetPointZ = 0;
-
-
+    private final PIDController mPIDx = new PIDController(Constants.PIDConstants.kP, Constants.PIDConstants.kI, Constants.PIDConstants.kD);
+    private final PIDController mPIDy = new PIDController(Constants.PIDConstants.kP, Constants.PIDConstants.kI, Constants.PIDConstants.kD);
+    private final PIDController mPIDz = new PIDController(Constants.PIDConstants.kP, Constants.PIDConstants.kI, Constants.PIDConstants.kD);
 
     private int mMode = 1;
 
@@ -40,27 +30,21 @@ public class DriveSubsystem extends SubsystemBase {
 
     private MecanumDrive mRobotDrive;
 
+    private boolean mIsPIDxEnabled = false;
+    private boolean mIsPIDyEnabled = false;
+
     private double mX = 0;
     private double mY = 0;
     private double mZ = 0;
 
-    private final VuforiaCurrentGame mVuforiaPOWERPLAY;
-    private VuforiaBase.TrackingResults mVuforiaResults;
-
-    // Pour suivre la position sur le terrain. Donnée par Vuforia.
-    private double mPositionX = 0;
-    private double mPositionY = 0;
-    private double mRotationZ = 0;
-
-    public DriveSubsystem(HardwareMap hardwareMap, Telemetry telemetry, VuforiaCurrentGame vuforiaPOWERPLAY) {
+    public DriveSubsystem(HardwareMap hardwareMap, Telemetry telemetry) {
         mTelemetry = telemetry;
         mHardwareMap = hardwareMap;
-        mVuforiaPOWERPLAY = vuforiaPOWERPLAY;
-        mFrontLeftMotor = mHardwareMap.get(DcMotor.class, "Front left");
-        mBackLeftMotor = mHardwareMap.get(DcMotor.class, "Front right");
-        mBackRightMotor = mHardwareMap.get(DcMotor.class, "Back right");
-        mFrontRightMotor = mHardwareMap.get(DcMotor.class, "Back left");
 
+        mFrontLeftMotor = mHardwareMap.get(DcMotor.class, "Front left");
+        mBackLeftMotor = mHardwareMap.get(DcMotor.class, "Back left");
+        mBackRightMotor = mHardwareMap.get(DcMotor.class, "Back right");
+        mFrontRightMotor = mHardwareMap.get(DcMotor.class, "Front right");
 
         mFrontLeftMotor.setDirection(DcMotor.Direction.REVERSE);
         mBackLeftMotor.setDirection(DcMotor.Direction.REVERSE);
@@ -79,6 +63,14 @@ public class DriveSubsystem extends SubsystemBase {
 
         mRobotDrive = new MecanumDrive(mFrontLeftMotor, mBackLeftMotor, mFrontRightMotor, mBackRightMotor);
 
+        mGYRO = new FTC_Gyro(hardwareMap);
+
+        mPIDz.enableContinuousInput(-180, 180);
+
+        mPIDx.setTolerance(Constants.PIDConstants.kPIDTolerance);
+        mPIDy.setTolerance(Constants.PIDConstants.kPIDTolerance);
+
+
 
     }
 
@@ -86,50 +78,48 @@ public class DriveSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-
-        /*if(mSetPointZ == 180) {
-            if (angleActuel < 0) {
-                angleActuel += 360;
-            }
+        if(mIsPIDxEnabled) {
+            mX = mPIDx.calculate(getEncoderX());
         }
-        mTelemetry.addData("angleActuel", angleActuel);
-        mZ = mPIDz.calculate(angleActuel);
-*/
-        mRobotDrive.driveCartesian(mX, mY, -mZ, mGYRO.getRotation2d());
+        if(mIsPIDyEnabled) {
+            mY = mPIDy.calculate(getEncoderY());
+        }
 
+        mZ = 0;//-mPIDz.calculate(mGYRO.getAngle());
 
+        mRobotDrive.driveCartesian(mX, mY, mZ);
+
+        mTelemetry.addData("getTick mFrontLeftMotor", mFrontLeftMotor.getCurrentPosition());
+        mTelemetry.addData("getTick mFrontRightMotor", mFrontRightMotor.getCurrentPosition());
+        mTelemetry.addData("Current position Y", getEncoderY());
+        mTelemetry.addData("Current position X", getEncoderX());
+        mTelemetry.addData("atSetPointY", atSetPointY());
+        mTelemetry.addData("atSetPointX", atSetPointX());
     }
 
-    public void drive(double x, double y, double z){
+    public void drive(double x, double y){
         switch (mMode) {
             case 1:
-                mX = x;
-                mY = y;
+                mX = -x;
+                mY = -y;
                 break;
             case 2:
                 mX = y;
                 mY = -x;
                 break;
             case 3:
-                mX = -y;
-                mY = x;
+                mX = y;
+                mY = -x;
                 break;
             case 4:
-                mX = -x;
-                mY = -y;
+                mX = y;
+                mY = x;
+                break;
         }
-            //mZ = z;
-
     }
 
     public void setZ (double z) {
-        mSetPointZ = z;
-        if(mSetPointZ < -180) {
-            mSetPointZ = mSetPointZ + 360;
-        } else if (mSetPointZ > 180) {
-            mSetPointZ = mSetPointZ - 360;
-        }
-        mPIDz.setSetpoint(mSetPointZ);
+        mPIDz.setSetpoint(z);
 
         switch ((int)z) {
             case 0 :
@@ -141,15 +131,48 @@ public class DriveSubsystem extends SubsystemBase {
             case 180:
                 mMode = 3;
             break;
-            case 270:
+            case -90:
                 mMode = 4;
             break;
         }
     }
+    public void setSetPointX(double x) {
+        double currentPosition = getEncoderX();
+        mPIDx.setSetpoint(currentPosition + x);
+        mIsPIDxEnabled = true;
+    }
+
+    public boolean atSetPointX() {
+        return mPIDx.atSetpoint();
+    }
+
+    public void setSetPointY(double y) {
+        double currentPosition = getEncoderY();
+        mPIDy.setSetpoint(currentPosition + y);
+        mIsPIDyEnabled = true;
+    }
+
+    public boolean atSetPointY() {
+        return mPIDy.atSetpoint();
+    }
+
+    public double getEncoderY() {
+        double mYwheels = (mFrontLeftMotor.getCurrentPosition() - mFrontRightMotor.getCurrentPosition())/2;
+        return mYwheels*Constants.DriveConstants.kCmParTick;
+    }
+    public double getEncoderX() {
+        double mXwheels = (mFrontLeftMotor.getCurrentPosition() + mFrontRightMotor.getCurrentPosition())/2;
+        return mXwheels*Constants.DriveConstants.kCmParTick;
+    }
+
+
+
 
 
     public void stop () {
-        drive(0, 0, 0);
+        drive(0, 0);
+        mIsPIDyEnabled = false;
+        mIsPIDxEnabled = false;
     }
 
 }

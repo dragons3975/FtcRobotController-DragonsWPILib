@@ -8,10 +8,15 @@ public class DriveAutoCommand extends CommandBase {
 
     private final DriveSubsystem mDriveSubsystem;
     private final Telemetry mTelemetry;
+    private int mConsigneY;
+    private int mConsigneX;
 
-    public DriveAutoCommand(Telemetry telemetry, DriveSubsystem driveSubsystem){
+    public DriveAutoCommand(Telemetry telemetry, DriveSubsystem driveSubsystem, int consigneX, int consigneY){
         mTelemetry = telemetry;
         mDriveSubsystem = driveSubsystem;
+
+        mConsigneX = consigneX;
+        mConsigneY = consigneY;
 
         addRequirements(driveSubsystem);
     }
@@ -19,23 +24,33 @@ public class DriveAutoCommand extends CommandBase {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
+
+        mTelemetry.addData("Command Active", true);
+
+        mDriveSubsystem.setSetPointY(mConsigneY);
+        mDriveSubsystem.setSetPointX(mConsigneX);
+
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        mDriveSubsystem.drive(0, 0.5);
     }
 
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
+        mTelemetry.addData("Command Active", false);
         mDriveSubsystem.stop();
+
     }
 
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return true;
+        mTelemetry.addData("At setpoint y", mDriveSubsystem.atSetPointY());
+        mTelemetry.addData("At setpoint x", mDriveSubsystem.atSetPointX());
+        boolean isFinished = mDriveSubsystem.atSetPointY() && mDriveSubsystem.atSetPointX();
+        return isFinished;// ***|| mDriveSubsystem.getEncoder for X (needs math to calculate mecanum) ***
     }
 }

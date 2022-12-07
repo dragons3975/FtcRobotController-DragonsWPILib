@@ -1,51 +1,50 @@
 package org.firstinspires.ftc.teamcode.commands;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.dragonswpilib.command.CommandBase;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.subsystems.BrasSubsystem;
-import org.firstinspires.ftc.teamcode.subsystems.TestMotorSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.testGabriel;
 
-public class TestMotorCommand extends CommandBase {
+public class TestGabrielCommand extends CommandBase {
 
-    private final TestMotorSubsystem mTestMotorSubsystem;
+    private final testGabriel mtestGabriel;
     private final Telemetry mTelemetry;
-    private final HardwareMap mHardwareMap;
-    private  int mCompteur;
+    private final Gamepad mGamepad;
 
-    public TestMotorCommand(Telemetry telemetry, TestMotorSubsystem testMotorSubsystem, HardwareMap hardwareMap){
+    public TestGabrielCommand(Telemetry telemetry, testGabriel test, Gamepad gamepad){
         mTelemetry = telemetry;
-        mTestMotorSubsystem = testMotorSubsystem;
-        mHardwareMap = hardwareMap;
+        mtestGabriel = test;
+        mGamepad = gamepad;
 
-        addRequirements(testMotorSubsystem);
+        addRequirements(test);
     }
 
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        mCompteur = 0;
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        mCompteur++;
-        mTestMotorSubsystem.test();
+        if(mGamepad.right_trigger > 0)
+            mtestGabriel.yann(mGamepad.right_trigger);
+        if(mGamepad.left_trigger > 0)
+            mtestGabriel.yann(-mGamepad.left_trigger);
+
     }
 
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-
-        mTestMotorSubsystem.stop();
+        mtestGabriel.stop();
     }
 
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return mCompteur >= 100;
+        return false;
     }
 }
