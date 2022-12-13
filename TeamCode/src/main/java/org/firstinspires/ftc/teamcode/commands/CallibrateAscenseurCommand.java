@@ -4,41 +4,44 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.dragonswpilib.command.CommandBase;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.subsystems.BrasSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.AscenseurSubsystem;
 
-public class BrasCommand extends CommandBase {
+public class CallibrateAscenseurCommand extends CommandBase {
 
-    private final BrasSubsystem mBrasSubsystem;
+    private final AscenseurSubsystem mAscenseurSubsystem;
     private final Telemetry mTelemetry;
-    private final Gamepad mGamepad;
+    private double mConsigne;
 
-    public BrasCommand(Telemetry telemetry, BrasSubsystem brasSubsystem, Gamepad gamepad){
+    public CallibrateAscenseurCommand(Telemetry telemetry, AscenseurSubsystem ascenseurSubsystem){
         mTelemetry = telemetry;
-        mBrasSubsystem = brasSubsystem;
-        mGamepad = gamepad;
+        mAscenseurSubsystem = ascenseurSubsystem;
 
-        addRequirements(brasSubsystem);
+        addRequirements(ascenseurSubsystem);
     }
 
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
+        mAscenseurSubsystem.manualOveride(-0.5);
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
+
     }
 
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-        mBrasSubsystem.stop();
+        mAscenseurSubsystem.stop();
+        mAscenseurSubsystem.calibrate();
     }
 
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return false;
+        return mAscenseurSubsystem.isLeftDown() && mAscenseurSubsystem.isRightDown();
+
     }
 }

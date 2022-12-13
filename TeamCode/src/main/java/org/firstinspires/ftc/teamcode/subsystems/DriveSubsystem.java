@@ -85,35 +85,37 @@ public class DriveSubsystem extends SubsystemBase {
             mY = mPIDy.calculate(getEncoderY());
         }
 
-        mZ = 0;//-mPIDz.calculate(mGYRO.getAngle());
+        mZ = -mPIDz.calculate(mGYRO.getAngle());
 
         mRobotDrive.driveCartesian(mX, mY, mZ);
-
-        mTelemetry.addData("getTick mFrontLeftMotor", mFrontLeftMotor.getCurrentPosition());
+        mTelemetry.addData("getXaxis", getEncoderY());
+        mTelemetry.addData("getYaxis", getEncoderX());
+        mTelemetry.addData("Mode", mMode);
+        /*mTelemetry.addData("getTick mFrontLeftMotor", mFrontLeftMotor.getCurrentPosition());
         mTelemetry.addData("getTick mFrontRightMotor", mFrontRightMotor.getCurrentPosition());
         mTelemetry.addData("Current position Y", getEncoderY());
         mTelemetry.addData("Current position X", getEncoderX());
         mTelemetry.addData("atSetPointY", atSetPointY());
-        mTelemetry.addData("atSetPointX", atSetPointX());
+        mTelemetry.addData("atSetPointX", atSetPointX());*/
     }
 
     public void drive(double x, double y){
         switch (mMode) {
             case 1:
-                mX = -x;
-                mY = -y;
+                mX = -y;
+                mY = -x;
                 break;
             case 2:
-                mX = y;
-                mY = -x;
+                mX = x;
+                mY = -y;
                 break;
             case 3:
                 mX = y;
-                mY = -x;
+                mY = x;
                 break;
             case 4:
-                mX = y;
-                mY = x;
+                mX = -x;
+                mY = y;
                 break;
         }
     }

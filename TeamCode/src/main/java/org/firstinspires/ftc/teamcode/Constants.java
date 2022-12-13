@@ -15,4 +15,8 @@ public final class Constants {
         public static final double kPIDTolerance = 5;
 
     }
+
+    public static final class AscenseurPIDConstants {
+        public static final double kToleranceAscenseur = 5;
+    }
 }

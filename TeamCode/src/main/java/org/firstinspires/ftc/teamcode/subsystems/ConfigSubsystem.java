@@ -29,9 +29,6 @@ public class ConfigSubsystem extends SubsystemBase {
         mHardwareMap = hardwareMap;
 
 
-
-       // mSetAscenseur = mMoteurAscenseur1.setTargetPosition();
-//setpositionAscenseur = mMoteurAscenseur1.setposition et mMoteurAScenseur2.setposition (THÉORIQUE)
     }
 
 
