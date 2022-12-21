@@ -19,4 +19,15 @@ public final class Constants {
     public static final class AscenseurPIDConstants {
         public static final double kToleranceAscenseur = 5;
     }
+
+    public static final class AscenseurConstants {
+        public static final double kPositionSol =10;
+        public static final double kPositionBas =50;
+        public static final double kPositionMoyen =75;
+        public static final double kPositionHaut =100;
+
+    }
+    public static final class VuforiaConstants {
+        public static final String kVuforiaKey = "Enoch";
+    }
 }

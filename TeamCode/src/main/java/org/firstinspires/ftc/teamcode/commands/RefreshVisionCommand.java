@@ -4,43 +4,41 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.dragonswpilib.command.CommandBase;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.subsystems.AscenseurSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.VisionSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.testGabriel;
 
-public class AscenseurCommand extends CommandBase {
+public class RefreshVisionCommand extends CommandBase {
 
-    private final AscenseurSubsystem mAscenseurSubsystem;
     private final Telemetry mTelemetry;
-    private double mConsigne;
+    private final VisionSubsystem mVisionSubsystem;
 
-    public AscenseurCommand(Telemetry telemetry, AscenseurSubsystem ascenseurSubsystem,  double consigne){
+    public RefreshVisionCommand(Telemetry telemetry, VisionSubsystem visionSubsystem){
         mTelemetry = telemetry;
-        mAscenseurSubsystem = ascenseurSubsystem;
-        mConsigne = consigne;
+        mVisionSubsystem = visionSubsystem;
 
-        addRequirements(ascenseurSubsystem);
+        addRequirements(visionSubsystem);
     }
 
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        mAscenseurSubsystem.setSetPointAscenseur(mConsigne);
-
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
+        mVisionSubsystem.setAutonomousPosition(1);
     }
 
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-        mAscenseurSubsystem.stop();
+
     }
 
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return mAscenseurSubsystem.atSetPointAscenseur();
+        return false;
     }
 }
