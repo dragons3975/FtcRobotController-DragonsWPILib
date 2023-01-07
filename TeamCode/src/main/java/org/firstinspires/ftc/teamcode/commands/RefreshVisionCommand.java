@@ -1,11 +1,8 @@
 package org.firstinspires.ftc.teamcode.commands;
 
-import com.qualcomm.robotcore.hardware.Gamepad;
-
 import org.firstinspires.ftc.dragonswpilib.command.CommandBase;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.subsystems.VisionSubsystem;
-import org.firstinspires.ftc.teamcode.subsystems.testGabriel;
 
 public class RefreshVisionCommand extends CommandBase {
 

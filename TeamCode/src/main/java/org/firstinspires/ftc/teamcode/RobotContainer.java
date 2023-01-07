@@ -9,17 +9,18 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.commandGroups.AutonomousLeftCommandGroup;
 import org.firstinspires.ftc.teamcode.commandGroups.AutonomousMiddleCommandGroup;
 import org.firstinspires.ftc.teamcode.commandGroups.AutonomousRightCommandGroup;
+import org.firstinspires.ftc.teamcode.commandGroups.ConeSequentialCommandGroup;
 import org.firstinspires.ftc.teamcode.commands.AscenseurCommand;
+import org.firstinspires.ftc.teamcode.commands.AscenseurDescendreCommand;
+import org.firstinspires.ftc.teamcode.commands.AscenseurMonterCommand;
 import org.firstinspires.ftc.teamcode.commands.CallibrateAscenseurCommand;
 import org.firstinspires.ftc.teamcode.commands.DriveCommand;
 import org.firstinspires.ftc.teamcode.commands.GoToAngleCommand;
 import org.firstinspires.ftc.teamcode.commands.RefreshVisionCommand;
-import org.firstinspires.ftc.teamcode.commands.TestGabrielCommand;
 import org.firstinspires.ftc.teamcode.subsystems.AscenseurSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
 import org.firstinspires.ftc.dragonswpilib.command.Command;
 import org.firstinspires.ftc.teamcode.subsystems.VisionSubsystem;
-import org.firstinspires.ftc.teamcode.subsystems.testGabriel;
 
 public class RobotContainer {
 
@@ -29,15 +30,18 @@ public class RobotContainer {
 
     private final DriveSubsystem mDriveSubsystem;
     private final DriveCommand mDriveCommand;
-    private final TestGabrielCommand mTestGabrielCommand;
-    private final testGabriel mTestGabriel;
     private final AscenseurSubsystem mAscenseurSubsystem;
+    private final AscenseurDescendreCommand mAscenseurDescendreCommand;
+    private final AscenseurMonterCommand mAscenseurMonterCommand;
     private final VisionSubsystem mVisionSubsystem;
     private final RefreshVisionCommand mRefreshVisionCommand;
 
     private final AutonomousMiddleCommandGroup mAutonomousMiddleCommandGroup;
     private final AutonomousLeftCommandGroup mAutonomousLeftCommandGroup;
     private final AutonomousRightCommandGroup mAutonomousRightCommandGroup;
+
+    private final ConeSequentialCommandGroup mConeSequentialCommandGroup;
+
     private final GoToAngleCommand mGoStraight;
     private final GoToAngleCommand mGoLeft;
     private final GoToAngleCommand mGoRight;
@@ -57,9 +61,9 @@ public class RobotContainer {
 
         mDriveSubsystem = new DriveSubsystem(mHardwareMap, mTelemetry);
         mAscenseurSubsystem = new AscenseurSubsystem(mHardwareMap, mTelemetry);
-        mTestGabriel = new testGabriel(mHardwareMap, mTelemetry);
+        mAscenseurMonterCommand = new AscenseurMonterCommand(mTelemetry, mAscenseurSubsystem);
+        mAscenseurDescendreCommand = new AscenseurDescendreCommand(mTelemetry, mAscenseurSubsystem);
 
-        mTestGabrielCommand = new TestGabrielCommand(mTelemetry, mTestGabriel, mGamepad1);
         mCallibrateAscenseurCommand = new CallibrateAscenseurCommand(mTelemetry, mAscenseurSubsystem);
         mCallibrateAscenseurCommand.schedule();//***Callibrer automatiquement à chaque fois que nous descendons
 
@@ -71,6 +75,8 @@ public class RobotContainer {
         mAutonomousMiddleCommandGroup = new AutonomousMiddleCommandGroup(mTelemetry, mDriveSubsystem, mAscenseurSubsystem, mGamepad1);
         mAutonomousLeftCommandGroup = new AutonomousLeftCommandGroup(mTelemetry, mDriveSubsystem, mAscenseurSubsystem, mGamepad1);
         mAutonomousRightCommandGroup = new AutonomousRightCommandGroup(mTelemetry, mDriveSubsystem, mAscenseurSubsystem, mGamepad1);
+
+        mConeSequentialCommandGroup = new ConeSequentialCommandGroup(mTelemetry, mDriveSubsystem, mAscenseurSubsystem);
 
         mGoStraight = new GoToAngleCommand(mTelemetry, mDriveSubsystem, mGamepad1, 0);
         mGoLeft = new GoToAngleCommand(mTelemetry,mDriveSubsystem,mGamepad1, 90);
@@ -99,11 +105,19 @@ public class RobotContainer {
         buttonB.onTrue(mGoRight);
         JoystickButton buttonA = new JoystickButton(mGamepad1, GenericHID.XboxControllerConstants.kA);
         buttonA.onTrue(mGoBack);
+
+        JoystickButton button2A = new JoystickButton(mGamepad2, GenericHID.XboxControllerConstants.kA);
+        button2A.onTrue(mConeSequentialCommandGroup);
+
+
+        JoystickButton RT = new JoystickButton(mGamepad1, GenericHID.XboxControllerConstants.kRightTrigger);
+        RT.whileTrue(mAscenseurMonterCommand);
+        JoystickButton LT = new JoystickButton(mGamepad1, GenericHID.XboxControllerConstants.kLeftTrigger);
+        LT.whileTrue(mAscenseurDescendreCommand);
     }
 
     private void configureDefaultCommands(){
         mDriveSubsystem.setDefaultCommand(mDriveCommand);
-        mTestGabriel.setDefaultCommand(mTestGabrielCommand);
 
     }
 

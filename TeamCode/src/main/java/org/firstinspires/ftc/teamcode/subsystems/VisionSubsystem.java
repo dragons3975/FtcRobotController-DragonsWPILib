@@ -35,13 +35,13 @@ public class VisionSubsystem extends SubsystemBase {
         parameters.vuforiaLicenseKey = Constants.VuforiaConstants.kVuforiaKey;
         parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
         parameters.cameraName = hardwareMap.get(WebcamName.class, "Webcam 1");
-        mVuforiaLocalizer = ClassFactory.getInstance().createVuforia(parameters);
+        //mVuforiaLocalizer = ClassFactory.getInstance().createVuforia(parameters);
 
-        mVuforiaPassThroughCam = OpenCvCameraFactory.getInstance().createVuforiaPassthrough(mVuforiaLocalizer, parameters, viewportContainerIds[1]);
+        //mVuforiaPassThroughCam = OpenCvCameraFactory.getInstance().createVuforiaPassthrough(mVuforiaLocalizer, parameters, viewportContainerIds[1]);
 
-        AutonomousPipeline mAutonomousPipeline = new AutonomousPipeline(this);
-        CameraListener listener = new CameraListener(mVuforiaPassThroughCam, mAutonomousPipeline);
-        mVuforiaPassThroughCam.openCameraDeviceAsync(listener);
+        //AutonomousPipeline mAutonomousPipeline = new AutonomousPipeline(this);
+        //CameraListener listener = new CameraListener(mVuforiaPassThroughCam, mAutonomousPipeline);
+        //mVuforiaPassThroughCam.openCameraDeviceAsync(listener);
     }
 
     @Override

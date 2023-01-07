@@ -15,7 +15,7 @@ public class AutonomousMiddleCommandGroup extends SequentialCommandGroup {
 
     public AutonomousMiddleCommandGroup(Telemetry telemetry, DriveSubsystem driveSubsystem, AscenseurSubsystem ascenseurSubsystem, Gamepad gamepad) {
 
-        DriveAutoCommand avancer40Cm = new DriveAutoCommand(telemetry, driveSubsystem, 40, 0);
+        DriveAutoCommand avancer160Cm = new DriveAutoCommand(telemetry, driveSubsystem, 130, 0);
         AscenseurCommand positionPickUp = new AscenseurCommand(telemetry, ascenseurSubsystem, Constants.AscenseurConstants.kPositionSol);
         AscenseurCommand positionBas = new AscenseurCommand(telemetry, ascenseurSubsystem, Constants.AscenseurConstants.kPositionBas);
         AscenseurCommand positionMoyen = new AscenseurCommand(telemetry, ascenseurSubsystem, Constants.AscenseurConstants.kPositionMoyen);
@@ -25,24 +25,29 @@ public class AutonomousMiddleCommandGroup extends SequentialCommandGroup {
         GoToAngleCommand GoLeft = new GoToAngleCommand(telemetry, driveSubsystem,gamepad, 90);
         GoToAngleCommand GoRight = new GoToAngleCommand(telemetry, driveSubsystem,gamepad, -90);
         GoToAngleCommand GoBack = new GoToAngleCommand(telemetry, driveSubsystem,gamepad, 180);
+        GoToAngleCommand Turn45 = new GoToAngleCommand(telemetry, driveSubsystem, gamepad, -45);
         //x =  forward-backward
         //y = sideways
 
         DriveAutoCommand tourner20cm = new DriveAutoCommand(telemetry, driveSubsystem, 0, 20);
-        DriveAutoCommand reculer40cm = new DriveAutoCommand(telemetry, driveSubsystem, -40, 0);
 
+        DriveAutoCommand avancer40cm = new DriveAutoCommand(telemetry, driveSubsystem, 40, 0);
+        DriveAutoCommand reculer10cm = new DriveAutoCommand(telemetry, driveSubsystem, -10, 0);
 
+        ConeSequentialCommandGroup callibrate = new ConeSequentialCommandGroup(telemetry, driveSubsystem, ascenseurSubsystem);
 
 
 
 
         addCommands(
-                    GoLeft,
-                avancer40Cm,
-                //ouvrir pince
-                reculer40cm,
-                GoRight,
-                avancer40Cm
+                avancer160Cm,
+                Turn45,
+                avancer40cm,
+                reculer10cm
+
+
+
+
 
             );
     }

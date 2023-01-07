@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
+import com.qualcomm.hardware.rev.RevSPARKMini;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.dragonswpilib.command.FTC_Gyro;
@@ -25,8 +27,8 @@ public class DriveSubsystem extends SubsystemBase {
 
     private final DcMotor mFrontLeftMotor;
     private final DcMotor mFrontRightMotor;
-    private final DcMotor mBackLeftMotor;
-    private final DcMotor mBackRightMotor;
+    private final DcMotorSimple mBackLeftMotor;
+    private final DcMotorSimple mBackRightMotor;
 
     private MecanumDrive mRobotDrive;
 
@@ -42,8 +44,8 @@ public class DriveSubsystem extends SubsystemBase {
         mHardwareMap = hardwareMap;
 
         mFrontLeftMotor = mHardwareMap.get(DcMotor.class, "Front left");
-        mBackLeftMotor = mHardwareMap.get(DcMotor.class, "Back left");
-        mBackRightMotor = mHardwareMap.get(DcMotor.class, "Back right");
+        mBackLeftMotor = mHardwareMap.get(DcMotorSimple.class, "Back left");
+        mBackRightMotor = mHardwareMap.get(DcMotorSimple.class, "Back right");
         mFrontRightMotor = mHardwareMap.get(DcMotor.class, "Front right");
 
         mFrontLeftMotor.setDirection(DcMotor.Direction.REVERSE);
@@ -55,11 +57,6 @@ public class DriveSubsystem extends SubsystemBase {
         mFrontRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         mFrontRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        mBackLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        mBackLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-        mBackRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        mBackRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         mRobotDrive = new MecanumDrive(mFrontLeftMotor, mBackLeftMotor, mFrontRightMotor, mBackRightMotor);
 
@@ -91,12 +88,12 @@ public class DriveSubsystem extends SubsystemBase {
         mTelemetry.addData("getXaxis", getEncoderY());
         mTelemetry.addData("getYaxis", getEncoderX());
         mTelemetry.addData("Mode", mMode);
-        /*mTelemetry.addData("getTick mFrontLeftMotor", mFrontLeftMotor.getCurrentPosition());
+        mTelemetry.addData("getTick mFrontLeftMotor", mFrontLeftMotor.getCurrentPosition());
         mTelemetry.addData("getTick mFrontRightMotor", mFrontRightMotor.getCurrentPosition());
-        mTelemetry.addData("Current position Y", getEncoderY());
-        mTelemetry.addData("Current position X", getEncoderX());
-        mTelemetry.addData("atSetPointY", atSetPointY());
-        mTelemetry.addData("atSetPointX", atSetPointX());*/
+        //mTelemetry.addData("Current position Y", getEncoderY());
+        //mTelemetry.addData("Current position X", getEncoderX());
+        //mTelemetry.addData("atSetPointY", atSetPointY());
+        //mTelemetry.addData("atSetPointX", atSetPointX());*/
     }
 
     public void drive(double x, double y){
@@ -148,6 +145,10 @@ public class DriveSubsystem extends SubsystemBase {
         return mPIDx.atSetpoint();
     }
 
+    public boolean atSetPointZ() {
+        return mPIDz.atSetpoint();
+    }
+
     public void  setSetPointY(double y) {
         double currentPosition = getEncoderY();
         mPIDy.setSetpoint(currentPosition + y);
@@ -166,7 +167,6 @@ public class DriveSubsystem extends SubsystemBase {
         double mXwheels = (mFrontLeftMotor.getCurrentPosition() + mFrontRightMotor.getCurrentPosition())/2;
         return mXwheels*Constants.DriveConstants.kCmParTick;
     }
-
 
 
 

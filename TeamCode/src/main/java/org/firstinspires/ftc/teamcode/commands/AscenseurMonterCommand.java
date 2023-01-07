@@ -1,44 +1,40 @@
 package org.firstinspires.ftc.teamcode.commands;
 
-import com.qualcomm.robotcore.hardware.Gamepad;
-
 import org.firstinspires.ftc.dragonswpilib.command.CommandBase;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.subsystems.testGabriel;
+import org.firstinspires.ftc.teamcode.subsystems.AscenseurSubsystem;
 
-public class TestGabrielCommand extends CommandBase {
+public class AscenseurMonterCommand extends CommandBase {
 
-    private final testGabriel mtestGabriel;
+    private final AscenseurSubsystem mAscenseurSubsystem;
     private final Telemetry mTelemetry;
-    private final Gamepad mGamepad;
+    private double mConsigne;
 
-    public TestGabrielCommand(Telemetry telemetry, testGabriel test, Gamepad gamepad){
+    public AscenseurMonterCommand(Telemetry telemetry, AscenseurSubsystem ascenseurSubsystem){
         mTelemetry = telemetry;
-        mtestGabriel = test;
-        mGamepad = gamepad;
+        mAscenseurSubsystem = ascenseurSubsystem;
 
-        addRequirements(test);
+        addRequirements(ascenseurSubsystem);
     }
 
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
+       // mAscenseurSubsystem.setSetPointAscenseur(mConsigne);
+
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        if(mGamepad.right_trigger > 0)
-            mtestGabriel.yann(mGamepad.right_trigger);
-        if(mGamepad.left_trigger > 0)
-            mtestGabriel.yann(-mGamepad.left_trigger);
+        mAscenseurSubsystem.setPower(-1.0);
 
     }
 
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-        mtestGabriel.stop();
+        mAscenseurSubsystem.stop();
     }
 
     // Returns true when the command should end.

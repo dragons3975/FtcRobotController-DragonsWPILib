@@ -103,6 +103,11 @@ public class AscenseurSubsystem extends SubsystemBase {
         mCalibrationRight = mMoteurAscenseurDroit.getCurrentPosition();
     }
 
+    public void setPower(double power) {
+        mMoteurAscenseurGauche.setPower(power);
+        mMoteurAscenseurDroit.setPower(power);
+    }
+
     public void stop() {
         mPowerLeft = 0;
         mPowerRight = 0;
