@@ -6,20 +6,23 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.dragonswpilib.GenericHID;
 import org.firstinspires.ftc.dragonswpilib.command.button.JoystickButton;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.commandGroups.AutonomousLeftCommandGroup;
-import org.firstinspires.ftc.teamcode.commandGroups.AutonomousMiddleCommandGroup;
-import org.firstinspires.ftc.teamcode.commandGroups.AutonomousRightCommandGroup;
+import org.firstinspires.ftc.teamcode.commandGroups.GaucheAutonomousLeftCommandGroup;
+import org.firstinspires.ftc.teamcode.commandGroups.GaucheAutonomousMiddleCommandGroup;
+import org.firstinspires.ftc.teamcode.commandGroups.GaucheAutonomousRightCommandGroup;
 import org.firstinspires.ftc.teamcode.commandGroups.ConeSequentialCommandGroup;
 import org.firstinspires.ftc.teamcode.commands.AscenseurCommand;
 import org.firstinspires.ftc.teamcode.commands.AscenseurDescendreCommand;
 import org.firstinspires.ftc.teamcode.commands.AscenseurMonterCommand;
 import org.firstinspires.ftc.teamcode.commands.CallibrateAscenseurCommand;
 import org.firstinspires.ftc.teamcode.commands.DriveCommand;
+import org.firstinspires.ftc.teamcode.commands.FermerPinceCommand;
 import org.firstinspires.ftc.teamcode.commands.GoToAngleCommand;
+import org.firstinspires.ftc.teamcode.commands.OuvrirPinceCommand;
 import org.firstinspires.ftc.teamcode.commands.RefreshVisionCommand;
 import org.firstinspires.ftc.teamcode.subsystems.AscenseurSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
 import org.firstinspires.ftc.dragonswpilib.command.Command;
+import org.firstinspires.ftc.teamcode.subsystems.PinceSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.VisionSubsystem;
 
 public class RobotContainer {
@@ -33,12 +36,16 @@ public class RobotContainer {
     private final AscenseurSubsystem mAscenseurSubsystem;
     private final AscenseurDescendreCommand mAscenseurDescendreCommand;
     private final AscenseurMonterCommand mAscenseurMonterCommand;
+    private final PinceSubsystem mPinceSubsystem;
+    private final OuvrirPinceCommand mOuvrirPinceCommand;
+    private final FermerPinceCommand mFermerPinceCommand;
+
     private final VisionSubsystem mVisionSubsystem;
     private final RefreshVisionCommand mRefreshVisionCommand;
 
-    private final AutonomousMiddleCommandGroup mAutonomousMiddleCommandGroup;
-    private final AutonomousLeftCommandGroup mAutonomousLeftCommandGroup;
-    private final AutonomousRightCommandGroup mAutonomousRightCommandGroup;
+    private final GaucheAutonomousMiddleCommandGroup mGaucheAutonomousMiddleCommandGroup;
+    private final GaucheAutonomousLeftCommandGroup mGaucheAutonomousLeftCommandGroup;
+    private final GaucheAutonomousRightCommandGroup mGaucheAutonomousRightCommandGroup;
 
     private final ConeSequentialCommandGroup mConeSequentialCommandGroup;
 
@@ -67,14 +74,17 @@ public class RobotContainer {
         mCallibrateAscenseurCommand = new CallibrateAscenseurCommand(mTelemetry, mAscenseurSubsystem);
         mCallibrateAscenseurCommand.schedule();//***Callibrer automatiquement à chaque fois que nous descendons
 
+        mPinceSubsystem = new PinceSubsystem(mHardwareMap, mTelemetry, mGamepad2);
+        mOuvrirPinceCommand = new OuvrirPinceCommand(mTelemetry, mPinceSubsystem);
+        mFermerPinceCommand = new FermerPinceCommand(mTelemetry, mPinceSubsystem);
 
         mVisionSubsystem = new VisionSubsystem(mHardwareMap, mTelemetry);
         mRefreshVisionCommand = new RefreshVisionCommand(mTelemetry, mVisionSubsystem);
         mRefreshVisionCommand.schedule();//***ne pas scheduler lors du mode teleop
         mDriveCommand = new DriveCommand(mTelemetry, mDriveSubsystem, mGamepad1);
-        mAutonomousMiddleCommandGroup = new AutonomousMiddleCommandGroup(mTelemetry, mDriveSubsystem, mAscenseurSubsystem, mGamepad1);
-        mAutonomousLeftCommandGroup = new AutonomousLeftCommandGroup(mTelemetry, mDriveSubsystem, mAscenseurSubsystem, mGamepad1);
-        mAutonomousRightCommandGroup = new AutonomousRightCommandGroup(mTelemetry, mDriveSubsystem, mAscenseurSubsystem, mGamepad1);
+        mGaucheAutonomousMiddleCommandGroup = new GaucheAutonomousMiddleCommandGroup(mTelemetry, mDriveSubsystem, mAscenseurSubsystem, mGamepad1);
+        mGaucheAutonomousLeftCommandGroup = new GaucheAutonomousLeftCommandGroup(mTelemetry, mDriveSubsystem, mAscenseurSubsystem, mGamepad1);
+        mGaucheAutonomousRightCommandGroup = new GaucheAutonomousRightCommandGroup(mTelemetry, mDriveSubsystem, mAscenseurSubsystem, mGamepad1);
 
         mConeSequentialCommandGroup = new ConeSequentialCommandGroup(mTelemetry, mDriveSubsystem, mAscenseurSubsystem);
 
@@ -95,7 +105,7 @@ public class RobotContainer {
 
     private void configureButtonBindings() {
         JoystickButton start = new JoystickButton(mGamepad1, GenericHID.XboxControllerConstants.kStart);
-        start.onTrue(mAutonomousMiddleCommandGroup);
+        start.onTrue(mGaucheAutonomousMiddleCommandGroup);
 
         JoystickButton buttonY = new JoystickButton(mGamepad1, GenericHID.XboxControllerConstants.kY);
         buttonY.onTrue(mGoStraight);
@@ -106,14 +116,20 @@ public class RobotContainer {
         JoystickButton buttonA = new JoystickButton(mGamepad1, GenericHID.XboxControllerConstants.kA);
         buttonA.onTrue(mGoBack);
 
-        JoystickButton button2A = new JoystickButton(mGamepad2, GenericHID.XboxControllerConstants.kA);
-        button2A.onTrue(mConeSequentialCommandGroup);
+        //JoystickButton button2A = new JoystickButton(mGamepad2, GenericHID.XboxControllerConstants.kA);
+        //button2A.onTrue(mConeSequentialCommandGroup);
 
 
         JoystickButton RT = new JoystickButton(mGamepad1, GenericHID.XboxControllerConstants.kRightTrigger);
         RT.whileTrue(mAscenseurMonterCommand);
         JoystickButton LT = new JoystickButton(mGamepad1, GenericHID.XboxControllerConstants.kLeftTrigger);
         LT.whileTrue(mAscenseurDescendreCommand);
+
+
+        JoystickButton buttonA2 = new JoystickButton(mGamepad2, GenericHID.XboxControllerConstants.kA);
+        buttonA2.onTrue(mOuvrirPinceCommand);
+        JoystickButton buttonB2 = new JoystickButton(mGamepad2, GenericHID.XboxControllerConstants.kB);
+        buttonB2.onTrue(mFermerPinceCommand);
     }
 
     private void configureDefaultCommands(){
@@ -122,13 +138,14 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        mRefreshVisionCommand.cancel();
+        return mGaucheAutonomousLeftCommandGroup;
+       /* mRefreshVisionCommand.cancel();
       int  position = mVisionSubsystem.getAutonomousPosition();
       switch(position) {
           default:
           case 1: return mAutonomousMiddleCommandGroup;
           case 2: return mAutonomousLeftCommandGroup;
-
+*/
       }
     }
-}
+

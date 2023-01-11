@@ -12,6 +12,7 @@ public class GoToAngleCommand extends CommandBase {
     private final Telemetry mTelemetry;
     private final Gamepad mGamepad;
     private int mConsigne;
+    private String Bonjour;
 
     public GoToAngleCommand(Telemetry telemetry, DriveSubsystem driveSubsystem, Gamepad gamepad, int consigne){
         mTelemetry = telemetry;
@@ -30,6 +31,7 @@ public class GoToAngleCommand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
+        mTelemetry.addData("GoToAngleCommand", Bonjour);
     }
 
     // Called once the command ends or is interrupted.

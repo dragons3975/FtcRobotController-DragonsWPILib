@@ -10,6 +10,8 @@ public class DriveAutoCommand extends CommandBase {
     private final Telemetry mTelemetry;
     private int mConsigneY;
     private int mConsigneX;
+    private String Bonjour;
+
 
     public DriveAutoCommand(Telemetry telemetry, DriveSubsystem driveSubsystem, int consigneX, int consigneY){
         mTelemetry = telemetry;
@@ -36,6 +38,7 @@ public class DriveAutoCommand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
+        mTelemetry.addData("DriveAutoCommand", Bonjour);
 
     }
 

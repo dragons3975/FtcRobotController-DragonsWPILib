@@ -1,7 +1,10 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
+import com.qualcomm.hardware.motors.Matrix12vMotor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.dragonswpilib.command.SubsystemBase;
 import org.firstinspires.ftc.dragonswpilib.math.controller.PIDController;
@@ -12,58 +15,34 @@ public class PinceSubsystem extends SubsystemBase {
 
     private Telemetry mTelemetry;
     private HardwareMap mHardwareMap;
+    private Gamepad mGamepad2;
 
-    private final DcMotor mMoteurPince;
-    private final PIDController mPIDpince = new PIDController(Constants.PIDConstants.kP, Constants.PIDConstants.kI, Constants.PIDConstants.kD);
+    private final Servo mMoteurPince;
 
+    private double position = 0;
 
-    private double mGetAscenseur1;
-
-
-
-    private double mX = 0;
-    private double mY = 0;
-    private double mZ = 0;
-
-    // Pour suivre la position sur le terrain. Donnée par Vuforia.
-    private double mPositionX = 0;
-    private double mPositionY = 0;
-    private double mRotationZ = 0;
-
-    public PinceSubsystem(HardwareMap hardwareMap, Telemetry telemetry) {
+    public PinceSubsystem(HardwareMap hardwareMap, Telemetry telemetry, Gamepad gamepad2) {
         mTelemetry = telemetry;
         mHardwareMap = hardwareMap;
+        mGamepad2 = gamepad2;
 
-        mMoteurPince = mHardwareMap.get(DcMotor.class, "Moteur pince");//************ À CHANGER***********************************
-
-        mMoteurPince.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        mMoteurPince.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-
-
-        mGetAscenseur1 = mMoteurPince.getCurrentPosition();
-        mPIDpince.setTolerance(5);
-
-       // mSetAscenseur = mMoteurAscenseur1.setTargetPosition();
-//setpositionAscenseur = mMoteurAscenseur1.setposition et mMoteurAScenseur2.setposition (THÉORIQUE)
+        mMoteurPince = mHardwareMap.get(Servo.class, "pince");
     }
-
 
     @Override
     public void periodic() {
-
+        mTelemetry.addData("Pince position", mMoteurPince.getPosition());
     }
 
-    public void setSetPointPince(double consigne) {
-        mPIDpince.setSetpoint(consigne);
+    public void setPosition(double consigne) {
+        mMoteurPince.setPosition(consigne);
     }
 
-    public boolean atSetPointPince() {
-        return mPIDpince.atSetpoint();
+    public void ouvrir() {
+        mMoteurPince.setPosition(0.27);
     }
-
-    public void stop() {
-        mMoteurPince.setPower(0);
+    public void fermer() {
+        mMoteurPince.setPosition(0);
     }
 
 }

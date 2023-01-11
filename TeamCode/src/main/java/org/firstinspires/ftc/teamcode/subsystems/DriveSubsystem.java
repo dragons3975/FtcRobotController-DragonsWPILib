@@ -19,9 +19,9 @@ public class DriveSubsystem extends SubsystemBase {
     private HardwareMap mHardwareMap;
     private FTC_Gyro mGYRO;
 
-    private final PIDController mPIDx = new PIDController(Constants.PIDConstants.kP, Constants.PIDConstants.kI, Constants.PIDConstants.kD);
-    private final PIDController mPIDy = new PIDController(Constants.PIDConstants.kP, Constants.PIDConstants.kI, Constants.PIDConstants.kD);
-    private final PIDController mPIDz = new PIDController(Constants.PIDConstants.kP, Constants.PIDConstants.kI, Constants.PIDConstants.kD);
+    private final PIDController mPIDx = new PIDController(Constants.PIDxConstants.kP, Constants.PIDxConstants.kI, Constants.PIDxConstants.kD);
+    private final PIDController mPIDy = new PIDController(Constants.PIDyConstants.kP, Constants.PIDyConstants.kI, Constants.PIDyConstants.kD);
+    private final PIDController mPIDz = new PIDController(Constants.PIDzConstants.kP, Constants.PIDzConstants.kI, Constants.PIDzConstants.kD);
 
     private int mMode = 1;
 
@@ -64,10 +64,9 @@ public class DriveSubsystem extends SubsystemBase {
 
         mPIDz.enableContinuousInput(-180, 180);
 
-        mPIDx.setTolerance(Constants.PIDConstants.kPIDTolerance);
-        mPIDy.setTolerance(Constants.PIDConstants.kPIDTolerance);
-
-
+        mPIDx.setTolerance(Constants.PIDxConstants.kTolerance);
+        mPIDy.setTolerance(Constants.PIDyConstants.kTolerance);
+        mPIDz.setTolerance(Constants.PIDzConstants.kTolerance);
 
     }
 
@@ -75,10 +74,10 @@ public class DriveSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        if(mIsPIDxEnabled) {
+        if (mIsPIDxEnabled) {
             mX = mPIDx.calculate(getEncoderX());
         }
-        if(mIsPIDyEnabled) {
+        if (mIsPIDyEnabled) {
             mY = mPIDy.calculate(getEncoderY());
         }
 
@@ -90,6 +89,8 @@ public class DriveSubsystem extends SubsystemBase {
         mTelemetry.addData("Mode", mMode);
         mTelemetry.addData("getTick mFrontLeftMotor", mFrontLeftMotor.getCurrentPosition());
         mTelemetry.addData("getTick mFrontRightMotor", mFrontRightMotor.getCurrentPosition());
+        mTelemetry.addData("Z", mZ);
+
         //mTelemetry.addData("Current position Y", getEncoderY());
         //mTelemetry.addData("Current position X", getEncoderX());
         //mTelemetry.addData("atSetPointY", atSetPointY());
@@ -160,12 +161,12 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public double getEncoderY() {
-        double mYwheels = (mFrontLeftMotor.getCurrentPosition() - mFrontRightMotor.getCurrentPosition())/2;
-        return mYwheels*Constants.DriveConstants.kCmParTick;
+        double tickY = (mFrontLeftMotor.getCurrentPosition() - mFrontRightMotor.getCurrentPosition())/2;
+        return tickY * Constants.DriveConstants.kCmParTick;
     }
     public double getEncoderX() {
-        double mXwheels = (mFrontLeftMotor.getCurrentPosition() + mFrontRightMotor.getCurrentPosition())/2;
-        return mXwheels*Constants.DriveConstants.kCmParTick;
+        double tickX = (mFrontLeftMotor.getCurrentPosition() + mFrontRightMotor.getCurrentPosition())/2;
+        return tickX * Constants.DriveConstants.kCmParTick;
     }
 
 
