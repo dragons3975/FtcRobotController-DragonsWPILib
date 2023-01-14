@@ -72,7 +72,7 @@ public class RobotContainer {
         mAscenseurDescendreCommand = new AscenseurDescendreCommand(mTelemetry, mAscenseurSubsystem);
 
         mCallibrateAscenseurCommand = new CallibrateAscenseurCommand(mTelemetry, mAscenseurSubsystem);
-        mCallibrateAscenseurCommand.schedule();//***Callibrer automatiquement à chaque fois que nous descendons
+        //mCallibrateAscenseurCommand.schedule();//***Callibrer automatiquement à chaque fois que nous descendons
 
         mPinceSubsystem = new PinceSubsystem(mHardwareMap, mTelemetry, mGamepad2);
         mOuvrirPinceCommand = new OuvrirPinceCommand(mTelemetry, mPinceSubsystem);

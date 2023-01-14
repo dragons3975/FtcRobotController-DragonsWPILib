@@ -21,13 +21,12 @@ public class AscenseurDescendreCommand extends CommandBase {
     @Override
     public void initialize() {
         //mAscenseurSubsystem.setSetPointAscenseur(mConsigne);
-
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        mAscenseurSubsystem.setPower(-1.0);
+        mAscenseurSubsystem.manualOveride(-0.5);
     }
 
     // Called once the command ends or is interrupted.

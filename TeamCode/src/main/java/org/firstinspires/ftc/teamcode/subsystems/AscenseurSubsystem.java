@@ -15,64 +15,66 @@ public class AscenseurSubsystem extends SubsystemBase {
     private HardwareMap mHardwareMap;
 
     private final DcMotor mMoteurAscenseurGauche;
-    //private final DcMotor mMoteurAscenseurDroit;
+    private final DcMotor mMoteurAscenseurDroit;
     private final PIDController mPIDascenseurGauche = new PIDController(Constants.PIDascenseurConstants.kP, Constants.PIDascenseurConstants.kI, Constants.PIDascenseurConstants.kD);
-    //private final PIDController mPIDascenseurDroit = new PIDController(Constants.PIDascenseurConstants.kP, Constants.PIDascenseurConstants.kI, Constants.PIDascenseurConstants.kD);
+    private final PIDController mPIDascenseurDroit = new PIDController(Constants.PIDascenseurConstants.kP, Constants.PIDascenseurConstants.kI, Constants.PIDascenseurConstants.kD);
 
     private boolean mPIDenabled = false;
     private double mPowerLeft = 0;
-    //private double mPowerRight = 0;
+    private double mPowerRight = 0;
 
     private double mCalibrationLeft;
-    //private double mCalibrationRight;
+    private double mCalibrationRight;
 
     private DigitalChannel mDigitalInputLeft;
-    //private DigitalChannel mDigitalInputRight;
-
-
+    private DigitalChannel mDigitalInputRight;
 
     public AscenseurSubsystem(HardwareMap hardwareMap, Telemetry telemetry) {
         mTelemetry = telemetry;
         mHardwareMap = hardwareMap;
 
         mMoteurAscenseurGauche = mHardwareMap.get(DcMotor.class, "Moteur Ascenseur gauche");
-        //mMoteurAscenseurDroit = mHardwareMap.get(DcMotor.class, "Moteur Ascenseur droit");
+        mMoteurAscenseurDroit = mHardwareMap.get(DcMotor.class, "Moteur Ascenseur droit");
 
         mDigitalInputLeft = mHardwareMap.get(DigitalChannel.class, "LeftTactile");
-        //mDigitalInputRight = mHardwareMap.get(DigitalChannel.class, "RightTactile");
+        mDigitalInputRight = mHardwareMap.get(DigitalChannel.class, "RightTactile");
 
         mMoteurAscenseurGauche.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         mMoteurAscenseurGauche.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        //mMoteurAscenseurDroit.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        //mMoteurAscenseurDroit.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        mMoteurAscenseurDroit.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        mMoteurAscenseurDroit.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         mPIDascenseurGauche.setTolerance(Constants.PIDascenseurConstants.kTolerance);
-        //mPIDascenseurDroit.setTolerance(Constants.PIDascenseurConstants.kTolerance);
+        mPIDascenseurDroit.setTolerance(Constants.PIDascenseurConstants.kTolerance);
     }
 
 
     @Override
     public void periodic() {
         if(mPIDenabled) {
-            mPowerLeft = mPIDascenseurGauche.calculate(getAscenseurGauchePosition());
-            //mPowerRight = mPIDascenseurDroit.calculate(getAscenseur());
+            //mPowerLeft = mPIDascenseurGauche.calculate(getAscenseurGauchePosition());
+            //mPowerRight = mPIDascenseurDroit.calculate(getAscenseurDroitPosition());
         }
         if (isLeftDown() && mPowerLeft < 0) {
             mPowerLeft = 0;
         }
+        if (isRightDown() && mPowerRight < 0) {
+            mPowerRight = 0;
+        }
         mMoteurAscenseurGauche.setPower(mPowerLeft);
+        mMoteurAscenseurDroit.setPower(-mPowerRight);
     }
 
     public double getAscenseurGauchePosition() {
         double tickGauche = mMoteurAscenseurGauche.getCurrentPosition();
-        return tickGauche * Constants.AscenseurConstants.kTickParCm;
+        return tickGauche * Constants.AscenseurConstants.kCmParTick;
     }
 
     public void setSetPointAscenseur(double consigne) {
        mPIDascenseurGauche.setSetpoint(consigne + mCalibrationLeft);
-       //mPIDascenseurDroit.setSetpoint(consigne+mCalibrationRight);
-        mPIDenabled = true;
+       mPIDascenseurDroit.setSetpoint(consigne + mCalibrationRight);
+       mPIDenabled = true;
     }
 
     public boolean atSetPointAscenseur() {
@@ -80,29 +82,28 @@ public class AscenseurSubsystem extends SubsystemBase {
     }
 
     public boolean isLeftDown(){
-    return mDigitalInputLeft.getState();
+        return false; //mDigitalInputLeft.getState();
     }
 
-    //public boolean isRightDown() {
-    //    return mDigitalInputRight.getState();
-    //}
+    public boolean isRightDown() {
+        return false; //mDigitalInputRight.getState();
+    }
 
     public void manualOveride(double power) {
         mPowerLeft = power;
-        //mPowerRight = power;
+        mPowerRight = power;
         mPIDenabled = false;
     }
 
     public void calibrate() {
         mCalibrationLeft = mMoteurAscenseurGauche.getCurrentPosition();
-        //mCalibrationRight = mMoteurAscenseurDroit.getCurrentPosition();
+        mCalibrationRight = mMoteurAscenseurDroit.getCurrentPosition();
     }
 
     public void stop() {
         mPowerLeft = 0;
-        //mPowerRight = 0;
+        mPowerRight = 0;
         mPIDenabled = false;
     }
 
 }
-
