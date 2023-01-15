@@ -7,13 +7,16 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.commands.AscenseurCommand;
 import org.firstinspires.ftc.teamcode.commands.DriveAutoCommand;
+import org.firstinspires.ftc.teamcode.commands.FermerPinceCommand;
 import org.firstinspires.ftc.teamcode.commands.GoToAngleCommand;
+import org.firstinspires.ftc.teamcode.commands.OuvrirPinceCommand;
 import org.firstinspires.ftc.teamcode.subsystems.AscenseurSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.PinceSubsystem;
 
 public class GaucheAutonomousRightCommandGroup extends SequentialCommandGroup {
 
-    public GaucheAutonomousRightCommandGroup(Telemetry telemetry, DriveSubsystem driveSubsystem, AscenseurSubsystem ascenseurSubsystem, Gamepad gamepad) {
+    public GaucheAutonomousRightCommandGroup(Telemetry telemetry, DriveSubsystem driveSubsystem, AscenseurSubsystem ascenseurSubsystem, PinceSubsystem pinceSubsystem, Gamepad gamepad) {
 
         DriveAutoCommand avancer130Cm = new DriveAutoCommand(telemetry, driveSubsystem, 130, 0);
         DriveAutoCommand reculer130cm = new DriveAutoCommand(telemetry, driveSubsystem, -130, 0);
@@ -39,6 +42,8 @@ public class GaucheAutonomousRightCommandGroup extends SequentialCommandGroup {
         DriveAutoCommand reculer30cm = new DriveAutoCommand(telemetry, driveSubsystem, -30, 0);
 
         DriveAutoCommand reculer10cm = new DriveAutoCommand(telemetry, driveSubsystem, -10, 0);
+        OuvrirPinceCommand ouvrirPince = new OuvrirPinceCommand(telemetry, pinceSubsystem);
+        FermerPinceCommand fermerPince = new FermerPinceCommand(telemetry, pinceSubsystem);
 
 
 
@@ -51,6 +56,7 @@ public class GaucheAutonomousRightCommandGroup extends SequentialCommandGroup {
                 avancer40cm,
                 reculer10cm,
                 //séquence ascenseur
+                ouvrirPince,
                 reculer30cm,
                 GoStraight,
                 reculer130cm,

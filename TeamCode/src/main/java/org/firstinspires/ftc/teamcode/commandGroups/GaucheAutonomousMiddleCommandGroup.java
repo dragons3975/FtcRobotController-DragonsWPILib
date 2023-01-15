@@ -7,13 +7,16 @@ import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.commands.AscenseurCommand;
 import org.firstinspires.ftc.teamcode.commands.DriveAutoCommand;
 import org.firstinspires.ftc.dragonswpilib.command.SequentialCommandGroup;
+import org.firstinspires.ftc.teamcode.commands.FermerPinceCommand;
 import org.firstinspires.ftc.teamcode.commands.GoToAngleCommand;
+import org.firstinspires.ftc.teamcode.commands.OuvrirPinceCommand;
 import org.firstinspires.ftc.teamcode.subsystems.AscenseurSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.PinceSubsystem;
 
 public class GaucheAutonomousMiddleCommandGroup extends SequentialCommandGroup {
 
-    public GaucheAutonomousMiddleCommandGroup(Telemetry telemetry, DriveSubsystem driveSubsystem, AscenseurSubsystem ascenseurSubsystem, Gamepad gamepad) {
+    public GaucheAutonomousMiddleCommandGroup(Telemetry telemetry, DriveSubsystem driveSubsystem, AscenseurSubsystem ascenseurSubsystem, PinceSubsystem pinceSubsystem, Gamepad gamepad) {
 
         DriveAutoCommand avancer130Cm = new DriveAutoCommand(telemetry, driveSubsystem, 130, 0);
         DriveAutoCommand reculer130cm = new DriveAutoCommand(telemetry, driveSubsystem, -130, 0);
@@ -39,7 +42,8 @@ public class GaucheAutonomousMiddleCommandGroup extends SequentialCommandGroup {
 
         DriveAutoCommand reculer10cm = new DriveAutoCommand(telemetry, driveSubsystem, -10, 0);
 
-        ConeSequentialCommandGroup callibrate = new ConeSequentialCommandGroup(telemetry, driveSubsystem, ascenseurSubsystem);
+        OuvrirPinceCommand ouvrirPince = new OuvrirPinceCommand(telemetry, pinceSubsystem);
+        FermerPinceCommand fermerPince = new FermerPinceCommand(telemetry, pinceSubsystem);
 
 
 
@@ -50,6 +54,7 @@ public class GaucheAutonomousMiddleCommandGroup extends SequentialCommandGroup {
                 avancer40cm,
                 reculer10cm,
                 //séquence ascenseur
+                ouvrirPince,
                 reculer30cm,
                 GoStraight,
                 reculer130cm

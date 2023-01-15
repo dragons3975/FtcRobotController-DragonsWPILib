@@ -1,8 +1,8 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
-import com.qualcomm.hardware.rev.RevSPARKMini;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.dragonswpilib.command.FTC_Gyro;
@@ -11,7 +11,6 @@ import org.firstinspires.ftc.dragonswpilib.drive.MecanumDrive;
 import org.firstinspires.ftc.dragonswpilib.math.controller.PIDController;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Constants;
-
 
 public class DriveSubsystem extends SubsystemBase {
 
@@ -35,6 +34,8 @@ public class DriveSubsystem extends SubsystemBase {
     private boolean mIsPIDxEnabled = false;
     private boolean mIsPIDyEnabled = false;
 
+    private DigitalChannel mTactile;
+
     private double mX = 0;
     private double mY = 0;
     private double mZ = 0;
@@ -48,6 +49,8 @@ public class DriveSubsystem extends SubsystemBase {
         mBackRightMotor = mHardwareMap.get(DcMotorSimple.class, "Back right");
         mFrontRightMotor = mHardwareMap.get(DcMotor.class, "Front right");
 
+        mTactile = mHardwareMap.get(DigitalChannel.class, "Tactile Jonction");
+
         mFrontLeftMotor.setDirection(DcMotor.Direction.REVERSE);
         mBackLeftMotor.setDirection(DcMotor.Direction.REVERSE);
 
@@ -56,7 +59,6 @@ public class DriveSubsystem extends SubsystemBase {
 
         mFrontRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         mFrontRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
 
         mRobotDrive = new MecanumDrive(mFrontLeftMotor, mBackLeftMotor, mFrontRightMotor, mBackRightMotor);
 
@@ -67,10 +69,7 @@ public class DriveSubsystem extends SubsystemBase {
         mPIDx.setTolerance(Constants.PIDxConstants.kTolerance);
         mPIDy.setTolerance(Constants.PIDyConstants.kTolerance);
         mPIDz.setTolerance(Constants.PIDzConstants.kTolerance);
-
     }
-
-
 
     @Override
     public void periodic() {
@@ -84,17 +83,13 @@ public class DriveSubsystem extends SubsystemBase {
         mZ = -mPIDz.calculate(mGYRO.getAngle());
 
         mRobotDrive.driveCartesian(mX, mY, mZ);
-        mTelemetry.addData("getXaxis", getEncoderY());
+        /*mTelemetry.addData("getXaxis", getEncoderY());
         mTelemetry.addData("getYaxis", getEncoderX());
         mTelemetry.addData("Mode", mMode);
         mTelemetry.addData("getTick mFrontLeftMotor", mFrontLeftMotor.getCurrentPosition());
         mTelemetry.addData("getTick mFrontRightMotor", mFrontRightMotor.getCurrentPosition());
-        mTelemetry.addData("Z", mZ);
-
-        //mTelemetry.addData("Current position Y", getEncoderY());
-        //mTelemetry.addData("Current position X", getEncoderX());
-        //mTelemetry.addData("atSetPointY", atSetPointY());
-        //mTelemetry.addData("atSetPointX", atSetPointX());*/
+        mTelemetry.addData("Z", mZ);*/
+        mTelemetry.addData("isCapteurJonctionEnfonce", isCapteurJonctionEnfonce());
     }
 
     public void drive(double x, double y){
@@ -136,6 +131,7 @@ public class DriveSubsystem extends SubsystemBase {
             break;
         }
     }
+
     public void setSetPointX(double x) {
         double currentPosition = getEncoderX();
         mPIDx.setSetpoint(currentPosition + x);
@@ -164,13 +160,15 @@ public class DriveSubsystem extends SubsystemBase {
         double tickY = (mFrontLeftMotor.getCurrentPosition() - mFrontRightMotor.getCurrentPosition())/2;
         return tickY * Constants.DriveConstants.kCmParTick;
     }
+
     public double getEncoderX() {
         double tickX = (mFrontLeftMotor.getCurrentPosition() + mFrontRightMotor.getCurrentPosition())/2;
         return tickX * Constants.DriveConstants.kCmParTick;
     }
 
-
-
+    public boolean isCapteurJonctionEnfonce() {
+        return mTactile.getState() == false;
+    }
 
     public void stop () {
         drive(0, 0);
@@ -179,4 +177,3 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
 }
-

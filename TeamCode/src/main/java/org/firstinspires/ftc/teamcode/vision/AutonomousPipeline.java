@@ -9,10 +9,8 @@ public class AutonomousPipeline extends OpenCvPipeline {
     private VisionSubsystem mVisionSubsystem;
     public AutonomousPipeline(VisionSubsystem visionSubsystem) {
         mVisionSubsystem = visionSubsystem;
-
-
-
     }
+
     @Override
     public Mat processFrame(Mat input) {
         mVisionSubsystem.setAutonomousPosition(1);
