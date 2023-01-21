@@ -22,8 +22,6 @@ public class DriveSubsystem extends SubsystemBase {
     private final PIDController mPIDy = new PIDController(Constants.PIDyConstants.kP, Constants.PIDyConstants.kI, Constants.PIDyConstants.kD);
     private final PIDController mPIDz = new PIDController(Constants.PIDzConstants.kP, Constants.PIDzConstants.kI, Constants.PIDzConstants.kD);
 
-    private int mMode = 1;
-
     private final DcMotor mFrontLeftMotor;
     private final DcMotor mFrontRightMotor;
     private final DcMotorSimple mBackLeftMotor;
@@ -39,6 +37,8 @@ public class DriveSubsystem extends SubsystemBase {
     private double mX = 0;
     private double mY = 0;
     private double mZ = 0;
+
+    private double mAngleConsigne = 0;
 
     public DriveSubsystem(HardwareMap hardwareMap, Telemetry telemetry) {
         mTelemetry = telemetry;
@@ -83,6 +83,8 @@ public class DriveSubsystem extends SubsystemBase {
         mZ = -mPIDz.calculate(mGYRO.getAngle());
 
         mRobotDrive.driveCartesian(mX, mY, mZ);
+        mTelemetry.addData("gyro", mGYRO.getAngle());
+
         /*mTelemetry.addData("getXaxis", getEncoderY());
         mTelemetry.addData("getYaxis", getEncoderX());
         mTelemetry.addData("Mode", mMode);
@@ -93,42 +95,23 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public void drive(double x, double y){
-        switch (mMode) {
-            case 1:
-                mX = -y;
-                mY = -x;
-                break;
-            case 2:
-                mX = x;
-                mY = -y;
-                break;
-            case 3:
-                mX = y;
-                mY = x;
-                break;
-            case 4:
-                mX = -x;
-                mY = y;
-                break;
-        }
+      //  double angleRadian = Math.toRadians(mAngleConsigne);
+          double angleRadian = Math.toRadians(mGYRO.getAngle());
+
+        mX = x*Math.sin(angleRadian) - y*Math.cos(angleRadian);
+       mY = -y*Math.sin(angleRadian) - x*Math.cos(angleRadian);
+        mTelemetry.addData("x", x);
+        mTelemetry.addData("y", y);
+       mTelemetry.addData("mX", mX);
+        mTelemetry.addData("mY", mY);
+
     }
 
     public void setZ (double z) {
-        mPIDz.setSetpoint(z);
-
-        switch ((int)z) {
-            case 0 :
-                mMode = 1;
-            break;
-            case 90 :
-                mMode = 2;
-            break;
-            case 180:
-                mMode = 3;
-            break;
-            case -90:
-                mMode = 4;
-            break;
+        if(Math.abs(z) > 0.1) {
+            mAngleConsigne = z * 5;//mAngleConsigne + (z*3);
+            double current = mGYRO.getAngle();
+            mPIDz.setSetpoint(-mAngleConsigne + current);
         }
     }
 

@@ -1,14 +1,22 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.dragonswpilib.command.SubsystemBase;
 import org.firstinspires.ftc.dragonswpilib.math.controller.PIDController;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
 import org.firstinspires.ftc.teamcode.Constants;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class AscenseurSubsystem extends SubsystemBase {
 
@@ -30,6 +38,8 @@ public class AscenseurSubsystem extends SubsystemBase {
     private DigitalChannel mDigitalInputLeft;
     private DigitalChannel mDigitalInputRight;
 
+
+    private final File mCalibrationFile;
     private boolean mIsCalibrated = false;
 
     public AscenseurSubsystem(HardwareMap hardwareMap, Telemetry telemetry) {
@@ -50,12 +60,20 @@ public class AscenseurSubsystem extends SubsystemBase {
         mMoteurAscenseurDroit.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         mMoteurAscenseurDroit.setDirection(DcMotor.Direction.REVERSE);
 
+
         mPIDMoyenne = new PIDController(Constants.PIDascenseurConstants.kPMoy, Constants.PIDascenseurConstants.kIMoy, Constants.PIDascenseurConstants.kDMoy);
         mPIDMoyenne.setTolerance(Constants.PIDascenseurConstants.kMoyTolerance);
 
         mPIDDiff = new PIDController(Constants.PIDascenseurConstants.kPDiff, Constants.PIDascenseurConstants.kIDiff, Constants.PIDascenseurConstants.kDDiff);
         mPIDDiff.setTolerance(Constants.PIDascenseurConstants.kDiffTolerance);
         mPIDDiff.setSetpoint(0);
+
+        String filename = "arm_calibration.json";
+        mCalibrationFile = AppUtil.getInstance().getSettingsFile(filename);
+
+        if(isCalibrationFileAvailable()) {
+            readCalibration();
+        }
     }
 
     @Override
@@ -71,15 +89,19 @@ public class AscenseurSubsystem extends SubsystemBase {
             mTelemetry.addData("outputPidMoyenne", outputPidMoyenne);
             mTelemetry.addData("outputPidDiff", outputPidDiff);
 
+            double previousMaxPower = Math.max(Math.abs(mPowerLeft), Math.abs(mPowerRight));
+            double maxSat = Math.min(previousMaxPower + .1, 1);
+
             mPowerLeft = outputPidMoyenne + outputPidDiff;
             mPowerRight = outputPidMoyenne - outputPidDiff;
 
             double maximumPower = Math.max(Math.abs(mPowerLeft), Math.abs(mPowerRight));
-            if (maximumPower > 1){
-                mPowerLeft = mPowerLeft / maximumPower ;
-                mPowerRight = mPowerRight / maximumPower;
+            if (maximumPower > maxSat) {
+                mPowerLeft = maxSat * mPowerLeft / maximumPower ;
+                mPowerRight = maxSat * mPowerRight / maximumPower;
             }
         }
+
         if (isLeftDown() && mPowerLeft < 0) {
             mPowerLeft = 0;
         }
@@ -89,13 +111,11 @@ public class AscenseurSubsystem extends SubsystemBase {
         mMoteurAscenseurGauche.setPower(mPowerLeft);
         mMoteurAscenseurDroit.setPower(mPowerRight);
 
-        /*mTelemetry.addData("mPowerLeft", mPowerLeft);
-        mTelemetry.addData("mPowerRight", mPowerRight);*/
-
+        mTelemetry.addData("DoesFileExist", isCalibrationFileAvailable());
         mTelemetry.addData("Ascenseur Position", getMoyenneAscenseurCm());
-        /*mTelemetry.addData("mCalibrationLeftTick", mCalibrationLeftTick);
-        mTelemetry.addData("mCalibrationRightTick", mCalibrationRightTick);*/
 
+        mTelemetry.addData("CalibrationLeft", mCalibrationLeftTick);
+        mTelemetry.addData("CalibrationRight", mCalibrationRightTick);
 
         mTelemetry.addData("isLeftDown", isLeftDown());
         mTelemetry.addData("isRightDown", isRightDown());
@@ -131,6 +151,7 @@ public class AscenseurSubsystem extends SubsystemBase {
     public void setConsigneCm(double consigne) {
         mPIDMoyenne.setSetpoint(consigne);
         mPIDenabled = true;
+
     }
 
     public boolean atSetPoint() {
@@ -164,8 +185,38 @@ public class AscenseurSubsystem extends SubsystemBase {
     public void calibrate() {
         mCalibrationLeftTick = mMoteurAscenseurGauche.getCurrentPosition();
         mCalibrationRightTick = mMoteurAscenseurDroit.getCurrentPosition();
+        writeCalibration();
         setConsigneCm(0);
         mIsCalibrated = true;
+    }
+
+    private boolean isCalibrationFileAvailable(){
+        return mCalibrationFile.exists();
+    }
+
+    private void readCalibration() {
+        JsonParser jsonParser = new JsonParser();
+        try {
+            FileReader reader = new FileReader(mCalibrationFile);
+            JsonObject json = jsonParser.parse(reader).getAsJsonObject();
+            mCalibrationRightTick = json.get("rightCalibrate").getAsDouble();
+            mCalibrationLeftTick = json.get("leftCalibrate").getAsDouble();
+        } catch (FileNotFoundException ignored) {
+        }
+    }
+
+    private void writeCalibration() {
+        JsonObject json = new JsonObject();
+        json.addProperty("rightCalibrate", mCalibrationRightTick);
+        json.addProperty("leftCalibrate", mCalibrationLeftTick);
+        try {
+            mCalibrationFile.createNewFile();
+            mCalibrationFile.setWritable(true);
+            FileWriter filewriter = new FileWriter(mCalibrationFile);
+            filewriter.write(json.toString());
+            filewriter.flush();
+        } catch (IOException e) {
+        }
     }
 
     public void stop() {

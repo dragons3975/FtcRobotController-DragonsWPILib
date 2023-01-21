@@ -32,6 +32,8 @@ public class DroiteAutonomousMiddleCommandGroup extends SequentialCommandGroup {
         GoToAngleCommand TurnRight45 = new GoToAngleCommand(telemetry, driveSubsystem, gamepad, -45);
         GoToAngleCommand TurnLeft45 = new GoToAngleCommand(telemetry, driveSubsystem, gamepad, 45);
 
+        AscenseurCommand goHigh = new AscenseurCommand(telemetry, ascenseurSubsystem, Constants.AscenseurConstants.kPositionHaut);
+
         //x =  forward-backward
         //y = sideways
 
@@ -49,6 +51,7 @@ public class DroiteAutonomousMiddleCommandGroup extends SequentialCommandGroup {
 
         //1 square = 60 cm
         addCommands(
+                goHigh,
                 avancer130Cm,
                 TurnLeft45,
                 avancer40cm,

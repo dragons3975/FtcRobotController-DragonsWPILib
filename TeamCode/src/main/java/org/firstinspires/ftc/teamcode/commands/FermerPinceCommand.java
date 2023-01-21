@@ -8,7 +8,6 @@ public class FermerPinceCommand extends CommandBase {
 
     private final PinceSubsystem mPinceSubsystem;
     private final Telemetry mTelemetry;
-    private double mConsigne;
 
     public FermerPinceCommand(Telemetry telemetry, PinceSubsystem pinceSubsystem){
         mTelemetry = telemetry;
@@ -20,25 +19,23 @@ public class FermerPinceCommand extends CommandBase {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-       // mAscenseurSubsystem.setSetPointAscenseur(mConsigne);
-
+        mPinceSubsystem.fermer();
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-    mPinceSubsystem.fermer();
     }
 
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-
     }
 
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
         return false;
+        //Cette commande (infinie) doit etre appelee avec un .withTimeout()
     }
 }

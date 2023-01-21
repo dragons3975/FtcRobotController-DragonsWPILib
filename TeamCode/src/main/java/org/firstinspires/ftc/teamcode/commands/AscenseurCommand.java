@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.commands;
 
-import com.qualcomm.robotcore.hardware.Gamepad;
-
 import org.firstinspires.ftc.dragonswpilib.command.CommandBase;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.subsystems.AscenseurSubsystem;
@@ -12,7 +10,7 @@ public class AscenseurCommand extends CommandBase {
     private final Telemetry mTelemetry;
     private double mConsigne;
 
-    public AscenseurCommand(Telemetry telemetry, AscenseurSubsystem ascenseurSubsystem ,  double consigne){
+    public AscenseurCommand(Telemetry telemetry, AscenseurSubsystem ascenseurSubsystem , double consigne){
         mTelemetry = telemetry;
         mAscenseurSubsystem = ascenseurSubsystem;
         mConsigne = consigne;

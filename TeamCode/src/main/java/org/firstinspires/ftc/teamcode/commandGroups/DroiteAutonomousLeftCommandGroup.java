@@ -34,9 +34,6 @@ public class DroiteAutonomousLeftCommandGroup extends SequentialCommandGroup {
         GoToAngleCommand TurnRight45 = new GoToAngleCommand(telemetry, driveSubsystem, gamepad, -45);
         GoToAngleCommand TurnLeft45 = new GoToAngleCommand(telemetry, driveSubsystem, gamepad, 45);
 
-        //x =  forward-backward
-        //y = sideways
-
         DriveAutoCommand tourner20cm = new DriveAutoCommand(telemetry, driveSubsystem, 0, 20);
 
         DriveAutoCommand avancer40cm = new DriveAutoCommand(telemetry, driveSubsystem, 40, 0);
@@ -45,7 +42,6 @@ public class DroiteAutonomousLeftCommandGroup extends SequentialCommandGroup {
         DriveAutoCommand reculer10cm = new DriveAutoCommand(telemetry, driveSubsystem, -10, 0);
         OuvrirPinceCommand ouvrirPince = new OuvrirPinceCommand(telemetry, pinceSubsystem);
         FermerPinceCommand fermerPince = new FermerPinceCommand(telemetry, pinceSubsystem);
-
 
         addCommands(
                 avancer130Cm,

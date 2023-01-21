@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.commandGroups;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
 
+import org.firstinspires.ftc.dragonswpilib.command.ParallelRaceGroup;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.commands.AscenseurCommand;
@@ -25,6 +26,9 @@ public class GaucheAutonomousMiddleCommandGroup extends SequentialCommandGroup {
         AscenseurCommand positionMoyen = new AscenseurCommand(telemetry, ascenseurSubsystem, Constants.AscenseurConstants.kPositionMoyen);
         AscenseurCommand positionHaut = new AscenseurCommand(telemetry, ascenseurSubsystem, Constants.AscenseurConstants.kPositionHaut);
 
+        AscenseurCommand goHigh = new AscenseurCommand(telemetry, ascenseurSubsystem, Constants.AscenseurConstants.kPositionHaut);
+
+
         GoToAngleCommand GoStraight = new GoToAngleCommand(telemetry, driveSubsystem,gamepad, 0);
         GoToAngleCommand GoLeft = new GoToAngleCommand(telemetry, driveSubsystem,gamepad, 90);
         GoToAngleCommand GoRight = new GoToAngleCommand(telemetry, driveSubsystem,gamepad, -90);
@@ -42,24 +46,24 @@ public class GaucheAutonomousMiddleCommandGroup extends SequentialCommandGroup {
 
         DriveAutoCommand reculer10cm = new DriveAutoCommand(telemetry, driveSubsystem, -10, 0);
 
-        OuvrirPinceCommand ouvrirPince = new OuvrirPinceCommand(telemetry, pinceSubsystem);
-        FermerPinceCommand fermerPince = new FermerPinceCommand(telemetry, pinceSubsystem);
+        ParallelRaceGroup ouvrirPinceWithTimeout = new OuvrirPinceCommand(telemetry, pinceSubsystem).withTimeout(Constants.PinceConstants.kOuvrirFermerPinceTimeout);
+
+
 
 
 
         //1 square = 60 cm
         addCommands(
+
                 avancer130Cm,
                 TurnRight45,
                 avancer40cm,
                 reculer10cm,
                 //séquence ascenseur
-                ouvrirPince,
+                ouvrirPinceWithTimeout,
                 reculer30cm,
                 GoStraight,
                 reculer130cm
-
-
             );
     }
 
