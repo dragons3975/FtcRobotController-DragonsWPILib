@@ -83,28 +83,12 @@ public class DriveSubsystem extends SubsystemBase {
         mZ = -mPIDz.calculate(mGYRO.getAngle());
 
         mRobotDrive.driveCartesian(mX, mY, mZ);
-        mTelemetry.addData("gyro", mGYRO.getAngle());
-
-        /*mTelemetry.addData("getXaxis", getEncoderY());
-        mTelemetry.addData("getYaxis", getEncoderX());
-        mTelemetry.addData("Mode", mMode);
-        mTelemetry.addData("getTick mFrontLeftMotor", mFrontLeftMotor.getCurrentPosition());
-        mTelemetry.addData("getTick mFrontRightMotor", mFrontRightMotor.getCurrentPosition());
-        mTelemetry.addData("Z", mZ);*/
-        mTelemetry.addData("isCapteurJonctionEnfonce", isCapteurJonctionEnfonce());
     }
 
-    public void drive(double x, double y){
-      //  double angleRadian = Math.toRadians(mAngleConsigne);
-          double angleRadian = Math.toRadians(mGYRO.getAngle());
-
-        mX = x*Math.sin(angleRadian) - y*Math.cos(angleRadian);
-       mY = -y*Math.sin(angleRadian) - x*Math.cos(angleRadian);
-        mTelemetry.addData("x", x);
-        mTelemetry.addData("y", y);
-       mTelemetry.addData("mX", mX);
-        mTelemetry.addData("mY", mY);
-
+    public void drive(double x, double y) {
+        double angleActuelRadians = Math.toRadians(mGYRO.getAngle());
+        mX = x * Math.sin(angleActuelRadians) - y * Math.cos(angleActuelRadians);
+        mY = -y * Math.sin(angleActuelRadians) - x * Math.cos(angleActuelRadians);
     }
 
     public void setZ (double z) {
@@ -113,6 +97,10 @@ public class DriveSubsystem extends SubsystemBase {
             double current = mGYRO.getAngle();
             mPIDz.setSetpoint(-mAngleConsigne + current);
         }
+    }
+
+    public boolean atSetPointZ() {
+        return mPIDz.atSetpoint();
     }
 
     public void setSetPointX(double x) {
@@ -125,10 +113,6 @@ public class DriveSubsystem extends SubsystemBase {
         return mPIDx.atSetpoint();
     }
 
-    public boolean atSetPointZ() {
-        return mPIDz.atSetpoint();
-    }
-
     public void  setSetPointY(double y) {
         double currentPosition = getEncoderY();
         mPIDy.setSetpoint(currentPosition + y);
@@ -139,12 +123,12 @@ public class DriveSubsystem extends SubsystemBase {
         return mPIDy.atSetpoint();
     }
 
-    public double getEncoderY() {
+    private double getEncoderY() {
         double tickY = (mFrontLeftMotor.getCurrentPosition() - mFrontRightMotor.getCurrentPosition())/2;
         return tickY * Constants.DriveConstants.kCmParTick;
     }
 
-    public double getEncoderX() {
+    private double getEncoderX() {
         double tickX = (mFrontLeftMotor.getCurrentPosition() + mFrontRightMotor.getCurrentPosition())/2;
         return tickX * Constants.DriveConstants.kCmParTick;
     }

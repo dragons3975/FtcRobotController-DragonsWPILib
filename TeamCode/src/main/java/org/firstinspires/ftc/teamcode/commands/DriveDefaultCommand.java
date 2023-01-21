@@ -34,7 +34,7 @@ public class DriveDefaultCommand extends CommandBase {
         double axeZ = mGamepad.right_stick_x;
 
         mDriveSubsystem.drive(axeX, axeY);
-    mTelemetry.addData("right joystick", mGamepad.right_stick_x);
+        //mTelemetry.addData("right joystick", mGamepad.right_stick_x);
 
         mDriveSubsystem.setZ(axeZ);
         /* Orientation selon Joystick

@@ -23,7 +23,7 @@ public class PinceSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        mTelemetry.addData("Pince position", mMoteurPince.getPosition());
+        //mTelemetry.addData("Pince position", mMoteurPince.getPosition());
     }
 
     public void ouvrir() {

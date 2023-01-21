@@ -38,7 +38,6 @@ public class AscenseurSubsystem extends SubsystemBase {
     private DigitalChannel mDigitalInputLeft;
     private DigitalChannel mDigitalInputRight;
 
-
     private final File mCalibrationFile;
     private boolean mIsCalibrated = false;
 
@@ -60,7 +59,6 @@ public class AscenseurSubsystem extends SubsystemBase {
         mMoteurAscenseurDroit.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         mMoteurAscenseurDroit.setDirection(DcMotor.Direction.REVERSE);
 
-
         mPIDMoyenne = new PIDController(Constants.PIDascenseurConstants.kPMoy, Constants.PIDascenseurConstants.kIMoy, Constants.PIDascenseurConstants.kDMoy);
         mPIDMoyenne.setTolerance(Constants.PIDascenseurConstants.kMoyTolerance);
 
@@ -71,7 +69,7 @@ public class AscenseurSubsystem extends SubsystemBase {
         String filename = "arm_calibration.json";
         mCalibrationFile = AppUtil.getInstance().getSettingsFile(filename);
 
-        if(isCalibrationFileAvailable()) {
+        if (isCalibrationFileAvailable()) {
             readCalibration();
         }
     }
@@ -82,12 +80,12 @@ public class AscenseurSubsystem extends SubsystemBase {
             double outputPidMoyenne = mPIDMoyenne.calculate(getMoyenneAscenseurCm());
             double outputPidDiff = mPIDDiff.calculate(getMotorDiffCm());
 
-            mTelemetry.addData("mPIDMoyenne.getSetpoint()", mPIDMoyenne.getSetpoint());
+            /*mTelemetry.addData("mPIDMoyenne.getSetpoint()", mPIDMoyenne.getSetpoint());
             mTelemetry.addData("getMoyenneAscenseurCm", getMoyenneAscenseurCm());
             mTelemetry.addData("getMotorDiffCm", getMotorDiffCm());
 
             mTelemetry.addData("outputPidMoyenne", outputPidMoyenne);
-            mTelemetry.addData("outputPidDiff", outputPidDiff);
+            mTelemetry.addData("outputPidDiff", outputPidDiff);*/
 
             double previousMaxPower = Math.max(Math.abs(mPowerLeft), Math.abs(mPowerRight));
             double maxSat = Math.min(previousMaxPower + .1, 1);
@@ -111,14 +109,14 @@ public class AscenseurSubsystem extends SubsystemBase {
         mMoteurAscenseurGauche.setPower(mPowerLeft);
         mMoteurAscenseurDroit.setPower(mPowerRight);
 
-        mTelemetry.addData("DoesFileExist", isCalibrationFileAvailable());
+        /*mTelemetry.addData("DoesFileExist", isCalibrationFileAvailable());
         mTelemetry.addData("Ascenseur Position", getMoyenneAscenseurCm());
 
         mTelemetry.addData("CalibrationLeft", mCalibrationLeftTick);
         mTelemetry.addData("CalibrationRight", mCalibrationRightTick);
 
         mTelemetry.addData("isLeftDown", isLeftDown());
-        mTelemetry.addData("isRightDown", isRightDown());
+        mTelemetry.addData("isRightDown", isRightDown());*/
     }
 
     private double getAscenseurGauchePositionCm() {
@@ -151,7 +149,6 @@ public class AscenseurSubsystem extends SubsystemBase {
     public void setConsigneCm(double consigne) {
         mPIDMoyenne.setSetpoint(consigne);
         mPIDenabled = true;
-
     }
 
     public boolean atSetPoint() {

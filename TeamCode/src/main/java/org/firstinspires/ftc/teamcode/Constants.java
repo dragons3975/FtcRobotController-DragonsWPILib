@@ -53,7 +53,7 @@ public final class Constants {
 
         public static final double kVitesseCalibration = -0.2;
 
-        public static final double kPositionSol = 5; //Après on fait une calibration pour revenir à 0
+        public static final double kPositionSol = 5;
         public static final double kPositionBas = 35;
         public static final double kPositionMoyen = 59;
         public static final double kPositionHaut = 80;

@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.subsystems;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.checkerframework.checker.signedness.qual.Constant;
 import org.firstinspires.ftc.dragonswpilib.command.SubsystemBase;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -17,15 +16,14 @@ import java.util.ArrayList;
 
 public class VisionSubsystem extends SubsystemBase {
 
-    private Telemetry mTelemetry;
-    private HardwareMap mHardwareMap;
-    private OpenCvCamera mVuforiaPassThroughCam;
-     AprilTagDetectionPipeline mAprilTagDetectionPipeline;
+    private final Telemetry mTelemetry;
+    private final HardwareMap mHardwareMap;
+    private final OpenCvCamera mVuforiaPassThroughCam;
+    private final AprilTagDetectionPipeline mAprilTagDetectionPipeline;
 
-     private boolean isVisionEnabled = false;
+    private boolean isVisionEnabled = false;
 
     private int mAutonomousPosition = 0;
-
 
     public VisionSubsystem(HardwareMap hardwareMap, Telemetry telemetry) {
         mTelemetry = telemetry;
@@ -52,11 +50,9 @@ public class VisionSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-
-        if (isVisionEnabled == true) {
+        if (isVisionEnabled) {
             ArrayList<AprilTagDetection> currentDetections = mAprilTagDetectionPipeline.getLatestDetections();
-            mTelemetry.addData("List Size", currentDetections.size());
-            if(currentDetections.size() != 0) {
+            if (currentDetections.size() != 0) {
                 mAutonomousPosition = currentDetections.get(currentDetections.size()-1).id;
             }
             mTelemetry.addData("Autonomous Position", mAutonomousPosition);
