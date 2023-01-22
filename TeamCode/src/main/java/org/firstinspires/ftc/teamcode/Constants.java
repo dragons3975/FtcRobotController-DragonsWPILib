@@ -3,7 +3,8 @@ package org.firstinspires.ftc.teamcode;
 public final class Constants {
 
     public static final class DriveConstants {
-        public static final double kCmParTour = Math.PI*10;
+        public static final double kDiametreRoue = 10;
+        public static final double kCmParTour = Math.PI * kDiametreRoue;
         public static final double kTickParTour = 1440;
         public static final double kCmParTick = kCmParTour / kTickParTour;
     }
