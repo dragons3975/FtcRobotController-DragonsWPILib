@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
+import android.os.SystemClock;
+
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -51,11 +53,11 @@ public class AscenseurSubsystem extends SubsystemBase {
         mDigitalInputLeft = mHardwareMap.get(DigitalChannel.class, "LeftTactile");
         mDigitalInputRight = mHardwareMap.get(DigitalChannel.class, "RightTactile");
 
-        mMoteurAscenseurGauche.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //mMoteurAscenseurGauche.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); //Non avec la calibration persistante
         mMoteurAscenseurGauche.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         mMoteurAscenseurGauche.setDirection(DcMotor.Direction.FORWARD);
 
-        mMoteurAscenseurDroit.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //mMoteurAscenseurDroit.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); //Non avec la calibration persistante
         mMoteurAscenseurDroit.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         mMoteurAscenseurDroit.setDirection(DcMotor.Direction.REVERSE);
 
@@ -71,12 +73,17 @@ public class AscenseurSubsystem extends SubsystemBase {
 
         if (isCalibrationFileAvailable()) {
             readCalibration();
+            mIsCalibrated = true;
         }
     }
 
     @Override
     public void periodic() {
         if(mPIDenabled && mIsCalibrated) {
+            mTelemetry.addData("AscenseurSubsystem: mPIDMoyenne.getSetpoint()", mPIDMoyenne.getSetpoint());
+            mTelemetry.addData("getAscenseurGauchePositionCm()", getAscenseurGauchePositionCm());
+            mTelemetry.addData("getAscenseurDroitPositionCm()", getAscenseurDroitPositionCm());
+
             double outputPidMoyenne = mPIDMoyenne.calculate(getMoyenneAscenseurCm());
             double outputPidDiff = mPIDDiff.calculate(getMotorDiffCm());
 
@@ -99,6 +106,9 @@ public class AscenseurSubsystem extends SubsystemBase {
                 mPowerRight = maxSat * mPowerRight / maximumPower;
             }
         }
+        else {
+            mTelemetry.addData("ASCENSEUR NON CALIBRE", "APPUYER SUR LA FLECHE DU BAS");
+        }
 
         if (isLeftDown() && mPowerLeft < 0) {
             mPowerLeft = 0;
@@ -109,14 +119,13 @@ public class AscenseurSubsystem extends SubsystemBase {
         mMoteurAscenseurGauche.setPower(mPowerLeft);
         mMoteurAscenseurDroit.setPower(mPowerRight);
 
-        /*mTelemetry.addData("DoesFileExist", isCalibrationFileAvailable());
-        mTelemetry.addData("Ascenseur Position", getMoyenneAscenseurCm());
+        //mTelemetry.addData("DoesFileExist", isCalibrationFileAvailable());
+        //mTelemetry.addData("CalibrationLeft", mCalibrationLeftTick);
+        //mTelemetry.addData("CalibrationRight", mCalibrationRightTick);
 
-        mTelemetry.addData("CalibrationLeft", mCalibrationLeftTick);
-        mTelemetry.addData("CalibrationRight", mCalibrationRightTick);
 
         mTelemetry.addData("isLeftDown", isLeftDown());
-        mTelemetry.addData("isRightDown", isRightDown());*/
+        mTelemetry.addData("isRightDown", isRightDown());
     }
 
     private double getAscenseurGauchePositionCm() {
@@ -136,7 +145,8 @@ public class AscenseurSubsystem extends SubsystemBase {
     }
 
     public void setDeltaConsigneCm(double consigne) {
-        double consigneCm = mPIDMoyenne.getSetpoint() + consigne;
+        //double consigneCm = mPIDMoyenne.getSetpoint() + consigne;
+        double consigneCm = getMoyenneAscenseurCm() + consigne; //C'est Enoch qui a raison, c'est plus réactif si on prend la position actuelle plutôt que le setpoint
         if (consigneCm > Constants.AscenseurConstants.kPositionMax){
             consigneCm = Constants.AscenseurConstants.kPositionMax;
         }
@@ -179,6 +189,12 @@ public class AscenseurSubsystem extends SubsystemBase {
         mPIDenabled = false;
     }
 
+    public void moteurDroitManualOveride(double power) {
+        mPowerLeft = 0;
+        mPowerRight = power;
+        mPIDenabled = false;
+    }
+
     public void calibrate() {
         mCalibrationLeftTick = mMoteurAscenseurGauche.getCurrentPosition();
         mCalibrationRightTick = mMoteurAscenseurDroit.getCurrentPosition();
@@ -187,8 +203,8 @@ public class AscenseurSubsystem extends SubsystemBase {
         mIsCalibrated = true;
     }
 
-    private boolean isCalibrationFileAvailable(){
-        return mCalibrationFile.exists();
+    private boolean isCalibrationFileAvailable() {
+        return mCalibrationFile.lastModified() > (System.currentTimeMillis() - SystemClock.elapsedRealtime());
     }
 
     private void readCalibration() {

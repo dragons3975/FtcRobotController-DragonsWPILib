@@ -1,15 +1,15 @@
-package org.firstinspires.ftc.teamcode.commands;
+package org.firstinspires.ftc.teamcode.commands.tests;
 
 import org.firstinspires.ftc.dragonswpilib.command.CommandBase;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.subsystems.AscenseurSubsystem;
 
-public class AscenseurGaucheManualDescendreCommand extends CommandBase {
+public class AscenseurGaucheManualMonterCommand extends CommandBase {
 
     private final AscenseurSubsystem mAscenseurSubsystem;
     private final Telemetry mTelemetry;
 
-    public AscenseurGaucheManualDescendreCommand(Telemetry telemetry, AscenseurSubsystem ascenseurSubsystem){
+    public AscenseurGaucheManualMonterCommand(Telemetry telemetry, AscenseurSubsystem ascenseurSubsystem){
         mTelemetry = telemetry;
         mAscenseurSubsystem = ascenseurSubsystem;
 
@@ -24,7 +24,7 @@ public class AscenseurGaucheManualDescendreCommand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        mAscenseurSubsystem.moteurGaucheManualOveride(-0.5);
+        mAscenseurSubsystem.moteurGaucheManualOveride(0.5);
     }
 
     // Called once the command ends or is interrupted.

@@ -1,45 +1,41 @@
-package org.firstinspires.ftc.teamcode.commands;
+package org.firstinspires.ftc.teamcode.commands.tests;
 
 import org.firstinspires.ftc.dragonswpilib.command.CommandBase;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.AscenseurSubsystem;
 
-public class AvancerAutoCommand extends CommandBase {
+public class AscenseurDroitManualMonterCommand extends CommandBase {
 
-    private final DriveSubsystem mDriveSubsystem;
+    private final AscenseurSubsystem mAscenseurSubsystem;
     private final Telemetry mTelemetry;
-    private int mConsigneY;
 
-    public AvancerAutoCommand(Telemetry telemetry, DriveSubsystem driveSubsystem, int consigneY){
-
+    public AscenseurDroitManualMonterCommand(Telemetry telemetry, AscenseurSubsystem ascenseurSubsystem){
         mTelemetry = telemetry;
-        mDriveSubsystem = driveSubsystem;
-        mConsigneY = consigneY;
+        mAscenseurSubsystem = ascenseurSubsystem;
 
-        addRequirements(driveSubsystem);
-
+        addRequirements(ascenseurSubsystem);
     }
 
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        mDriveSubsystem.setSetPointY(mConsigneY);
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
+        mAscenseurSubsystem.moteurDroitManualOveride(0.5);
     }
 
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-        mDriveSubsystem.stop();
+        mAscenseurSubsystem.stop();
     }
 
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return mDriveSubsystem.atSetPointY();
+        return false;
     }
 }

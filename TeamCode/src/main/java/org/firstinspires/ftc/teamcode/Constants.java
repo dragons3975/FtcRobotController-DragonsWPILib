@@ -2,6 +2,14 @@ package org.firstinspires.ftc.teamcode;
 
 public final class Constants {
 
+    public static final class ModesConstants {
+        enum Modes {
+            auto,
+            teleop,
+            test
+        }
+    }
+
     public static final class DriveConstants {
         public static final double kDiametreRoue = 10;
         public static final double kCmParTour = Math.PI * kDiametreRoue;
@@ -45,12 +53,12 @@ public final class Constants {
     public static final class AscenseurConstants {
         private static final double kDiametrePoulie = 1.86;
         private static final double kCmParTour = Math.PI * kDiametrePoulie;
-        private static final double kTickParTour = 1440;
+        //public static final double kTickParTour = 1440; //Encodeurs des moteurs, ne pas supprimer
+        public static final double kTickParTour = -8192; //Encodeurs REV, important de laisser le signe ici pour rester compatible si on remet les encodeurs des moteurs
         private static final int knbEtages = 3;
         public static final double kCmParTick = knbEtages * kCmParTour / kTickParTour;
 
-        public static final double kDeltaMonterAscenseurCm = 0.2;
-        public static final double kDeltaDescendreAscenseurCm = -0.2;
+        public static final double kDefaultDeltaCoeff = 2;
 
         public static final double kVitesseCalibration = -0.2;
 

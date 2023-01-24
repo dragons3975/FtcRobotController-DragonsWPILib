@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.dragonswpilib.command.CommandScheduler;
 
 @TeleOp
-public class Robot extends OpMode{
+public class RobotTest extends OpMode{
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -14,7 +14,7 @@ public class Robot extends OpMode{
     @Override
     public void init() {
         CommandScheduler.getInstance().reset();
-        new RobotContainer(gamepad1, gamepad2, telemetry, hardwareMap, Constants.ModesConstants.Modes.teleop);
+        new RobotContainer(gamepad1, gamepad2, telemetry, hardwareMap, Constants.ModesConstants.Modes.test);
     }
 
     /*

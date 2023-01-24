@@ -21,6 +21,10 @@ import org.firstinspires.ftc.teamcode.commands.FermerPinceCommand;
 import org.firstinspires.ftc.teamcode.commands.GoToAngleCommand;
 import org.firstinspires.ftc.teamcode.commands.OuvrirPinceCommand;
 import org.firstinspires.ftc.teamcode.commands.TogglePositionDepartCommand;
+import org.firstinspires.ftc.teamcode.commands.tests.AscenseurDroitManualDescendreCommand;
+import org.firstinspires.ftc.teamcode.commands.tests.AscenseurDroitManualMonterCommand;
+import org.firstinspires.ftc.teamcode.commands.tests.AscenseurGaucheManualDescendreCommand;
+import org.firstinspires.ftc.teamcode.commands.tests.AscenseurGaucheManualMonterCommand;
 import org.firstinspires.ftc.teamcode.subsystems.AscenseurSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ConfigSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
@@ -33,6 +37,7 @@ public class RobotContainer {
     private final Gamepad mGamepad1, mGamepad2;
     private final Telemetry mTelemetry;
     private final HardwareMap mHardwareMap;
+    private final Constants.ModesConstants.Modes mMode;
 
     private final DriveSubsystem mDriveSubsystem;
     private final AscenseurSubsystem mAscenseurSubsystem;
@@ -44,13 +49,6 @@ public class RobotContainer {
 
     private final ParallelRaceGroup mOuvrirPinceCommandWithTimeout;
     private final ParallelRaceGroup mFermerPinceCommandWithTimeout;
-
-    private final GaucheAutonomousMiddleCommandGroup mGaucheAutonomousMiddleCommandGroup;
-    private final GaucheAutonomousLeftCommandGroup mGaucheAutonomousLeftCommandGroup;
-    private final GaucheAutonomousRightCommandGroup mGaucheAutonomousRightCommandGroup;
-    private final DroiteAutonomousMiddleCommandGroup mDroiteAutonomousMiddleCommandGroup;
-    private final DroiteAutonomousLeftCommandGroup mDroiteAutonomousLeftCommandGroup;
-    private final DroiteAutonomousRightCommandGroup mDroiteAutonomousRightCommandGroup;
 
     private final GoToAngleCommand mGoStraight;
     private final GoToAngleCommand mGoLeft;
@@ -68,31 +66,28 @@ public class RobotContainer {
 
     private final TogglePositionDepartCommand mTogglePositionDepartCommand;
 
-    public RobotContainer(Gamepad gamepad1, Gamepad gamepad2, Telemetry telemetry, HardwareMap hardwareMap){
+
+    public RobotContainer(Gamepad gamepad1, Gamepad gamepad2, Telemetry telemetry, HardwareMap hardwareMap, Constants.ModesConstants.Modes mode) {
         mGamepad1 = gamepad1;
         mGamepad2 = gamepad2;
         mTelemetry = telemetry;
         mHardwareMap = hardwareMap;
+        mMode = mode;
 
         mDriveSubsystem = new DriveSubsystem(mHardwareMap, mTelemetry);
         mAscenseurSubsystem = new AscenseurSubsystem(mHardwareMap, mTelemetry);
         mPinceSubsystem = new PinceSubsystem(mHardwareMap, mTelemetry);
         mConfigSubsystem = new ConfigSubsystem(mTelemetry);
         mVisionSubsystem = new VisionSubsystem(mHardwareMap, mTelemetry);
-        mVisionSubsystem.enableVision(); //Il faudrait le désactiver quand on est en teleop
 
-        mOuvrirPinceCommandWithTimeout = new OuvrirPinceCommand(mTelemetry, mPinceSubsystem).withTimeout(Constants.PinceConstants.kOuvrirFermerPinceTimeout);;
+        if (mMode == Constants.ModesConstants.Modes.auto) {
+            mVisionSubsystem.enableVision(); //Pas 100% correct, le thread est quand même crée, il faut trouver une autre façon de ne pas le créer en teleop
+        }
+
+        mOuvrirPinceCommandWithTimeout = new OuvrirPinceCommand(mTelemetry, mPinceSubsystem).withTimeout(Constants.PinceConstants.kOuvrirFermerPinceTimeout);
         mFermerPinceCommandWithTimeout = new FermerPinceCommand(mTelemetry, mPinceSubsystem).withTimeout(Constants.PinceConstants.kOuvrirFermerPinceTimeout);
 
         mDriveDefaultCommand = new DriveDefaultCommand(mTelemetry, mDriveSubsystem, mGamepad1);
-
-        mGaucheAutonomousMiddleCommandGroup = new GaucheAutonomousMiddleCommandGroup(mTelemetry, mDriveSubsystem, mAscenseurSubsystem, mPinceSubsystem, mGamepad1);
-        mGaucheAutonomousLeftCommandGroup = new GaucheAutonomousLeftCommandGroup(mTelemetry, mDriveSubsystem, mAscenseurSubsystem, mPinceSubsystem, mGamepad1);
-        mGaucheAutonomousRightCommandGroup = new GaucheAutonomousRightCommandGroup(mTelemetry, mDriveSubsystem, mAscenseurSubsystem, mPinceSubsystem, mGamepad1);
-
-        mDroiteAutonomousMiddleCommandGroup = new DroiteAutonomousMiddleCommandGroup(mTelemetry, mDriveSubsystem, mAscenseurSubsystem, mPinceSubsystem, mGamepad1);
-        mDroiteAutonomousLeftCommandGroup = new DroiteAutonomousLeftCommandGroup(mTelemetry, mDriveSubsystem, mAscenseurSubsystem, mPinceSubsystem, mGamepad1);
-        mDroiteAutonomousRightCommandGroup = new DroiteAutonomousRightCommandGroup(mTelemetry, mDriveSubsystem, mAscenseurSubsystem, mPinceSubsystem, mGamepad1);
 
         mGoStraight = new GoToAngleCommand(mTelemetry, mDriveSubsystem, mGamepad1, 0);
         mGoLeft = new GoToAngleCommand(mTelemetry, mDriveSubsystem, mGamepad1, 90);
@@ -100,7 +95,7 @@ public class RobotContainer {
         mGoBack = new GoToAngleCommand(mTelemetry, mDriveSubsystem, mGamepad1, 180);
 
         mCallibrateAscenseurCommand = new CallibrateAscenseurCommand(mTelemetry, mAscenseurSubsystem);
-        //mCallibrateAscenseurCommand.schedule(); //Calibrer automatiquement au demarrage du robot
+        //mCallibrateAscenseurCommand.schedule(); //Calibrer automatiquement au demarrage du robot, mais pas à chaque programme
 
         mAscenseurDefaultDeltaCommand= new AscenseurDefaultDeltaCommand(mTelemetry, mAscenseurSubsystem, mGamepad2);
 
@@ -144,11 +139,24 @@ public class RobotContainer {
         DPadLeft2.onTrue(mOuvrirPinceCommandWithTimeout);
         JoystickButton DPadRight2 = new JoystickButton(mGamepad2, GenericHID.XboxControllerConstants.kDpadRight);
         DPadRight2.onTrue(mFermerPinceCommandWithTimeout);
+
+        if (mMode == Constants.ModesConstants.Modes.test) {
+            JoystickButton buttonLB = new JoystickButton(mGamepad2, GenericHID.XboxControllerConstants.kLeftBumper);
+            buttonLB.whileTrue(new AscenseurGaucheManualMonterCommand(mTelemetry, mAscenseurSubsystem));
+            JoystickButton buttonLT = new JoystickButton(mGamepad2, GenericHID.XboxControllerConstants.kLeftTrigger);
+            buttonLT.whileTrue(new AscenseurGaucheManualDescendreCommand(mTelemetry, mAscenseurSubsystem));
+            JoystickButton buttonRB = new JoystickButton(mGamepad2, GenericHID.XboxControllerConstants.kRightBumper);
+            buttonRB.whileTrue(new AscenseurDroitManualMonterCommand(mTelemetry, mAscenseurSubsystem));
+            JoystickButton buttonRT = new JoystickButton(mGamepad2, GenericHID.XboxControllerConstants.kRightTrigger);
+            buttonRT.whileTrue(new AscenseurDroitManualDescendreCommand(mTelemetry, mAscenseurSubsystem));
+        }
     }
 
     private void configureDefaultCommands() {
-        mDriveSubsystem.setDefaultCommand(mDriveDefaultCommand);
-        mAscenseurSubsystem.setDefaultCommand(mAscenseurDefaultDeltaCommand);
+        if (mMode == Constants.ModesConstants.Modes.teleop) {
+            mDriveSubsystem.setDefaultCommand(mDriveDefaultCommand);
+            mAscenseurSubsystem.setDefaultCommand(mAscenseurDefaultDeltaCommand);
+        }
     }
 
     public Command getAutonomousCommand() {
@@ -158,23 +166,23 @@ public class RobotContainer {
         if(mConfigSubsystem.isPositionDepartGauche()){
             switch (mVisionSubsystem.getAutonomousPosition()) {
                 case 1:
-                    return mGaucheAutonomousLeftCommandGroup;
+                    return new GaucheAutonomousLeftCommandGroup(mTelemetry, mDriveSubsystem, mAscenseurSubsystem, mPinceSubsystem, mGamepad1);
                 case 2:
                 default:
-                    return mGaucheAutonomousMiddleCommandGroup;
+                    return new GaucheAutonomousMiddleCommandGroup(mTelemetry, mDriveSubsystem, mAscenseurSubsystem, mPinceSubsystem, mGamepad1);
                 case 3:
-                    return mGaucheAutonomousRightCommandGroup;
+                    return new GaucheAutonomousRightCommandGroup(mTelemetry, mDriveSubsystem, mAscenseurSubsystem, mPinceSubsystem, mGamepad1);
             }
         }
         else {
             switch (mVisionSubsystem.getAutonomousPosition()) {
                 case 1:
-                    return mDroiteAutonomousLeftCommandGroup;
+                    return new DroiteAutonomousLeftCommandGroup(mTelemetry, mDriveSubsystem, mAscenseurSubsystem, mPinceSubsystem, mGamepad1);
                 case 2:
                 default:
-                    return mDroiteAutonomousMiddleCommandGroup;
+                    return new DroiteAutonomousMiddleCommandGroup(mTelemetry, mDriveSubsystem, mAscenseurSubsystem, mPinceSubsystem, mGamepad1);
                 case 3:
-                    return mDroiteAutonomousRightCommandGroup;
+                    return new DroiteAutonomousRightCommandGroup(mTelemetry, mDriveSubsystem, mAscenseurSubsystem, mPinceSubsystem, mGamepad1);
             }
         }
       }

@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import org.firstinspires.ftc.dragonswpilib.command.Command;
 import org.firstinspires.ftc.dragonswpilib.command.CommandScheduler;
 
-@Autonomous
+@Autonomous(preselectTeleOp = "Robot")
 public class RobotAutonomous extends OpMode{
 
     private Command mAutonomousCommand;
@@ -18,7 +18,7 @@ public class RobotAutonomous extends OpMode{
     @Override
     public void init() {
         CommandScheduler.getInstance().reset();
-        mRobotContainer = new RobotContainer(gamepad1, gamepad2, telemetry, hardwareMap);
+        mRobotContainer = new RobotContainer(gamepad1, gamepad2, telemetry, hardwareMap, Constants.ModesConstants.Modes.auto);
     }
 
     /*
