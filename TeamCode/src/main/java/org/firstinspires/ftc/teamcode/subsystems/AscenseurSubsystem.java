@@ -19,6 +19,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.DecimalFormat;
 
 public class AscenseurSubsystem extends SubsystemBase {
 
@@ -27,12 +28,17 @@ public class AscenseurSubsystem extends SubsystemBase {
 
     private final DcMotor mMoteurAscenseurGauche;
     private final DcMotor mMoteurAscenseurDroit;
+
+    private double mPreviousPosition;
+    private double mCurrentPosition;
+
     private final PIDController mPIDMoyenne;
     private final PIDController mPIDDiff;
 
     private boolean mPIDenabled = false;
     private double mPowerLeft = 0;
     private double mPowerRight = 0;
+    private double mPowerMax = 1;
 
     private double mCalibrationLeftTick;
     private double mCalibrationRightTick;
@@ -42,6 +48,9 @@ public class AscenseurSubsystem extends SubsystemBase {
 
     private final File mCalibrationFile;
     private boolean mIsCalibrated = false;
+
+
+    private DecimalFormat mDecimalFormat =  new DecimalFormat("#.##");
 
     public AscenseurSubsystem(HardwareMap hardwareMap, Telemetry telemetry) {
         mTelemetry = telemetry;
@@ -71,6 +80,7 @@ public class AscenseurSubsystem extends SubsystemBase {
         String filename = "arm_calibration.json";
         mCalibrationFile = AppUtil.getInstance().getSettingsFile(filename);
 
+
         if (isCalibrationFileAvailable()) {
             readCalibration();
             mIsCalibrated = true;
@@ -80,9 +90,6 @@ public class AscenseurSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         if(mPIDenabled && mIsCalibrated) {
-            mTelemetry.addData("AscenseurSubsystem: mPIDMoyenne.getSetpoint()", mPIDMoyenne.getSetpoint());
-            mTelemetry.addData("getAscenseurGauchePositionCm()", getAscenseurGauchePositionCm());
-            mTelemetry.addData("getAscenseurDroitPositionCm()", getAscenseurDroitPositionCm());
 
             double outputPidMoyenne = mPIDMoyenne.calculate(getMoyenneAscenseurCm());
             double outputPidDiff = mPIDDiff.calculate(getMotorDiffCm());
@@ -95,7 +102,7 @@ public class AscenseurSubsystem extends SubsystemBase {
             mTelemetry.addData("outputPidDiff", outputPidDiff);*/
 
             double previousMaxPower = Math.max(Math.abs(mPowerLeft), Math.abs(mPowerRight));
-            double maxSat = Math.min(previousMaxPower + .1, 1);
+            double maxSat = Math.min(previousMaxPower + Constants.AscenseurConstants.kAccelerationLimit, mPowerMax);
 
             mPowerLeft = outputPidMoyenne + outputPidDiff;
             mPowerRight = outputPidMoyenne - outputPidDiff;
@@ -116,16 +123,33 @@ public class AscenseurSubsystem extends SubsystemBase {
         if (isRightDown() && mPowerRight < 0) {
             mPowerRight = 0;
         }
+        //if ascenseur < 0
+        /*if (getVitesse() <= 0 && mPowerLeft < 0 && mPowerRight < 0) {
+            mPowerLeft = 0;
+            mPowerRight = 0;
+        }*/
+
+        mTelemetry.addData("mPowerLeft", mPowerLeft);
+        mTelemetry.addData("mPowerRight", mPowerRight);
         mMoteurAscenseurGauche.setPower(mPowerLeft);
         mMoteurAscenseurDroit.setPower(mPowerRight);
+
+        //Pour calculer la vitesse. A faire en dehors du if (PIDEnabled)
+        mPreviousPosition = mCurrentPosition;
+        mCurrentPosition = getMoyenneAscenseurCm();
+        mTelemetry.addData("CurrentPosition", mCurrentPosition);
+        mTelemetry.addData("Ascenseur getVitesse()", mDecimalFormat.format(getVitesse()));
 
         //mTelemetry.addData("DoesFileExist", isCalibrationFileAvailable());
         //mTelemetry.addData("CalibrationLeft", mCalibrationLeftTick);
         //mTelemetry.addData("CalibrationRight", mCalibrationRightTick);
 
-
         mTelemetry.addData("isLeftDown", isLeftDown());
         mTelemetry.addData("isRightDown", isRightDown());
+        mTelemetry.addData("AscenseurSubsystem: mPIDMoyenne.getSetpoint()", mDecimalFormat.format(mPIDMoyenne.getSetpoint()));
+        //mTelemetry.addData("getAscenseurGauchePositionCm()", mDecimalFormat.format(getAscenseurGauchePositionCm()));
+        //mTelemetry.addData("getAscenseurDroitPositionCm()", mDecimalFormat.format(getAscenseurDroitPositionCm()));
+
     }
 
     private double getAscenseurGauchePositionCm() {
@@ -136,7 +160,7 @@ public class AscenseurSubsystem extends SubsystemBase {
         return (mMoteurAscenseurDroit.getCurrentPosition() - mCalibrationRightTick) * Constants.AscenseurConstants.kCmParTick;
     }
 
-    private double getMoyenneAscenseurCm(){
+    public double getMoyenneAscenseurCm(){
         return (getAscenseurDroitPositionCm() + getAscenseurGauchePositionCm())/2;
     }
 
@@ -230,6 +254,14 @@ public class AscenseurSubsystem extends SubsystemBase {
             filewriter.flush();
         } catch (IOException e) {
         }
+    }
+
+    public double getVitesse() {
+       return mCurrentPosition - mPreviousPosition;
+    }
+
+    public void resetSecurity() {
+        mPreviousPosition = Constants.AscenseurConstants.kPositionMax;
     }
 
     public void stop() {

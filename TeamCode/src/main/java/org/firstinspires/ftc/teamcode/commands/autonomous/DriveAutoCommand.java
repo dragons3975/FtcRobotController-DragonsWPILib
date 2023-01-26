@@ -1,7 +1,8 @@
-package org.firstinspires.ftc.teamcode.commands;
+package org.firstinspires.ftc.teamcode.commands.autonomous;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.dragonswpilib.command.CommandBase;
+import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
 
 public class DriveAutoCommand extends CommandBase {
@@ -18,6 +19,8 @@ public class DriveAutoCommand extends CommandBase {
         mConsigneX = consigneX;
         mConsigneY = consigneY;
 
+
+
         addRequirements(driveSubsystem);
     }
 
@@ -26,6 +29,8 @@ public class DriveAutoCommand extends CommandBase {
     public void initialize() {
         mDriveSubsystem.setSetPointY(mConsigneY);
         mDriveSubsystem.setSetPointX(mConsigneX);
+
+        mDriveSubsystem.setMaxSpeed(Constants.DriveConstants.kMaxOutput);
     }
 
     // Called every time the scheduler runs while the command is scheduled.

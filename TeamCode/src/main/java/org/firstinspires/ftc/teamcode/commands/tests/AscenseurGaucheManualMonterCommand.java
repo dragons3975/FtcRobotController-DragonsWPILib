@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.commands.tests;
 
 import org.firstinspires.ftc.dragonswpilib.command.CommandBase;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.subsystems.AscenseurSubsystem;
 
 public class AscenseurGaucheManualMonterCommand extends CommandBase {
@@ -24,7 +25,7 @@ public class AscenseurGaucheManualMonterCommand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        mAscenseurSubsystem.moteurGaucheManualOveride(0.5);
+        mAscenseurSubsystem.moteurGaucheManualOveride(Constants.AscenseurConstants.kVitesseTest);
     }
 
     // Called once the command ends or is interrupted.

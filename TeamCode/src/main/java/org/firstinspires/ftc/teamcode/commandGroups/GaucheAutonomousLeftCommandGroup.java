@@ -6,7 +6,7 @@ import org.firstinspires.ftc.dragonswpilib.command.SequentialCommandGroup;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.commands.AscenseurCommand;
-import org.firstinspires.ftc.teamcode.commands.DriveAutoCommand;
+import org.firstinspires.ftc.teamcode.commands.autonomous.DriveAutoCommand;
 import org.firstinspires.ftc.teamcode.commands.GoToAngleCommand;
 import org.firstinspires.ftc.teamcode.subsystems.AscenseurSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
@@ -20,6 +20,7 @@ public class GaucheAutonomousLeftCommandGroup extends SequentialCommandGroup {
         DriveAutoCommand avancer130Cm = new DriveAutoCommand(telemetry, driveSubsystem, 130, 0);
         GoToAngleCommand TurnRight45 = new GoToAngleCommand(telemetry, driveSubsystem, gamepad, -45);
         LacherConeSemiAutonomousCommandGroup lacherConeSemiAutonomousCommandGroup = new LacherConeSemiAutonomousCommandGroup(telemetry, driveSubsystem, pinceSubsystem);
+        RamasserConeSemiAutonomousCommandGroup ramasserConeSemiAutonomousCommandGroup = new RamasserConeSemiAutonomousCommandGroup(telemetry, driveSubsystem, pinceSubsystem, ascenseurSubsystem);
         GoToAngleCommand GoStraight = new GoToAngleCommand(telemetry, driveSubsystem,gamepad, 0);
         DriveAutoCommand reculer130cm = new DriveAutoCommand(telemetry, driveSubsystem, -130, 0);
         GoToAngleCommand GoLeft = new GoToAngleCommand(telemetry, driveSubsystem,gamepad, 90);

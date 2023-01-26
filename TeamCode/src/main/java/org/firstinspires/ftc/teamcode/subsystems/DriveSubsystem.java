@@ -9,6 +9,7 @@ import org.firstinspires.ftc.dragonswpilib.command.FTC_Gyro;
 import org.firstinspires.ftc.dragonswpilib.command.SubsystemBase;
 import org.firstinspires.ftc.dragonswpilib.drive.MecanumDrive;
 import org.firstinspires.ftc.dragonswpilib.math.controller.PIDController;
+import org.firstinspires.ftc.robotcore.external.Const;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Constants;
 
@@ -31,6 +32,7 @@ public class DriveSubsystem extends SubsystemBase {
 
     private boolean mIsPIDxEnabled = false;
     private boolean mIsPIDyEnabled = false;
+    private boolean mIsPIDzEnabled = true;
 
     private DigitalChannel mTactile;
 
@@ -69,6 +71,7 @@ public class DriveSubsystem extends SubsystemBase {
         mPIDx.setTolerance(Constants.PIDxConstants.kTolerance);
         mPIDy.setTolerance(Constants.PIDyConstants.kTolerance);
         mPIDz.setTolerance(Constants.PIDzConstants.kTolerance);
+        setMaxSpeed(1.0);
     }
 
     @Override
@@ -80,8 +83,9 @@ public class DriveSubsystem extends SubsystemBase {
             mY = mPIDy.calculate(getEncoderY());
         }
 
-        mZ = -mPIDz.calculate(mGYRO.getAngle());
-
+        if (mIsPIDzEnabled) {
+            mZ = -mPIDz.calculate(mGYRO.getAngle());
+        }
         mRobotDrive.driveCartesian(mX, mY, mZ);
     }
 
@@ -137,10 +141,19 @@ public class DriveSubsystem extends SubsystemBase {
         return mTactile.getState() == false;
     }
 
+    public void disablePIDz() {
+        mIsPIDzEnabled = false;
+    }
+
+    public void setMaxSpeed(double speed) {
+        mRobotDrive.setMaxOutput(speed);
+    }
+
     public void stop () {
         drive(0, 0);
         mIsPIDyEnabled = false;
         mIsPIDxEnabled = false;
+        setMaxSpeed(1.0);
     }
 
 }

@@ -15,6 +15,8 @@ public final class Constants {
         public static final double kCmParTour = Math.PI * kDiametreRoue;
         public static final double kTickParTour = 1440;
         public static final double kCmParTick = kCmParTour / kTickParTour;
+
+        public static final double kMaxOutput = 0.5;
     }
 
     public static final class PIDxConstants {
@@ -58,23 +60,33 @@ public final class Constants {
         private static final int knbEtages = 3;
         public static final double kCmParTick = knbEtages * kCmParTour / kTickParTour;
 
+        public static final double kAccelerationLimit = 0.02;
+
         public static final double kDefaultDeltaCoeff = 2;
 
         public static final double kVitesseCalibration = -0.2;
 
+        public static final double kVitesseTest = 0.2;
+
+        public static final double kPositionMin = 0;
+        public static final double kPositionMax = 84;
+
         public static final double kPositionSol = 5;
         public static final double kPositionBas = 35;
         public static final double kPositionMoyen = 59;
-        public static final double kPositionHaut = 80;
 
-        public static final double kPositionMin = 0;
-        public static final double kPositionMax = 80;
+        public static final double kPositionSecurity = 19;
+        public static final double kPositionHaut = kPositionMax;
+
+        public static final double kSecurityMinMovedDistance = 1.5; //cm
+        public static final double kSecurityVitesse = 0.02;
+        public static final double kAscenseurPower = 0.1;
     }
 
     public static final class PinceConstants {
         public static final double kOuvrirPincePosition = 0.27;
         public static final double kFermerPincePosition = 0;
-        public static final double kOuvrirFermerPinceTimeout = 1;
+        public static final double kOuvrirFermerPinceTimeout = 0.5;
     }
 
     public static final class VisionConstants {
