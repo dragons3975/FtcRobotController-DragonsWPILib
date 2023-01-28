@@ -4,23 +4,23 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.dragonswpilib.command.CommandBase;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.subsystems.Lift_SS;
+import org.firstinspires.ftc.teamcode.subsystems.Servo_SS;
 
-public class LiftDown_CMD extends CommandBase {
+public class servoClose_CMD extends CommandBase {
 
-    private final Lift_SS  mLift_SS;
+    private final Servo_SS mServo_SS;
     private final Telemetry mTelemetry;
 
     private final Gamepad mGamepad;
-    private  double liftSpeed;
+    private  double sevoDegrees;
 
-    public LiftDown_CMD(Telemetry telemetry, Lift_SS p_Lift_SS,Gamepad gamepad, double p_Speed ){
+    public servoClose_CMD(Telemetry telemetry, Servo_SS p_Servo_SS, Gamepad gamepad/*, double p_ServoSpeed*/){
         mTelemetry = telemetry;
-        mLift_SS  = p_Lift_SS;
+        mServo_SS  = p_Servo_SS;
         mGamepad = gamepad;
-        liftSpeed = p_Speed;
+        //sevoDegrees = p_ServoSpeed;
 
-        addRequirements(p_Lift_SS);
+        addRequirements(p_Servo_SS);
     }
 
     // Called when the command is initially scheduled.
@@ -32,14 +32,16 @@ public class LiftDown_CMD extends CommandBase {
     @Override
     public void execute( ) {
 
-        double downSpeed= liftSpeed;
-        mLift_SS.liftDown(downSpeed);
+       // double upSpeed= liftSpeed;
+        mServo_SS.closeServo();
     }
 
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-        mLift_SS.stopLift();
+
+      //  mServo_SS.servoOFF();
+
     }
 
     // Returns true when the command should end.

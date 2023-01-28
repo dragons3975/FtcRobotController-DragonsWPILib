@@ -8,19 +8,19 @@ import org.firstinspires.ftc.teamcode.commands.TournerAutoCommande;
 import org.firstinspires.ftc.teamcode.commands.TournerDroiteAutoCommande;
 import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
 
-public class AutonomousCommandGroupDroite extends SequentialCommandGroup {
+public class Autonomous2CommandGroupGauche extends SequentialCommandGroup {
 
-    public AutonomousCommandGroupDroite(Telemetry telemetry, DriveSubsystem driveSubsystem) {
+    public Autonomous2CommandGroupGauche(Telemetry telemetry, DriveSubsystem driveSubsystem) {
 
-        AvancerAutoCommande avancer90cm = new AvancerAutoCommande(telemetry, driveSubsystem, 73, 0.8);
+        AvancerAutoCommande avancer73cm = new AvancerAutoCommande(telemetry, driveSubsystem, 73, 0.5);
         TournerDroiteAutoCommande tourner90 = new TournerDroiteAutoCommande(telemetry, driveSubsystem, 90, 0.5);
-        AvancerAutoCommande reculer55cm = new AvancerAutoCommande(telemetry, driveSubsystem, 48, 0.5);
+        ReculerAutoCommande avancer55cm = new ReculerAutoCommande(telemetry, driveSubsystem, 48, 0.5);
 
 
             addCommands(
-                    avancer90cm,
+                    avancer73cm,
                     tourner90,
-                    reculer55cm
+                    avancer55cm
             );
 
     }

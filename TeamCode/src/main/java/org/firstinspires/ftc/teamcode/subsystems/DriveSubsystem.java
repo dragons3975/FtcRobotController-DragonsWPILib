@@ -20,6 +20,8 @@ public class DriveSubsystem extends SubsystemBase {
     private final FTC_Gyro mGyro;
     private DifferentialDrive mArcadeDrive;
 
+    private double lirePosition;
+
 
     public DriveSubsystem(HardwareMap hardwareMap, Telemetry telemetry) {
         mTelemetry = telemetry;
@@ -37,7 +39,9 @@ public class DriveSubsystem extends SubsystemBase {
 
         mArcadeDrive = new DifferentialDrive(mBackLeftMotor, mBackRightMotor);
 
+
         mGyro = new FTC_Gyro(mHardwareMap);
+        lirePosition= mBackLeftMotor.getCurrentPosition();
 
     }
 
@@ -60,6 +64,17 @@ public class DriveSubsystem extends SubsystemBase {
     public double getPositionCm() {
         return mBackLeftMotor.getCurrentPosition()*Constants.DriveConstants.kCmParTick;
     }
+
+    public double resetEncoderPositionCm() {
+
+        double v = mBackLeftMotor.getCurrentPosition() * Constants.DriveConstants.kCmParTick / lirePosition;
+        return v;
+
+
+
+    }
+
+
 
     public void resetGyro() {
         mGyro.reset();
