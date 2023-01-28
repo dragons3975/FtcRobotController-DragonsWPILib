@@ -20,7 +20,9 @@ import org.firstinspires.ftc.teamcode.commands.AscenseurSecurityCommand;
 import org.firstinspires.ftc.teamcode.commands.CallibrateAscenseurCommand;
 import org.firstinspires.ftc.teamcode.commands.DriveDefaultCommand;
 import org.firstinspires.ftc.teamcode.commands.GoToAngleCommand;
+import org.firstinspires.ftc.teamcode.commands.ResetAngleCommand;
 import org.firstinspires.ftc.teamcode.commands.TogglePinceCommand;
+import org.firstinspires.ftc.teamcode.commands.autonomous.DriveAutoCommand;
 import org.firstinspires.ftc.teamcode.commands.autonomous.TogglePositionDepartCommand;
 import org.firstinspires.ftc.teamcode.commands.tests.AscenseurDroitManualDescendreCommand;
 import org.firstinspires.ftc.teamcode.commands.tests.AscenseurDroitManualMonterCommand;
@@ -55,18 +57,24 @@ public class RobotContainer {
     private final GoToAngleCommand mGoRight;
     private final GoToAngleCommand mGoBack;
 
+    private final ResetAngleCommand mResetAngleCommand;
+
     private final CallibrateAscenseurCommand mCallibrateAscenseurCommand;
 
     private final AscenseurDefaultDeltaCommand mAscenseurDefaultDeltaCommand;
 
-    private final AscenseurSecurityCommand mGroundWithSecurity;
     private final AscenseurCommand mLow;
     private final AscenseurCommand mMedium;
     private final AscenseurCommand mHigh;
 
+    private final DriveAutoCommand mHoverLeft;
+    private final DriveAutoCommand mHoverRight;
+    private final DriveAutoCommand mForward;
+    private final DriveAutoCommand mBackward;
+
     private final TogglePositionDepartCommand mTogglePositionDepartCommand;
 
-    private final PlotsSequentialCommandGroup mPlotSequentialCommandGroup ;
+    private final PlotsSequentialCommandGroup mPlotSequentialCommandGroup;
 
     public RobotContainer(Gamepad gamepad1, Gamepad gamepad2, Telemetry telemetry, HardwareMap hardwareMap, Constants.ModesConstants.Modes mode) {
         mGamepad1 = gamepad1;
@@ -93,17 +101,20 @@ public class RobotContainer {
 
         mDriveDefaultCommand = new DriveDefaultCommand(mTelemetry, mDriveSubsystem, mGamepad1);
 
-        mGoStraight = new GoToAngleCommand(mTelemetry, mDriveSubsystem, mGamepad1, 0);
-        mGoLeft = new GoToAngleCommand(mTelemetry, mDriveSubsystem, mGamepad1, 90);
-        mGoRight = new GoToAngleCommand(mTelemetry, mDriveSubsystem, mGamepad1, -90);
-        mGoBack = new GoToAngleCommand(mTelemetry, mDriveSubsystem, mGamepad1, 180);
+        mGoStraight = new GoToAngleCommand(mTelemetry, mDriveSubsystem, 0);
+        mGoLeft = new GoToAngleCommand(mTelemetry, mDriveSubsystem, 90);
+        mGoRight = new GoToAngleCommand(mTelemetry, mDriveSubsystem, -90);
+        mGoBack = new GoToAngleCommand(mTelemetry, mDriveSubsystem, 180);
+
+        mResetAngleCommand = new ResetAngleCommand(mTelemetry, mDriveSubsystem);
 
         mCallibrateAscenseurCommand = new CallibrateAscenseurCommand(mTelemetry, mAscenseurSubsystem);
-        //mCallibrateAscenseurCommand.schedule(); //Calibrer automatiquement au demarrage du robot, mais pas à chaque programme
+        if (mMode == Constants.ModesConstants.Modes.auto) {
+            mCallibrateAscenseurCommand.schedule(); //Calibrer automatiquement au demarrage du robot, mais pas à chaque programme
+        }
 
         mAscenseurDefaultDeltaCommand = new AscenseurDefaultDeltaCommand(mTelemetry, mAscenseurSubsystem, mGamepad2);
 
-        mGroundWithSecurity = new AscenseurSecurityCommand(mTelemetry, mAscenseurSubsystem);
         mLow = new AscenseurCommand(mTelemetry, mAscenseurSubsystem, Constants.AscenseurConstants.kPositionBas);
         mMedium = new AscenseurCommand(mTelemetry, mAscenseurSubsystem, Constants.AscenseurConstants.kPositionMoyen);
         mHigh = new AscenseurCommand(mTelemetry, mAscenseurSubsystem, Constants.AscenseurConstants.kPositionHaut);
@@ -111,6 +122,11 @@ public class RobotContainer {
         mTogglePositionDepartCommand = new TogglePositionDepartCommand(mConfigSubsystem);
 
         mPlotSequentialCommandGroup = new PlotsSequentialCommandGroup(mTelemetry, mDriveSubsystem, mPinceSubsystem, mAscenseurSubsystem);
+
+        mHoverLeft = new DriveAutoCommand(mTelemetry, mDriveSubsystem, 0, -60);
+        mHoverRight = new DriveAutoCommand(mTelemetry, mDriveSubsystem, 0, 60);
+        mForward = new DriveAutoCommand(mTelemetry, mDriveSubsystem, 60, 0);
+        mBackward = new DriveAutoCommand(mTelemetry, mDriveSubsystem, -60, 0);
 
         configureButtonBindings();
         configureDefaultCommands();
@@ -126,8 +142,22 @@ public class RobotContainer {
         JoystickButton buttonA = new JoystickButton(mGamepad1, GenericHID.XboxControllerConstants.kA);
         buttonA.onTrue(mGoBack);
 
+        JoystickButton Dup = new JoystickButton(mGamepad1, GenericHID.XboxControllerConstants.kDpadUp);
+        Dup.onTrue(mForward);
+        JoystickButton DLeft = new JoystickButton(mGamepad1, GenericHID.XboxControllerConstants.kDpadLeft);
+        DLeft.onTrue(mHoverLeft);
+        JoystickButton DRight = new JoystickButton(mGamepad1, GenericHID.XboxControllerConstants.kDpadRight);
+        DRight.onTrue(mHoverRight);
+        JoystickButton Dback = new JoystickButton(mGamepad1, GenericHID.XboxControllerConstants.kDpadDown);
+        Dback.onTrue(mBackward);
+
         JoystickButton buttonStart = new JoystickButton(mGamepad1, GenericHID.XboxControllerConstants.kStart);
-        buttonStart.onTrue(mTogglePositionDepartCommand);
+        if (mMode == Constants.ModesConstants.Modes.auto)
+        {
+            buttonStart.onTrue(mTogglePositionDepartCommand);
+        } else {
+            buttonStart.onTrue(mResetAngleCommand);
+        }
 
         JoystickButton buttonY2 = new JoystickButton(mGamepad2, GenericHID.XboxControllerConstants.kY);
         buttonY2.onTrue(mHigh);
@@ -142,8 +172,8 @@ public class RobotContainer {
         DPadDown.onTrue(mCallibrateAscenseurCommand);
 
         if (mMode == Constants.ModesConstants.Modes.test) {
-            JoystickButton buttonLB = new JoystickButton(mGamepad2, GenericHID.XboxControllerConstants.kLeftBumper);
-            buttonLB.whileTrue(new AscenseurGaucheManualMonterCommand(mTelemetry, mAscenseurSubsystem));
+            JoystickButton buttonLB2 = new JoystickButton(mGamepad2, GenericHID.XboxControllerConstants.kLeftBumper);
+            buttonLB2.whileTrue(new AscenseurGaucheManualMonterCommand(mTelemetry, mAscenseurSubsystem));
             JoystickButton buttonLT = new JoystickButton(mGamepad2, GenericHID.XboxControllerConstants.kLeftTrigger);
             buttonLT.whileTrue(new AscenseurGaucheManualDescendreCommand(mTelemetry, mAscenseurSubsystem));
             JoystickButton buttonRB = new JoystickButton(mGamepad2, GenericHID.XboxControllerConstants.kRightBumper);
@@ -158,7 +188,7 @@ public class RobotContainer {
     }
 
     private void configureDefaultCommands() {
-        if (mMode == Constants.ModesConstants.Modes.teleop) {
+        if (mMode != Constants.ModesConstants.Modes.test) {
             mDriveSubsystem.setDefaultCommand(mDriveDefaultCommand);
             mAscenseurSubsystem.setDefaultCommand(mAscenseurDefaultDeltaCommand);
         }
@@ -191,5 +221,4 @@ public class RobotContainer {
             }
         }
       }
-
-    }
+}

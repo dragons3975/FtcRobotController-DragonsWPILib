@@ -16,22 +16,18 @@ import org.firstinspires.ftc.teamcode.subsystems.PinceSubsystem;
 public class PlotsSequentialCommandGroup extends SequentialCommandGroup {
 
     public PlotsSequentialCommandGroup(Telemetry telemetry, DriveSubsystem driveSubsystem, PinceSubsystem pinceSubsystem, AscenseurSubsystem ascenseurSubsystem) {
-
-        DriveAutoCommand avancer40cm = new DriveAutoCommand(telemetry, driveSubsystem, 40, 0);
-        DriveAutoCommand reculer30cm = new DriveAutoCommand(telemetry, driveSubsystem, -30, 0);
-
         ParallelRaceGroup ouvrirPinceWithTimeout = new OuvrirPinceCommand(telemetry, pinceSubsystem).withTimeout(Constants.PinceConstants.kOuvrirFermerPinceTimeout);
         ParallelRaceGroup fermerPinceWithTimeout = new FermerPinceCommand(telemetry, pinceSubsystem).withTimeout(Constants.PinceConstants.kOuvrirFermerPinceTimeout);
 
         AscenseurCommand remonterAscenseur = new AscenseurCommand(telemetry, ascenseurSubsystem, Constants.AscenseurConstants.kPositionBas);
-        AscenseurCommand baisserAscenseur5plots = new AscenseurCommand(telemetry, ascenseurSubsystem, Constants.AscenseurConstants.kPositionSecurity);
+        AscenseurCommand baisserAscenseur5plots = new AscenseurCommand(telemetry, ascenseurSubsystem, Constants.AscenseurConstants.kPositionSecurity, true);
         AscenseurSecurityCommand groundWithSecurityCommand = new AscenseurSecurityCommand(telemetry, ascenseurSubsystem);
 
         addCommands(
-                baisserAscenseur5plots.alongWith(fermerPinceWithTimeout),
-                groundWithSecurityCommand,
-                ouvrirPinceWithTimeout,
-                remonterAscenseur
+            baisserAscenseur5plots.alongWith(fermerPinceWithTimeout),
+            groundWithSecurityCommand,
+            ouvrirPinceWithTimeout,
+            remonterAscenseur
         );
     }
 

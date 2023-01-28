@@ -80,7 +80,6 @@ public class AscenseurSubsystem extends SubsystemBase {
         String filename = "arm_calibration.json";
         mCalibrationFile = AppUtil.getInstance().getSettingsFile(filename);
 
-
         if (isCalibrationFileAvailable()) {
             readCalibration();
             mIsCalibrated = true;

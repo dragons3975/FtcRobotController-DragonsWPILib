@@ -17,26 +17,22 @@ public class DroiteAutonomousLeftCommandGroup extends SequentialCommandGroup {
     public DroiteAutonomousLeftCommandGroup(Telemetry telemetry, DriveSubsystem driveSubsystem, AscenseurSubsystem ascenseurSubsystem, PinceSubsystem pinceSubsystem, Gamepad gamepad) {
 
         AscenseurCommand goHigh = new AscenseurCommand(telemetry, ascenseurSubsystem, Constants.AscenseurConstants.kPositionHaut);
-        DriveAutoCommand avancer130Cm = new DriveAutoCommand(telemetry, driveSubsystem, 130, 0);
-        GoToAngleCommand TurnLeft45 = new GoToAngleCommand(telemetry, driveSubsystem, gamepad, 45);
-        LacherConeSemiAutonomousCommandGroup lacherConeSemiAutonomousCommandGroup = new LacherConeSemiAutonomousCommandGroup(telemetry, driveSubsystem, pinceSubsystem);
-        RamasserConeSemiAutonomousCommandGroup ramasserConeSemiAutonomousCommandGroup = new RamasserConeSemiAutonomousCommandGroup(telemetry, driveSubsystem, pinceSubsystem, ascenseurSubsystem);
-        GoToAngleCommand GoStraight = new GoToAngleCommand(telemetry, driveSubsystem,gamepad, 0);
-        DriveAutoCommand reculer130cm = new DriveAutoCommand(telemetry, driveSubsystem, -130, 0);
-        GoToAngleCommand GoLeft = new GoToAngleCommand(telemetry, driveSubsystem,gamepad, 90);
-        DriveAutoCommand avancer60cm = new DriveAutoCommand(telemetry, driveSubsystem, 60, 0);
+        LacherConeSemiAutonomousCommandGroup lacherCone = new LacherConeSemiAutonomousCommandGroup( telemetry,  driveSubsystem,  pinceSubsystem,  ascenseurSubsystem);
+        DroiteStartingAutonomousCommandGroup droiteStart = new DroiteStartingAutonomousCommandGroup(telemetry, driveSubsystem, ascenseurSubsystem, pinceSubsystem, gamepad);
+
+        GoToAngleCommand turnRight30 = new GoToAngleCommand(telemetry, driveSubsystem,  -Constants.Autonomous.k7_Z_ForwardJonction);
+        DriveAutoCommand reculer110cm = new DriveAutoCommand(telemetry, driveSubsystem, -Constants.Autonomous.k6_Y_3Case, 0);
+        DriveAutoCommand replacer = new DriveAutoCommand(telemetry, driveSubsystem,
+                Constants.Autonomous.k10_X_finalPos, -Constants.Autonomous.k10_Y_finalPos);
+        GoToAngleCommand turnUp = new GoToAngleCommand(telemetry, driveSubsystem, 0);
 
         addCommands(
-                goHigh,
-                avancer130Cm,
-                TurnLeft45,
-                lacherConeSemiAutonomousCommandGroup,
-                GoStraight,
-                reculer130cm,
-                GoLeft,
-                avancer60cm,
-                GoStraight
-            );
+                droiteStart,
+                reculer110cm.andThen(turnRight30).alongWith(goHigh),
+                lacherCone,
+                replacer,
+                turnUp
+        );
     }
 
 }

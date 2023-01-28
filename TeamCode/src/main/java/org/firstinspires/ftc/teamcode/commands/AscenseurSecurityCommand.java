@@ -22,7 +22,7 @@ public class AscenseurSecurityCommand extends CommandBase {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        mAscenseurSubsystem.manualOveride(-Constants.AscenseurConstants.kAscenseurPower);
+        mAscenseurSubsystem.manualOveride(-Constants.AscenseurConstants.kAscenseurSecurityPower);
         mHasMoved = false;
         mHasMovedPosition = mAscenseurSubsystem.getMoyenneAscenseurCm() - Constants.AscenseurConstants.kSecurityMinMovedDistance;
     }

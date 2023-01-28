@@ -6,7 +6,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 public class ConfigSubsystem extends SubsystemBase {
 
     private Telemetry mTelemetry;
-    private boolean mPositionDepartGauche = true;
+    private boolean mPositionDepartGauche = false;
 
     public ConfigSubsystem(Telemetry telemetry) {
         mTelemetry = telemetry;

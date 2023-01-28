@@ -9,20 +9,25 @@ public class DriveAutoCommand extends CommandBase {
 
     private final DriveSubsystem mDriveSubsystem;
     private final Telemetry mTelemetry;
-    private final int mConsigneY;
-    private final int mConsigneX;
+    private final double mConsigneY;
+    private final double mConsigneX;
+    private final double mMaxSpeed;
 
-    public DriveAutoCommand(Telemetry telemetry, DriveSubsystem driveSubsystem, int consigneX, int consigneY) {
+    public DriveAutoCommand(Telemetry telemetry, DriveSubsystem driveSubsystem, double consigneX, double consigneY, double maxSpeed) {
         mTelemetry = telemetry;
         mDriveSubsystem = driveSubsystem;
+        mMaxSpeed = maxSpeed;
 
         mConsigneX = consigneX;
-        mConsigneY = consigneY;
-
-
+        mConsigneY = consigneY * Constants.DriveConstants.kHoverBoost;
 
         addRequirements(driveSubsystem);
     }
+
+    public DriveAutoCommand(Telemetry telemetry, DriveSubsystem driveSubsystem, double consigneX, double consigneY) {
+        this(telemetry, driveSubsystem, consigneX, consigneY, Constants.DriveConstants.kMaxOutput);
+    }
+
 
     // Called when the command is initially scheduled.
     @Override
@@ -30,7 +35,7 @@ public class DriveAutoCommand extends CommandBase {
         mDriveSubsystem.setSetPointY(mConsigneY);
         mDriveSubsystem.setSetPointX(mConsigneX);
 
-        mDriveSubsystem.setMaxSpeed(Constants.DriveConstants.kMaxOutput);
+        mDriveSubsystem.setMaxSpeed(mMaxSpeed);
     }
 
     // Called every time the scheduler runs while the command is scheduled.

@@ -9,19 +9,29 @@ public class AscenseurCommand extends CommandBase {
     private final AscenseurSubsystem mAscenseurSubsystem;
     private final Telemetry mTelemetry;
     private double mConsigne;
+    private boolean mForceDown;
 
-    public AscenseurCommand(Telemetry telemetry, AscenseurSubsystem ascenseurSubsystem , double consigne){
+    public AscenseurCommand(Telemetry telemetry, AscenseurSubsystem ascenseurSubsystem , double consigne, boolean forceDown){
         mTelemetry = telemetry;
         mAscenseurSubsystem = ascenseurSubsystem;
         mConsigne = consigne;
+        mForceDown = forceDown;
 
         addRequirements(ascenseurSubsystem);
+    }
+
+    public AscenseurCommand(Telemetry telemetry, AscenseurSubsystem ascenseurSubsystem , double consigne){
+        this(telemetry, ascenseurSubsystem, consigne, false);
     }
 
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        mAscenseurSubsystem.setConsigneCm(mConsigne);
+        if(mForceDown && mAscenseurSubsystem.getMoyenneAscenseurCm() <= mConsigne){
+            mAscenseurSubsystem.setConsigneCm(mAscenseurSubsystem.getMoyenneAscenseurCm());
+        } else {
+            mAscenseurSubsystem.setConsigneCm(mConsigne);
+        }
     }
 
     // Called every time the scheduler runs while the command is scheduled.

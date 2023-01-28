@@ -17,23 +17,23 @@ public class GaucheAutonomousMiddleCommandGroup extends SequentialCommandGroup {
     public GaucheAutonomousMiddleCommandGroup(Telemetry telemetry, DriveSubsystem driveSubsystem, AscenseurSubsystem ascenseurSubsystem, PinceSubsystem pinceSubsystem, Gamepad gamepad) {
 
         AscenseurCommand goHigh = new AscenseurCommand(telemetry, ascenseurSubsystem, Constants.AscenseurConstants.kPositionHaut);
-        LacherConeSemiAutonomousCommandGroup lacherConeSemiAutonomousCommandGroup = new LacherConeSemiAutonomousCommandGroup(telemetry, driveSubsystem, pinceSubsystem);
-        RamasserConeSemiAutonomousCommandGroup ramasserConeSemiAutonomousCommandGroup = new RamasserConeSemiAutonomousCommandGroup(telemetry, driveSubsystem, pinceSubsystem, ascenseurSubsystem);
+        LacherConeSemiAutonomousCommandGroup lacherCone = new LacherConeSemiAutonomousCommandGroup( telemetry,  driveSubsystem,  pinceSubsystem,  ascenseurSubsystem);
+        GaucheStartingAutonomousCommandGroup gaucheStart = new GaucheStartingAutonomousCommandGroup(telemetry, driveSubsystem, ascenseurSubsystem, pinceSubsystem, gamepad);
 
-        GoToAngleCommand TurnRight45 = new GoToAngleCommand(telemetry, driveSubsystem, gamepad, -45);
-        GoToAngleCommand GoStraight = new GoToAngleCommand(telemetry, driveSubsystem,gamepad, 0);
-
-        DriveAutoCommand reculer130cm = new DriveAutoCommand(telemetry, driveSubsystem, -130, 0);
-        DriveAutoCommand avancer130Cm = new DriveAutoCommand(telemetry, driveSubsystem, 130, 0);
+        GoToAngleCommand turnLeft30 = new GoToAngleCommand(telemetry, driveSubsystem, -Constants.Autonomous.k7_Z_ForwardJonction);
+        DriveAutoCommand reculer70cm = new DriveAutoCommand(telemetry, driveSubsystem, -Constants.Autonomous.k6_Y_2Case, 0);
+        DriveAutoCommand replacer = new DriveAutoCommand(telemetry, driveSubsystem,
+                Constants.Autonomous.k10_X_finalPos,
+                -Constants.Autonomous.k10_Y_finalPos);
+        GoToAngleCommand turnUp = new GoToAngleCommand(telemetry, driveSubsystem, 0);
 
         addCommands(
-                goHigh,
-                avancer130Cm,
-                TurnRight45,
-                lacherConeSemiAutonomousCommandGroup,
-                GoStraight,
-                reculer130cm
-            );
+                gaucheStart,
+                reculer70cm.andThen(turnLeft30).alongWith(goHigh),
+                lacherCone,
+                replacer,
+                turnUp
+        );
     }
 
 }

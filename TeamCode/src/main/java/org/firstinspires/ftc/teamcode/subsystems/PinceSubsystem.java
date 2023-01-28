@@ -11,7 +11,7 @@ public class PinceSubsystem extends SubsystemBase {
 
     private Telemetry mTelemetry;
     private HardwareMap mHardwareMap;
-    private boolean mTogglePince = false;
+    private boolean mPinceOuverte = true;
     private final Servo mMoteurPince;
 
     public PinceSubsystem(HardwareMap hardwareMap, Telemetry telemetry) {
@@ -19,30 +19,33 @@ public class PinceSubsystem extends SubsystemBase {
         mHardwareMap = hardwareMap;
 
         mMoteurPince = mHardwareMap.get(Servo.class, "pince");
+
+        fermer();
     }
 
     @Override
     public void periodic() {
-        //mTelemetry.addData("Pince position", mMoteurPince.getPosition());
+        // mTelemetry.addData("Pince position", mMoteurPince.getPosition());
+        // mTelemetry.addData("Pince ouverte:", mPinceOuverte);
     }
 
     public void toggle() {
-        mTogglePince = !mTogglePince;
-
-        if (mTogglePince) {
-            mMoteurPince.setPosition(Constants.PinceConstants.kOuvrirPincePosition);
+        if (mPinceOuverte) {
+            fermer();
         }
         else {
-            mMoteurPince.setPosition(Constants.PinceConstants.kFermerPincePosition);
+            ouvrir();
         }
     }
 
     public void ouvrir() {
         mMoteurPince.setPosition(Constants.PinceConstants.kOuvrirPincePosition);
+        mPinceOuverte = true;
     }
 
     public void fermer() {
         mMoteurPince.setPosition(Constants.PinceConstants.kFermerPincePosition);
+        mPinceOuverte = false;
     }
 
 }

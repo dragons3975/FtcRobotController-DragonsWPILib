@@ -17,21 +17,23 @@ public class DroiteAutonomousMiddleCommandGroup extends SequentialCommandGroup {
     public DroiteAutonomousMiddleCommandGroup(Telemetry telemetry, DriveSubsystem driveSubsystem, AscenseurSubsystem ascenseurSubsystem, PinceSubsystem pinceSubsystem, Gamepad gamepad) {
 
         AscenseurCommand goHigh = new AscenseurCommand(telemetry, ascenseurSubsystem, Constants.AscenseurConstants.kPositionHaut);
-        DriveAutoCommand avancer130Cm = new DriveAutoCommand(telemetry, driveSubsystem, 130, 0);
-        GoToAngleCommand TurnLeft45 = new GoToAngleCommand(telemetry, driveSubsystem, gamepad, 45);
-        LacherConeSemiAutonomousCommandGroup lacherConeSemiAutonomousCommandGroup = new LacherConeSemiAutonomousCommandGroup(telemetry, driveSubsystem, pinceSubsystem);
-        RamasserConeSemiAutonomousCommandGroup ramasserConeSemiAutonomousCommandGroup = new RamasserConeSemiAutonomousCommandGroup(telemetry, driveSubsystem, pinceSubsystem, ascenseurSubsystem);
-        GoToAngleCommand GoStraight = new GoToAngleCommand(telemetry, driveSubsystem,gamepad, 0);
-        DriveAutoCommand reculer130cm = new DriveAutoCommand(telemetry, driveSubsystem, -130, 0);
+        LacherConeSemiAutonomousCommandGroup lacherCone = new LacherConeSemiAutonomousCommandGroup( telemetry,  driveSubsystem,  pinceSubsystem,  ascenseurSubsystem);
+        DroiteStartingAutonomousCommandGroup droiteStart = new DroiteStartingAutonomousCommandGroup(telemetry, driveSubsystem, ascenseurSubsystem, pinceSubsystem, gamepad);
+
+        DriveAutoCommand reculer70cm = new DriveAutoCommand(telemetry, driveSubsystem, -Constants.Autonomous.k6_Y_2Case, 0);
+        GoToAngleCommand turnRight30 = new GoToAngleCommand(telemetry, driveSubsystem,  Constants.Autonomous.k7_Z_ForwardJonction);
+        GoToAngleCommand turnUp = new GoToAngleCommand(telemetry, driveSubsystem, 0);
+        DriveAutoCommand replositionnement = new DriveAutoCommand(telemetry, driveSubsystem,
+                Constants.Autonomous.k10_X_finalPos,
+                Constants.Autonomous.k10_Y_finalPos);
 
         addCommands(
-                goHigh,
-                avancer130Cm,
-                TurnLeft45,
-                lacherConeSemiAutonomousCommandGroup,
-                GoStraight,
-                reculer130cm
-            );
-    }
+                droiteStart,
+                reculer70cm.andThen(turnRight30).alongWith(goHigh),
+                lacherCone,
+                replositionnement,
+                turnUp
+        );
 
+    }
 }

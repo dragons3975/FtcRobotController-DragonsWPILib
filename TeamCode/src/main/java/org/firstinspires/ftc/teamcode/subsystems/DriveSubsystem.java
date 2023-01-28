@@ -1,5 +1,9 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
+import android.os.SystemClock;
+
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
@@ -8,10 +12,19 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.dragonswpilib.command.FTC_Gyro;
 import org.firstinspires.ftc.dragonswpilib.command.SubsystemBase;
 import org.firstinspires.ftc.dragonswpilib.drive.MecanumDrive;
+import org.firstinspires.ftc.dragonswpilib.interfaces.Gyro;
+import org.firstinspires.ftc.dragonswpilib.math.MathUtil;
 import org.firstinspires.ftc.dragonswpilib.math.controller.PIDController;
 import org.firstinspires.ftc.robotcore.external.Const;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
 import org.firstinspires.ftc.teamcode.Constants;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class DriveSubsystem extends SubsystemBase {
 
@@ -40,7 +53,9 @@ public class DriveSubsystem extends SubsystemBase {
     private double mY = 0;
     private double mZ = 0;
 
-    private double mAngleConsigne = 0;
+    private final File mCalibrationFile;
+
+    private double mZOffset = 0;
 
     public DriveSubsystem(HardwareMap hardwareMap, Telemetry telemetry) {
         mTelemetry = telemetry;
@@ -65,6 +80,8 @@ public class DriveSubsystem extends SubsystemBase {
         mRobotDrive = new MecanumDrive(mFrontLeftMotor, mBackLeftMotor, mFrontRightMotor, mBackRightMotor);
 
         mGYRO = new FTC_Gyro(hardwareMap);
+        String filename = "gyro_calibration.json";
+        mCalibrationFile = AppUtil.getInstance().getSettingsFile(filename);
 
         mPIDz.enableContinuousInput(-180, 180);
 
@@ -84,24 +101,40 @@ public class DriveSubsystem extends SubsystemBase {
         }
 
         if (mIsPIDzEnabled) {
-            mZ = -mPIDz.calculate(mGYRO.getAngle());
+            mZ = -mPIDz.calculate(getZ());
         }
         mRobotDrive.driveCartesian(mX, mY, mZ);
+        // mTelemetry.addData("mZ", mZ);
+    }
+
+    private double getZ() {
+        return MathUtil.inputModulus(mGYRO.getAngle() - mZOffset, -180, 180);
     }
 
     public void drive(double x, double y) {
-        double angleActuelRadians = Math.toRadians(mGYRO.getAngle());
+        double angleActuelRadians = Math.toRadians(getZ());
         mX = x * Math.sin(angleActuelRadians) - y * Math.cos(angleActuelRadians);
         mY = -y * Math.sin(angleActuelRadians) - x * Math.cos(angleActuelRadians);
     }
 
     public void setZ (double z) {
         if(Math.abs(z) > 0.1) {
-            mAngleConsigne = z * 5;//mAngleConsigne + (z*3);
-            double current = mGYRO.getAngle();
-            mPIDz.setSetpoint(-mAngleConsigne + current);
+            double angleConsigne = z * 5;
+            double current = getZ();
+            mPIDz.setSetpoint(-angleConsigne + current);
         }
+        mTelemetry.addData("z", z);
     }
+    public void setZAutonomous (double z) { //set Z est une incrimentation, ne marche pas avec Autonomous
+           // if(z == 0) {
+                mIsPIDzEnabled = true;
+                mPIDz.setSetpoint(z);
+            /*} else{
+            mAngleConsigne = z;
+            double current = mGYRO.getAngle();
+            mPIDz.setSetpoint(mAngleConsigne + current);}*/
+        }
+
 
     public boolean atSetPointZ() {
         return mPIDz.atSetpoint();
@@ -155,5 +188,41 @@ public class DriveSubsystem extends SubsystemBase {
         mIsPIDxEnabled = false;
         setMaxSpeed(1.0);
     }
+
+    public void resetZ() {
+        mZOffset = mGYRO.getAngle();
+        if (mIsPIDzEnabled) {
+            setZAutonomous(getZ());
+        }
+    }
+
+    /*private boolean isGyroCalibrationFileAvailable() {
+        return mCalibrationFile.lastModified() > (System.currentTimeMillis() - SystemClock.elapsedRealtime());
+    }
+
+    private void readGyroCalibration() {
+        JsonParser jsonParser = new JsonParser();
+        try {
+            FileReader reader = new FileReader(mCalibrationFile);
+            JsonObject json = jsonParser.parse(reader).getAsJsonObject();
+            mAngleConsigne = json.get("angleConsigne").getAsDouble();
+        } catch (FileNotFoundException ignored) {
+        }
+    }
+
+    private void writeGyroCalibration() {
+        JsonObject json = new JsonObject();
+        json.addProperty("angleConsigne", mAngleConsigne);
+        try {
+            mCalibrationFile.createNewFile();
+            mCalibrationFile.setWritable(true);
+            FileWriter filewriter = new FileWriter(mCalibrationFile);
+            filewriter.write(json.toString());
+            filewriter.flush();
+        } catch (IOException e) {
+        }
+    }*/
+
+
 
 }
