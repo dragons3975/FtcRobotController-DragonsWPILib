@@ -6,6 +6,7 @@ package org.firstinspires.ftc.dragonswpilib.drive;
 import static java.util.Objects.requireNonNull;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.dragonswpilib.math.MathUtil;
 import org.firstinspires.ftc.dragonswpilib.math.geometry.Rotation2d;
@@ -50,10 +51,10 @@ import org.firstinspires.ftc.dragonswpilib.math.geometry.Translation2d;
 public class MecanumDrive extends RobotDriveBase /*implements Sendable, AutoCloseable*/ {
   private static int instances;
 
-  private final DcMotor m_frontLeftMotor;
-  private final DcMotor m_rearLeftMotor;
-  private final DcMotor m_frontRightMotor;
-  private final DcMotor m_rearRightMotor;
+  private final DcMotorSimple m_frontLeftMotor;
+  private final DcMotorSimple m_rearLeftMotor;
+  private final DcMotorSimple m_frontRightMotor;
+  private final DcMotorSimple m_rearRightMotor;
 
   private boolean m_reported;
 
@@ -99,10 +100,10 @@ public class MecanumDrive extends RobotDriveBase /*implements Sendable, AutoClos
    * @param rearRightMotor The motor on the rear-right corner.
    */
   public MecanumDrive(
-          DcMotor frontLeftMotor,
-          DcMotor rearLeftMotor,
-          DcMotor frontRightMotor,
-          DcMotor rearRightMotor) {
+          DcMotorSimple frontLeftMotor,
+          DcMotorSimple rearLeftMotor,
+          DcMotorSimple frontRightMotor,
+          DcMotorSimple rearRightMotor) {
     requireNonNull(frontLeftMotor, "Front-left motor cannot be null");
     requireNonNull(rearLeftMotor, "Rear-left motor cannot be null");
     requireNonNull(frontRightMotor, "Front-right motor cannot be null");
