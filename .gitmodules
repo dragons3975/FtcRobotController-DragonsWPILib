@@ -1,0 +1,3 @@
+[submodule "modules/allwpilib-DragonsWPILib"]
+	path = modules/allwpilib-DragonsWPILib
+	url = https://github.com/dragons3975/allwpilib-DragonsWPILib
