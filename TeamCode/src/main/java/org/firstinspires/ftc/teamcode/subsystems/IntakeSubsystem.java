@@ -15,7 +15,8 @@ public class IntakeSubsystem extends Subsystem {
 
 
     public IntakeSubsystem() {
-    m_MotorDroit.setInverted(true);
+    m_MotorDroit.setInverted(false);
+        m_MotorGauche.setInverted(true);
     }
 
 
@@ -34,10 +35,7 @@ public class IntakeSubsystem extends Subsystem {
 
     }
 
-    public void stop () {
-        m_MotorDroit.stopMotor();
-        m_MotorGauche.stopMotor();
-    }
+
 }
 
 

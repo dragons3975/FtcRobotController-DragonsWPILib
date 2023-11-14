@@ -1,11 +1,13 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.Constants;
 
 import dragons.rev.FtcGyro;
 import dragons.rev.FtcMotor;
 
 import edu.wpi.first.hal.DriverStationJNI;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj2.command.Subsystem;
@@ -23,7 +25,10 @@ private double mAngle = 0;
     private double m_xSpeed = 0; // The robot's speed along the X axis [-1.0..1.0]. Forward is positive.
     private double m_zRotation = 0; // The robot's rotation rate around the Z axis [-1.0..1.0]. Clockwise is positive.
     private double m_ySpeed = 0;
+
+    private PIDController mPIDz = new PIDController(Constants.ConstantsDrivePID.kP,Constants.ConstantsDrivePID.kI, Constants.ConstantsDrivePID.kD);
     public DriveSubsystem() {
+
     }
 
     @Override
@@ -37,10 +42,14 @@ private double mAngle = 0;
 
     }
 
-    public void MecanumDrive(double xSpeed, double zRotation, double ySpeed){
+    public void mecanumDrive(double xSpeed, double zRotation, double ySpeed){
         m_xSpeed = xSpeed;
         m_zRotation = zRotation;
         m_ySpeed = ySpeed;
+    }
+    public void getFrontLeft() {
+        m_frontLeftMotor.getCurrentPosition();
+
     }
 
     public void stop () {
