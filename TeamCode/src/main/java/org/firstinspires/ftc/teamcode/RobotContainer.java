@@ -4,8 +4,9 @@ import org.firstinspires.ftc.teamcode.commandGroups.AutonomousCommandGroup;
 import org.firstinspires.ftc.teamcode.commands.DriveCommand;
 import org.firstinspires.ftc.teamcode.commands.IntakeCommand;
 import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
-import org.firstinspires.ftc.teamcode.commands.BrasCommand;
 import org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem;
+import org.firstinspires.ftc.teamcode.commands.BrasCommand;
+import org.firstinspires.ftc.teamcode.subsystems.BrasSubsystem;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -23,6 +24,8 @@ public class RobotContainer {
    //private final BrasCommand mBrasCommand = new BrasCommand(mDriveSubsystem);
 
     private final IntakeCommand mIntakeCommand = new IntakeCommand(mIntakeSubsystem);
+
+    private final BrasSubsystem mBrasSubsystem = new BrasSubsystem();
 
     private final AutonomousCommandGroup mAutonomousCommandGroup;
 
