@@ -3,15 +3,23 @@ package org.firstinspires.ftc.teamcode.subsystems;
 
 import com.qualcomm.robotcore.hardware.Servo;
 
+import dragons.rev.FtcCRServo;
 import dragons.rev.FtcMotor;
+import dragons.rev.FtcServo;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 
 public class PinceSubsystem extends Subsystem {
 
-    //private final Servo mMotorPince = new Servo();
+    private final FtcServo mMotorPince = new FtcServo("pince");
+    private  final FtcCRServo mMoteurPinceTourne = new FtcCRServo("pincetourne");
     private boolean mOuverte = true;
 
     public PinceSubsystem() {
+    }
+
+    public void Test(double degre) {
+        mMoteurPinceTourne.setInverted(true);
+        mMoteurPinceTourne.set(-1);
     }
 
 
@@ -28,10 +36,10 @@ public class PinceSubsystem extends Subsystem {
 
     public void Toggle(){
         if (mOuverte) {
-            //fermer();
+            //Fermer();
         }
         else {
-            //ouvrir();
+            //Ouvrir();
         }
     }
 

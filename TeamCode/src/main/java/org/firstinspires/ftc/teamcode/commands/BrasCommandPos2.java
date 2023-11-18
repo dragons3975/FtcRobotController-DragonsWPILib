@@ -1,42 +1,32 @@
 package org.firstinspires.ftc.teamcode.commands;
 
-import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.BrasSubsystem;
 
-import edu.wpi.first.hal.DriverStationJNI;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj.XboxController;
 
-
-public class BrasCommand extends Command{
+public class BrasCommandPos2 extends Command{
 
     private final BrasSubsystem mBrasSubsystem;
 
-    private final XboxController mxBoxController;
+    private final double mPos;
 
-    private int mXSpeed;
-    private int mZRotation;
-
-    private double targetAvant = 0;
-
-    public BrasCommand(BrasSubsystem brasSubsystem, XboxController xboxController) {
+    public BrasCommandPos2(BrasSubsystem brasSubsystem, double pos) {
+        mPos = pos;
         mBrasSubsystem = brasSubsystem;
-        mxBoxController = xboxController;
 
-        addRequirements(brasSubsystem);
+        addRequirements();
     }
 
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        DriverStationJNI.getTelemetry().addData("Init", "ASDASDAS");
+        mBrasSubsystem.setTarget(mPos);
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        DriverStationJNI.getTelemetry().addData("joystick", mxBoxController.getRightY());
-        mBrasSubsystem.incrementTarget(mxBoxController.getRightY() * 2);
+
     }
 
 
@@ -51,7 +41,7 @@ public class BrasCommand extends Command{
     public boolean isFinished() {
         // Commande infinie car la commande sera appellée avec un withTimeout()
         // donc elle sera interrompue à la fin du timeout
-        return false;
+        return true;
     }
 }
 

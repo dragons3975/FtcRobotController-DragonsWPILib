@@ -28,14 +28,9 @@ public class DriveCommand extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        if (mXboxController.getLeftX() > 0.1 || mXboxController.getLeftX() < -0.1){
-            mX = -mXboxController.getLeftX(); } else {mX = 0;}
-
-        if (mXboxController.getLeftY() > 0.1 || mXboxController.getLeftY() < -0.1){
-            mY = mXboxController.getLeftY(); } else {mY = 0;}
-
-        if (mXboxController.getRightX() > 0.1 || mXboxController.getRightX() < -0.1){
-            mZ = -mXboxController.getRightX(); } else {mZ = 0;}
+        mX = mXboxController.getLeftX();
+        mY = -mXboxController.getLeftY();
+        mZ = mXboxController.getRightX();
 
         mDriveSubsystem.mecanumDrive(mX,mY,mZ);
     }

@@ -1,47 +1,38 @@
 package org.firstinspires.ftc.teamcode.commands;
 
 import org.firstinspires.ftc.teamcode.subsystems.BrasSubsystem;
-
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class BrasCommandPos1 extends Command{
+public class CalibreBrasCommand extends Command {
 
     private final BrasSubsystem mBrasSubsystem;
 
-    private final double mPos;
-
-    public BrasCommandPos1(BrasSubsystem brasSubsystem, double pos) {
-        mPos = pos;
+    public CalibreBrasCommand(BrasSubsystem brasSubsystem) {
         mBrasSubsystem = brasSubsystem;
 
-        addRequirements();
+        addRequirements(mBrasSubsystem);
     }
 
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        mBrasSubsystem.setTarget(mPos);
+        mBrasSubsystem.calibreActif();
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-
     }
-
 
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-
+        mBrasSubsystem.calibreDesactif();
     }
 
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        // Commande infinie car la commande sera appellée avec un withTimeout()
-        // donc elle sera interrompue à la fin du timeout
-        return true;
+        return mBrasSubsystem.verifButton();
     }
 }
-
