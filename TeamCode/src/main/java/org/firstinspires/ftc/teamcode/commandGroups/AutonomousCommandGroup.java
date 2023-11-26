@@ -10,14 +10,12 @@ public class AutonomousCommandGroup extends SequentialCommandGroup {
 
     public AutonomousCommandGroup(DriveSubsystem driveSubsystem) {
 
-        ParallelRaceGroup avancer5sec = new DriveAutoCommand(driveSubsystem, 1, 0).withTimeout(5);
-        ParallelRaceGroup tourner1sec = new DriveAutoCommand(driveSubsystem, 0, 1).withTimeout(1);
-        ParallelRaceGroup reculer5sec = new DriveAutoCommand(driveSubsystem, -1, 0).withTimeout(5);
+        ParallelRaceGroup avancer5sec = new DriveAutoCommand(driveSubsystem, 1, 0, 0).withTimeout(5);
+        ParallelRaceGroup tourner1sec = new DriveAutoCommand(driveSubsystem, 0, 1, 0).withTimeout(1);
+        ParallelRaceGroup reculer5sec = new DriveAutoCommand(driveSubsystem, -1, 0, 0).withTimeout(5);
 
         addCommands(
-            avancer5sec,
-            tourner1sec,
-            reculer5sec
+            avancer5sec
         );
     }
 

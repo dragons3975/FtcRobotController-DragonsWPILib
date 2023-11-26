@@ -36,13 +36,15 @@ private double mAngle = 0;
 
     @Override
     public void periodic() {
+        DriverStationJNI.getTelemetry().addData("distanceX", getDistanceX());
         m_robotDrive.driveCartesian(m_xSpeed, m_zRotation, m_ySpeed);
         mAngle = mGyro.getAngle();
         DriverStationJNI.getTelemetry().addData("mGyro angle", mAngle);
+    }
 
 
-
-
+    public double getDistanceX() {
+        return m_rearLeftMotor.getCurrentPosition() / (8192/(Math.PI * 5.08));
     }
 
     public void mecanumDrive(double xSpeed, double zRotation, double ySpeed){

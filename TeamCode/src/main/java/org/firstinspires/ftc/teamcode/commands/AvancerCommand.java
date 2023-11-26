@@ -4,17 +4,20 @@ import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
 
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class DriveAutoCommand extends Command {
+public class AvancerCommand extends Command {
 
     private final DriveSubsystem mDriveSubsystem;
 
     private double mXSpeed;
     private double mZRotation;
 
+    private double mDistance;
+
     private double mYSpeed;
 
-    public DriveAutoCommand(DriveSubsystem driveSubsystem, double x, double z, double y) {
+    public AvancerCommand(DriveSubsystem driveSubsystem, double x, double z, double y, double distance) {
         mDriveSubsystem = driveSubsystem;
+        mDistance = distance;
 
         mXSpeed = x;
         mZRotation = z;
@@ -26,6 +29,7 @@ public class DriveAutoCommand extends Command {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
+
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -43,8 +47,6 @@ public class DriveAutoCommand extends Command {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        // Commande infinie car la commande sera appellée avec un withTimeout()
-        // donc elle sera interrompue à la fin du timeout
-        return false;
+        return (mDriveSubsystem.getDistanceX() >= mDistance);
     }
 }

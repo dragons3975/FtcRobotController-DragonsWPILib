@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import org.checkerframework.checker.units.qual.C;
 import org.firstinspires.ftc.teamcode.commandGroups.AutonomousCommandGroup;
 import org.firstinspires.ftc.teamcode.commands.BrasCommandPos1;
 import org.firstinspires.ftc.teamcode.commands.BrasCommandPos2;
@@ -44,6 +43,8 @@ public class RobotContainer {
     private final  PinceCommand mPinceCommand = new PinceCommand(mPinceSubsystem);
 
     private final CalibreBrasCommand mCalibreBrasCommand = new CalibreBrasCommand(mBrasSubsystem);
+
+    //private final AvancerAutoCommand mAvancerAutoCommand = new AvancerAutoCommand(mDriveSubsystem, 0, 0, 0);
 
     private final AutonomousCommandGroup mAutonomousCommandGroup;
 
