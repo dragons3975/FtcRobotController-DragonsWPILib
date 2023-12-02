@@ -1,38 +1,46 @@
 package org.firstinspires.ftc.teamcode.commands;
 
-import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.CameraSubsystem;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj.XboxController;
 
-public class AvanceAutoCommand extends Command {
 
-    private final DriveSubsystem mDriveSubsystem;
+public class ToggleCameraCommand extends Command {
+
+    private final CameraSubsystem mCameraSubsystem;
+
+    private final XboxController mxBoxController;
 
     private int mXSpeed;
+    private int mZRotation;
 
-    public AvanceAutoCommand(DriveSubsystem driveSubsystem, int x) {
-        mDriveSubsystem = driveSubsystem;
+    private double targetAvant = 0;
 
-        mXSpeed = x;
+    public ToggleCameraCommand(CameraSubsystem cameraSubsystem, XboxController xboxController) {
+        mCameraSubsystem = cameraSubsystem;
+        mxBoxController = xboxController;
 
-        addRequirements(driveSubsystem);
+        addRequirements(cameraSubsystem);
     }
 
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
+        mCameraSubsystem.toggle();
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        //mDriveSubsystem.MecanumDrive(mXSpeed, 0, 0);
+
     }
+
 
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-        mDriveSubsystem.stop();
+
     }
 
     // Returns true when the command should end.

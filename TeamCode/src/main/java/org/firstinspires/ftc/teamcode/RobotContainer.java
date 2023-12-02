@@ -12,6 +12,8 @@ import org.firstinspires.ftc.teamcode.subsystems.BrasSubsystem;
 import org.firstinspires.ftc.teamcode.commands.PinceCommand;
 import org.firstinspires.ftc.teamcode.subsystems.PinceSubsystem;
 import org.firstinspires.ftc.teamcode.commands.CalibreBrasCommand;
+import org.firstinspires.ftc.teamcode.subsystems.CameraSubsystem;
+import org.firstinspires.ftc.teamcode.commands.ToggleCameraCommand;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -44,13 +46,15 @@ public class RobotContainer {
 
     private final CalibreBrasCommand mCalibreBrasCommand = new CalibreBrasCommand(mBrasSubsystem);
 
+    private final CameraSubsystem mCameraSubsystem = new CameraSubsystem();
+
+    private  final ToggleCameraCommand mToggleCameraCommand = new ToggleCameraCommand(mCameraSubsystem, mXboxController);
+
     //private final AvancerAutoCommand mAvancerAutoCommand = new AvancerAutoCommand(mDriveSubsystem, 0, 0, 0);
 
-    private final AutonomousCommandGroup mAutonomousCommandGroup;
+    private final AutonomousCommandGroup mAutonomousCommandGroup = new AutonomousCommandGroup(mDriveSubsystem);;
 
     public RobotContainer() {
-
-        mAutonomousCommandGroup = new AutonomousCommandGroup(mDriveSubsystem);
         configureButtonBindings();
         configureDefaultCommands();
     }
@@ -68,12 +72,15 @@ public class RobotContainer {
         JoystickButton buttonB = new JoystickButton(mXboxController, XboxController.Button.kB.value);
         buttonB.whileTrue(mIntakeCommand);
 
-
+        JoystickButton buttonB2 = new JoystickButton(mXboxController2, XboxController.Button.kB.value);
+        buttonB2.onTrue(mToggleCameraCommand);
 
     }
+
     private void configureDefaultCommands() {
         mDriveSubsystem.setDefaultCommand(mDriveCommand);
         mBrasSubsystem.setDefaultCommand(mBrasCommand);
+        //mCameraSubsystem.setDefaultCommand(mToggleCameraCommand);
     }
 
     public Command getAutonomousCommand() {
