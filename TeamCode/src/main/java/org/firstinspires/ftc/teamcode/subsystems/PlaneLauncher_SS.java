@@ -3,45 +3,24 @@ package org.firstinspires.ftc.teamcode.subsystems;
 
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
 
-import com.arcrobotics.ftclib.hardware.motors.Motor;
-import com.arcrobotics.ftclib.hardware.motors.MotorGroup;
 
-import dragons.rev.FtcMotor;
-import dragons.rev.FtcTouchSensor;
-import edu.wpi.first.hal.DriverStationJNI;
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.motorcontrol.MotorController;
+import dragons.rev.FtcServo;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 
-public class BrasSubsystem extends Subsystem {
+public class PlaneLauncher_SS extends Subsystem {
 
 
-
-    private final FtcMotor m_motor1 = new FtcMotor("bras1");
-
-
-    //  Motor m_motor1 = new Motor(hardwareMap, "bras1");
+private final FtcServo m_servoMotor = new FtcServo("servo_avion");
 
 
-    //MotorGroup  myMotors;
-
-
-
-    // MotorController m_MotorBrasGroup = new MotorController();
-   // private final PIDController m_zPID = new PIDController(0.001, 0, 0);
-
-    //private double m_posTarget = 0;
-
-    //private boolean pidActive = false;
 
     private double init = 0;
 
-    public BrasSubsystem() {
+    public PlaneLauncher_SS() {
         //m_zPID.setTolerance(2);
 
-        m_motor1.setInverted(false);
-
-        //myMotors = new MotorGroup(m_motor1, m_motor2);
+     //   servoMotor = hardwareMap.get(Servo.class,"servo_avion");
+        planeLaucherOFF();
 
     }
 
@@ -96,19 +75,17 @@ public class BrasSubsystem extends Subsystem {
     }
 */
 
-    public void up() {
-        m_motor1.set(0.3);
+    public void planeLaucherOn(){
+        m_servoMotor.setPosition(0.5);
 
     }
 
-    public void down() {
-        m_motor1.set(-0.3);
+    public void planeLaucherOFF(){
+        m_servoMotor.setPosition(0.0);
 
     }
 
-    public void stop() {
-        m_motor1.stopMotor();
-    }
+
 
 
 

@@ -1,16 +1,16 @@
 package org.firstinspires.ftc.teamcode.commands;
 
-import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.BrasSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.PlaneLauncher_SS;
 
 import edu.wpi.first.hal.DriverStationJNI;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.Command;
 
 
-public class BrasCommand extends Command{
+public class FlyPlane_CMD extends Command{
 
-    private final BrasSubsystem mBrasSubsystem;
+    private final PlaneLauncher_SS m_PlaneLauncher_SS;
 
     private final XboxController mxBoxController;
 
@@ -19,33 +19,33 @@ public class BrasCommand extends Command{
 
     private double targetAvant = 0;
 
-    public BrasCommand(BrasSubsystem brasSubsystem, XboxController xboxController) {
-        mBrasSubsystem = brasSubsystem;
+    public FlyPlane_CMD(PlaneLauncher_SS p_PlaneLauncher_SS, XboxController xboxController) {
+        m_PlaneLauncher_SS = p_PlaneLauncher_SS;
         mxBoxController = xboxController;
 
-        addRequirements(brasSubsystem);
+        addRequirements(p_PlaneLauncher_SS);
     }
 
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        DriverStationJNI.getTelemetry().addData("Init", "ASDASDAS");
+        m_PlaneLauncher_SS.planeLaucherOFF();
+
+
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        mBrasSubsystem.down();
-        mBrasSubsystem.up();
-        mBrasSubsystem.stop();
-        DriverStationJNI.getTelemetry().addData("joystick", mxBoxController.getRightY());
-       // mBrasSubsystem.incrementTarget(mxBoxController.getRightY() * 2);
+        m_PlaneLauncher_SS.planeLaucherOn();
+
     }
 
 
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
+        m_PlaneLauncher_SS.planeLaucherOFF();
 
     }
 

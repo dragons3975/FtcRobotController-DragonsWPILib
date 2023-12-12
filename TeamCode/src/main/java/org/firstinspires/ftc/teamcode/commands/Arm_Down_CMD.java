@@ -1,16 +1,15 @@
 package org.firstinspires.ftc.teamcode.commands;
 
-import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
-import org.firstinspires.ftc.teamcode.subsystems.BrasSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.Arm_SS;
 
 import edu.wpi.first.hal.DriverStationJNI;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.Command;
 
 
-public class BrasCommand extends Command{
+public class Arm_Down_CMD extends Command{
 
-    private final BrasSubsystem mBrasSubsystem;
+    private final Arm_SS m_Arm_SS;
 
     private final XboxController mxBoxController;
 
@@ -19,11 +18,15 @@ public class BrasCommand extends Command{
 
     private double targetAvant = 0;
 
-    public BrasCommand(BrasSubsystem brasSubsystem, XboxController xboxController) {
-        mBrasSubsystem = brasSubsystem;
+
+    private double speedX = -0.8;
+    private double speedY = 0;
+
+    public Arm_Down_CMD(Arm_SS p_Arm_SS, XboxController xboxController) {
+        m_Arm_SS = p_Arm_SS;
         mxBoxController = xboxController;
 
-        addRequirements(brasSubsystem);
+        addRequirements(p_Arm_SS);
     }
 
     // Called when the command is initially scheduled.
@@ -35,9 +38,9 @@ public class BrasCommand extends Command{
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        mBrasSubsystem.down();
-        mBrasSubsystem.up();
-        mBrasSubsystem.stop();
+
+        m_Arm_SS.down(speedX, speedY);
+
         DriverStationJNI.getTelemetry().addData("joystick", mxBoxController.getRightY());
        // mBrasSubsystem.incrementTarget(mxBoxController.getRightY() * 2);
     }
@@ -46,7 +49,8 @@ public class BrasCommand extends Command{
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-
+        m_Arm_SS.stop();
+        
     }
 
     // Returns true when the command should end.

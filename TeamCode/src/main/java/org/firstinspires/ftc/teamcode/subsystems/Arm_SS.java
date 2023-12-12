@@ -1,28 +1,25 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
-
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.arcrobotics.ftclib.hardware.motors.MotorGroup;
 
 import dragons.rev.FtcMotor;
-import dragons.rev.FtcTouchSensor;
-import edu.wpi.first.hal.DriverStationJNI;
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.motorcontrol.MotorController;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 
-public class BrasSubsystem extends Subsystem {
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+
+public class Arm_SS extends Subsystem {
 
 
 
-    private final FtcMotor m_motor1 = new FtcMotor("bras1");
+    private final FtcMotor m_Motor1 = new FtcMotor("bras1");
+    private final FtcMotor m_Motor2 = new FtcMotor("bras2");
 
-
-    //  Motor m_motor1 = new Motor(hardwareMap, "bras1");
-
-
+    DifferentialDrive m_groupedMotors =new DifferentialDrive(m_Motor1,m_Motor2);
     //MotorGroup  myMotors;
 
 
@@ -36,10 +33,19 @@ public class BrasSubsystem extends Subsystem {
 
     private double init = 0;
 
-    public BrasSubsystem() {
+    private double speed;
+    private double speedRotAlways0;
+
+    public Arm_SS() {
         //m_zPID.setTolerance(2);
 
-        m_motor1.setInverted(false);
+
+       // private final FtcMotor m_motor1 = new FtcMotor("bras1");
+
+
+
+        m_Motor2.setInverted(true);
+
 
         //myMotors = new MotorGroup(m_motor1, m_motor2);
 
@@ -96,18 +102,23 @@ public class BrasSubsystem extends Subsystem {
     }
 */
 
-    public void up() {
-        m_motor1.set(0.3);
+    public void up( double speedX, double speedR) {
 
+        speed = speedX;
+        speedRotAlways0 = speedR;
+
+        m_groupedMotors.arcadeDrive(speedX, speedR);
     }
 
-    public void down() {
-        m_motor1.set(-0.3);
+    public void down(double speedX, double speedR) {
+        speed = speedX;
+        speedRotAlways0 = speedR;
 
+        m_groupedMotors.arcadeDrive(speedX, speedR);
     }
 
     public void stop() {
-        m_motor1.stopMotor();
+        m_groupedMotors.stopMotor();
     }
 
 
