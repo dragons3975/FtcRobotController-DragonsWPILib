@@ -15,6 +15,8 @@ public class AvancerCommand extends Command {
 
     private double mYSpeed;
 
+    private double distInit = 0;
+
     public AvancerCommand(DriveSubsystem driveSubsystem, double x, double z, double y, double distance) {
         mDriveSubsystem = driveSubsystem;
         mDistance = distance;
@@ -29,7 +31,7 @@ public class AvancerCommand extends Command {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-
+        distInit = mDriveSubsystem.getDistanceX();
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -47,6 +49,6 @@ public class AvancerCommand extends Command {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return (mDriveSubsystem.getDistanceX() >= mDistance);
+        return (mDriveSubsystem.getDistanceX() >= mDistance + distInit);
     }
 }

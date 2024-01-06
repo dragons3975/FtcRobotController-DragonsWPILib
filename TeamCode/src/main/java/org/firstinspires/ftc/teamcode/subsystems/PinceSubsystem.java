@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode.subsystems;
 
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.Constants;
+
 import dragons.rev.FtcCRServo;
 import dragons.rev.FtcMotor;
 import dragons.rev.FtcServo;
@@ -10,16 +12,21 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 
 public class PinceSubsystem extends Subsystem {
 
-    private final FtcServo mMotorPince = new FtcServo("pince");
-    private  final FtcCRServo mMoteurPinceTourne = new FtcCRServo("pincetourne");
+    private final FtcServo mMotorPince = new FtcServo("pinceRotation");
+
+    private final FtcServo mMotorPinceG = new FtcServo("pinceGauche");
+
+    private final FtcServo mMotorPinceD = new FtcServo("pinceDroite");
     private boolean mOuverte = true;
+
+    private double pos = 0;
 
     public PinceSubsystem() {
     }
 
-    public void Test(double degre) {
-        mMoteurPinceTourne.setInverted(true);
-        mMoteurPinceTourne.set(-1);
+
+    public void ModifInclinaison(double pos) {
+        mMotorPince.setPosition(pos);
     }
 
 
@@ -32,6 +39,16 @@ public class PinceSubsystem extends Subsystem {
     public void Fermer() {
         //mMotorPince.setPosition(-0.5, fermer);
         mOuverte = false;
+    }
+
+    public void Ferme() {
+        mMotorPinceG.setPosition(0);
+        mMotorPinceD.setPosition(Constants.ConstantsPince.ouvreMax);
+    }
+
+    public void Ouvre() {
+        mMotorPinceG.setPosition(Constants.ConstantsPince.ouvreMax);
+        mMotorPinceD.setPosition(0);
     }
 
     public void Toggle(){

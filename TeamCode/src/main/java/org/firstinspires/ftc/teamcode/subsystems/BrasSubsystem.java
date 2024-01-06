@@ -12,7 +12,10 @@ public class BrasSubsystem extends Subsystem {
     private final FtcTouchSensor mTouchSensor = new FtcTouchSensor("TouchSensor");
 
     private final FtcMotor m_MotorBras = new FtcMotor("bras");
-    private final PIDController m_zPID = new PIDController(0.001, 0, 0);
+
+    private final FtcMotor m_MoteurExtention = new FtcMotor("extention");
+
+    private final PIDController m_zPID = new PIDController(0.005, 0, 0);
 
     private double m_posTarget = 0;
 
@@ -26,7 +29,6 @@ public class BrasSubsystem extends Subsystem {
 
     @Override
     public void periodic() {
-        DriverStationJNI.getTelemetry().addData("bouttonApuye", verifButton());
         if (pidActive) {
             double consigne = m_zPID.calculate(m_MotorBras.getCurrentPosition(), m_posTarget);
             DriverStationJNI.getTelemetry().addData("currentPosition", m_MotorBras.getCurrentPosition());
@@ -41,16 +43,18 @@ public class BrasSubsystem extends Subsystem {
     }
 
     public void setTarget(double target) {
+        m_MotorBras.setInverted(true);
         m_posTarget = init + target;
     }
 
-    public boolean verifButton() {
-       return (!mTouchSensor.getState());
-    }
 
     public void calibreActif() {
         pidActive = false;
-        m_MotorBras.set(-0.1);
+        m_MotorBras.set(-0.01);
+    }
+
+    public void extention(double ex) {
+        m_MoteurExtention.set(ex);
     }
 
     public void calibreDesactif() {

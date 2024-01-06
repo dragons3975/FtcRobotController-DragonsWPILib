@@ -1,41 +1,46 @@
 package org.firstinspires.ftc.teamcode.commands;
 
-import org.firstinspires.ftc.teamcode.subsystems.BrasSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.PinceSubsystem;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class CalibreBrasCommand extends Command {
+public class PinceCommandFerme extends Command{
 
-    private final BrasSubsystem mBrasSubsystem;
+    private final PinceSubsystem mPinceSubsystem;
 
-    public CalibreBrasCommand(BrasSubsystem brasSubsystem) {
+    private  final XboxController mXboxControler;
 
-        mBrasSubsystem = brasSubsystem;
+    public PinceCommandFerme(PinceSubsystem pinceSubsystem, XboxController xboxController) {
+        mPinceSubsystem = pinceSubsystem;
+        mXboxControler = xboxController;
 
-        addRequirements(mBrasSubsystem);
+        addRequirements(pinceSubsystem);
     }
 
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        mBrasSubsystem.calibreActif();
+        mPinceSubsystem.Ferme();
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
+
     }
+
 
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-        mBrasSubsystem.calibreDesactif();
+
     }
 
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return false;
+        return true;
     }
 }
+

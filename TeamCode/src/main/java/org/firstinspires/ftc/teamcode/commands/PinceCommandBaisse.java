@@ -1,24 +1,24 @@
 package org.firstinspires.ftc.teamcode.commands;
 
-import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
-import org.firstinspires.ftc.teamcode.subsystems.BrasSubsystem;
+import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.subsystems.PinceSubsystem;
 
-import edu.wpi.first.hal.DriverStationJNI;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj.XboxController;
 
-public class PinceCommand extends Command{
+import edu.wpi.first.hal.DriverStationJNI;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.Command;
+
+public class PinceCommandBaisse extends Command{
 
     private final PinceSubsystem mPinceSubsystem;
 
-    private int mXSpeed;
-    private int mZRotation;
+    private  final XboxController mXboxControler;
 
-    private double targetAvant = 0;
+    private double pos = 0;
 
-    public PinceCommand(PinceSubsystem pinceSubsystem) {
+    public PinceCommandBaisse(PinceSubsystem pinceSubsystem, XboxController xboxController) {
         mPinceSubsystem = pinceSubsystem;
+        mXboxControler = xboxController;
 
         addRequirements(pinceSubsystem);
     }
@@ -26,13 +26,20 @@ public class PinceCommand extends Command{
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        mPinceSubsystem.Test(0);
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-
+       pos += mXboxControler.getLeftY() / 110;
+       mPinceSubsystem.ModifInclinaison(pos);
+       if (pos >= Constants.ConstantsPince.etenduePince) {
+           pos = Constants.ConstantsPince.etenduePince;
+       }
+       if (pos <= 0) {
+            pos = 0;
+       }
+        DriverStationJNI.getTelemetry().addData("pos", pos);
     }
 
 
@@ -45,8 +52,6 @@ public class PinceCommand extends Command{
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        // Commande infinie car la commande sera appellée avec un withTimeout()
-        // donc elle sera interrompue à la fin du timeout
         return false;
     }
 }
