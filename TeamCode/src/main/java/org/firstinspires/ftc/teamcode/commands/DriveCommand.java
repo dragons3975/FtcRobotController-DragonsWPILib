@@ -32,13 +32,13 @@ public class DriveCommand extends Command {
         mY = -mXboxController.getLeftY();
         mZ = mXboxController.getRightX();
 
-        mDriveSubsystem.mecanumDrive(mX,mY,mZ);
+        //mDriveSubsystem.mecanumDrive(mX,mY,mZ);
     }
 
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-        mDriveSubsystem.stop();
+        //mDriveSubsystem.stop();
     }
 
     // Returns true when the command should end.

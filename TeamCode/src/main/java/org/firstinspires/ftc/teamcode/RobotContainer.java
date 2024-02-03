@@ -2,14 +2,16 @@ package org.firstinspires.ftc.teamcode;
 
 import org.firstinspires.ftc.teamcode.commandGroups.AutonomousCommandGroup;
 import org.firstinspires.ftc.teamcode.commands.DriveCommand;
+import org.firstinspires.ftc.teamcode.commands.FermePinceCommand;
+import org.firstinspires.ftc.teamcode.commands.OuvrePinceCommand;
 import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
 import org.firstinspires.ftc.teamcode.commands.BrasCommand;
 import org.firstinspires.ftc.teamcode.subsystems.BrasSubsystem;
-import org.firstinspires.ftc.teamcode.commands.PinceCommand;
 import org.firstinspires.ftc.teamcode.subsystems.PinceSubsystem;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 public class RobotContainer {
 
@@ -17,12 +19,17 @@ public class RobotContainer {
     private final XboxController mXboxController2 = new XboxController(1);
 
     private final DriveSubsystem mDriveSubsystem = new DriveSubsystem();
-    private final PinceSubsystem mPinceSubsystem = new PinceSubsystem();
     private final BrasSubsystem mBrasSubsystem = new BrasSubsystem();
+
+    private final PinceSubsystem mPinceSubsystem = new PinceSubsystem();
+
 
     private final DriveCommand mDriveCommand = new DriveCommand(mDriveSubsystem, mXboxController);
     private final BrasCommand mBrasCommand = new BrasCommand(mBrasSubsystem, mXboxController2);
-    private final PinceCommand mPinceCommand = new PinceCommand(mPinceSubsystem);
+    private final OuvrePinceCommand mOuvrePinceCommand = new OuvrePinceCommand(mPinceSubsystem);
+    private final FermePinceCommand mFermePinceCommand = new FermePinceCommand(mPinceSubsystem);
+
+
 
     private final AutonomousCommandGroup mAutonomousCommandGroup = new AutonomousCommandGroup(mDriveSubsystem);;
 
@@ -32,8 +39,10 @@ public class RobotContainer {
     }
 
     private void configureButtonBindings() {
-        //JoystickButton buttonX = new JoystickButton(mXboxController, XboxController.Button.kX.value);
-        //buttonX.whileTrue(mBrasCommandPos1);
+        JoystickButton buttonX = new JoystickButton(mXboxController, XboxController.Button.kX.value);
+        buttonX.onTrue(mOuvrePinceCommand);
+        JoystickButton buttonB = new JoystickButton(mXboxController, XboxController.Button.kB.value);
+        buttonB.onTrue(mFermePinceCommand);
     }
 
     private void configureDefaultCommands() {
