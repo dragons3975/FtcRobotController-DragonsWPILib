@@ -30,6 +30,10 @@ public class DriveSubsystem extends Subsystem {
         mZ = z;
     }
 
+    public void stop(){
+        drive(0, 0, 0);
+    }
+
 
 
 

@@ -35,7 +35,7 @@ public class RobotContainer {
     private final DescendBrasCommand mDescendBrasCommand = new DescendBrasCommand(mBrasSubsystem);
 
 
-    private final AutonomousCommandGroup mAutonomousCommandGroup = new AutonomousCommandGroup(mDriveSubsystem);;
+    private final AutonomousCommandGroup mAutonomousCommandGroup = new AutonomousCommandGroup(mDriveSubsystem, mPinceSubsystem, mBrasSubsystem);
 
     public RobotContainer() {
         configureButtonBindings();

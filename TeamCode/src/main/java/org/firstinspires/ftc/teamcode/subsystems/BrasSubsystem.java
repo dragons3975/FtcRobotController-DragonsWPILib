@@ -39,5 +39,11 @@ public class BrasSubsystem extends Subsystem {
             mPositionCurrent = mPositionMin;
         }
     }
+
+    public void goToPosition(int position) {
+        if (position > mPositionMin && position < mPositionMax) {
+            mPositionCurrent = position;
+        }
+    }
 }
 
