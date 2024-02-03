@@ -1,11 +1,12 @@
 package org.firstinspires.ftc.teamcode;
 
 import org.firstinspires.ftc.teamcode.commandGroups.AutonomousCommandGroup;
+import org.firstinspires.ftc.teamcode.commands.DescendBrasCommand;
 import org.firstinspires.ftc.teamcode.commands.DriveCommand;
 import org.firstinspires.ftc.teamcode.commands.FermePinceCommand;
 import org.firstinspires.ftc.teamcode.commands.OuvrePinceCommand;
 import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
-import org.firstinspires.ftc.teamcode.commands.BrasCommand;
+import org.firstinspires.ftc.teamcode.commands.MonteBrasCommand;
 import org.firstinspires.ftc.teamcode.subsystems.BrasSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.PinceSubsystem;
 
@@ -25,10 +26,13 @@ public class RobotContainer {
 
 
     private final DriveCommand mDriveCommand = new DriveCommand(mDriveSubsystem, mXboxController);
-    private final BrasCommand mBrasCommand = new BrasCommand(mBrasSubsystem, mXboxController2);
     private final OuvrePinceCommand mOuvrePinceCommand = new OuvrePinceCommand(mPinceSubsystem);
     private final FermePinceCommand mFermePinceCommand = new FermePinceCommand(mPinceSubsystem);
 
+
+    private final MonteBrasCommand mMonteBrasCommand = new MonteBrasCommand(mBrasSubsystem);
+
+    private final DescendBrasCommand mDescendBrasCommand = new DescendBrasCommand(mBrasSubsystem);
 
 
     private final AutonomousCommandGroup mAutonomousCommandGroup = new AutonomousCommandGroup(mDriveSubsystem);;
@@ -43,11 +47,16 @@ public class RobotContainer {
         buttonX.onTrue(mOuvrePinceCommand);
         JoystickButton buttonB = new JoystickButton(mXboxController, XboxController.Button.kB.value);
         buttonB.onTrue(mFermePinceCommand);
+
+        JoystickButton buttonflechehaut = new JoystickButton(mXboxController, XboxController.Button.kUp.value);
+        buttonflechehaut.whileTrue(mMonteBrasCommand);
+
+        JoystickButton buttonflechebas = new JoystickButton(mXboxController, XboxController.Button.kDown.value);
+        buttonflechebas.whileTrue(mDescendBrasCommand);
     }
 
     private void configureDefaultCommands() {
         mDriveSubsystem.setDefaultCommand(mDriveCommand);
-        mBrasSubsystem.setDefaultCommand(mBrasCommand);
     }
 
     public Command getAutonomousCommand() {

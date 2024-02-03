@@ -1,22 +1,36 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
 
-import dragons.rev.FtcGyro;
+import dragons.rev.FtcMotor;
+import dragons.rev.HolonomicDrive;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 
 public class DriveSubsystem extends Subsystem {
-    //private final FtcMotorSimple m_frontLeftMotor = new FtcMotorSimple("fleft");
-    //private final FtcMotorSimple m_frontRightMotor = new FtcMotorSimple("fright");
-    //private final FtcMotor m_rearLeftMotor = new FtcMotor("rleft");/
-    //private final MecanumDrive m_robotDrive = new MecanumDrive(m_frontLeftMotor, m_frontRightMotor,m_rearLeftMotor, m_rearRightMotor);
-    private final FtcGyro mGyro = new FtcGyro();
+    public final FtcMotor m_roueright = new FtcMotor("roue1");
+    public final FtcMotor m_roueleft = new FtcMotor("roue2");
+    public final FtcMotor m_roueback = new FtcMotor("roue3");
+
+    private final HolonomicDrive m_robotdrive = new HolonomicDrive(m_roueleft, m_roueright, m_roueback);
+
+    private double mX;
+    private double mY;
+    private double mZ;
 
     public DriveSubsystem() {
     }
 
     @Override
     public void periodic() {
+        m_robotdrive.holonomicDrive(mX, mY, mZ);
     }
+
+    public void drive(double x, double y, double z) {
+        mX = x;
+        mY = y;
+        mZ = z;
+    }
+
+
 
 
 }

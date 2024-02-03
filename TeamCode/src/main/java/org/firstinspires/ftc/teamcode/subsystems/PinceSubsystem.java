@@ -8,7 +8,9 @@ public class PinceSubsystem extends Subsystem {
 
     private final FtcServo mPince1 = new FtcServo("pince1");
     private final FtcServo mPince2 = new FtcServo("pince2");
+
     public PinceSubsystem() {
+        ouvre();
     }
 
     public void ouvre() {

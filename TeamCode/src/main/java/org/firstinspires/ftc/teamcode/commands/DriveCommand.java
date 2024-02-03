@@ -9,9 +9,6 @@ public class DriveCommand extends Command {
 
     private final DriveSubsystem mDriveSubsystem;
     private final XboxController mXboxController;
-    private double mX;
-    private double mY;
-    private double mZ;
 
     public DriveCommand(DriveSubsystem driveSubsystem, XboxController xboxController) {
         mDriveSubsystem = driveSubsystem;
@@ -28,17 +25,13 @@ public class DriveCommand extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        mX = mXboxController.getLeftX();
-        mY = -mXboxController.getLeftY();
-        mZ = mXboxController.getRightX();
+        mDriveSubsystem.drive(-mXboxController.getLeftX(), mXboxController.getLeftY(), -mXboxController.getRightX());
 
-        //mDriveSubsystem.mecanumDrive(mX,mY,mZ);
     }
 
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-        //mDriveSubsystem.stop();
     }
 
     // Returns true when the command should end.
