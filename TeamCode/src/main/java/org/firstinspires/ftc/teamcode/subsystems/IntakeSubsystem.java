@@ -9,21 +9,21 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 
 public class IntakeSubsystem extends Subsystem {
 
-    //private final FtcMotor m_MotorDroit = new FtcMotor("ramasseur");
+    private final FtcMotor m_MotorDroit = new FtcMotor("ramasseur");
 
 
 
     public IntakeSubsystem() {
-    //m_MotorDroit.setInverted(false);
+    m_MotorDroit.setInverted(false);
     }
 
 
     public void IntakeDemarrer() {
-        //m_MotorDroit.set(1);
+        m_MotorDroit.set(1);
     }
 
     public void intakeArreter(){
-       // m_MotorDroit.stopMotor();
+        m_MotorDroit.stopMotor();
     }
 
     @Override
