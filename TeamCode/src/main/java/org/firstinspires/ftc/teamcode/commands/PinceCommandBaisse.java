@@ -31,15 +31,16 @@ public class PinceCommandBaisse extends Command{
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-       pos += mXboxControler.getLeftY() / 110;
-       mPinceSubsystem.ModifInclinaison(pos);
-       if (pos >= Constants.ConstantsPince.etenduePince) {
-           pos = Constants.ConstantsPince.etenduePince;
-       }
-       if (pos <= 0) {
-            pos = 0;
-       }
+        double joy = mXboxControler.getRightTriggerAxis() - mXboxControler.getLeftTriggerAxis();
+        pos += joy / 110;
+        if (pos >= Constants.ConstantsPince.ouvreMax) {
+           pos = Constants.ConstantsPince.ouvreMax;
+        }
+        if (pos <= Constants.ConstantsPince.ouvreMin) {
+            pos = Constants.ConstantsPince.ouvreMin;
+        }
         DriverStationJNI.getTelemetry().addData("pos", pos);
+        mPinceSubsystem.ModifInclinaison(pos / 2);
     }
 
 

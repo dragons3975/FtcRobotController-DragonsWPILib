@@ -42,13 +42,14 @@ public class PinceSubsystem extends Subsystem {
     }
 
     public void Ferme() {
-        mMotorPinceG.setPosition(0);
-        mMotorPinceD.setPosition(Constants.ConstantsPince.ouvreMax);
+        mMotorPinceG.setPosition(Constants.ConstantsPince.etenduePince);
+        mMotorPinceD.setPosition(0);
+
     }
 
     public void Ouvre() {
-        mMotorPinceG.setPosition(Constants.ConstantsPince.ouvreMax);
-        mMotorPinceD.setPosition(0);
+        mMotorPinceG.setPosition(0);
+        mMotorPinceD.setPosition(Constants.ConstantsPince.etenduePince);
     }
 
     public void Toggle(){

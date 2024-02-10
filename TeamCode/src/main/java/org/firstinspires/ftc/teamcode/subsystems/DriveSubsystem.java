@@ -26,6 +26,10 @@ public class DriveSubsystem extends Subsystem {
 
     private double total = 0;
 
+    private boolean pidActif = false;
+
+    private double angleConsigne = 0;
+
     private PIDController mPIDz = new PIDController(Constants.ConstantsDrivePID.kP, Constants.ConstantsDrivePID.kI, Constants.ConstantsDrivePID.kD);
     public DriveSubsystem() {
         m_frontLeftMotor.setInverted(true);
@@ -34,13 +38,17 @@ public class DriveSubsystem extends Subsystem {
 
     @Override
     public void periodic() {
-        /*DriverStationJNI.getTelemetry().addData("distanceX", getDistanceX());
+        DriverStationJNI.getTelemetry().addData("distanceX", getDistanceX());
 
         mAngle = mGyro.getAngle();
         DriverStationJNI.getTelemetry().addData("mGyro angle", mAngle);
-        double consigne = mPIDz.calculate(mAngle, m_zRotation);
-        DriverStationJNI.getTelemetry().addData("consigne", consigne);
-        m_robotDrive.driveCartesian(m_xSpeed, consigne, m_ySpeed);*/
+
+        if (pidActif) {
+            m_zRotation = mPIDz.calculate(mAngle, angleConsigne);
+            DriverStationJNI.getTelemetry().addData("m_zRotation", m_zRotation);
+        }
+
+        m_robotDrive.driveCartesian(m_xSpeed, m_ySpeed, m_zRotation);
     }
 
 
@@ -48,14 +56,23 @@ public class DriveSubsystem extends Subsystem {
         return m_rearLeftMotor.getCurrentPosition() / (8192/(Math.PI * 5.08));
     }
 
-    public void mecanumDrive(double xSpeed, double zRotation, double ySpeed){
+    public void mecanumDrive(double xSpeed, double ySpeed, double zRotation){
         m_xSpeed = xSpeed;
-        m_zRotation += zRotation;
         m_ySpeed = ySpeed;
+        m_zRotation = zRotation;
     }
     public void getFrontLeft() {
         //m_frontLeftMotor.getCurrentPosition();
 
+    }
+
+    public void activerPid() {
+        pidActif = true;
+        angleConsigne = mGyro.getAngle();
+    }
+
+    public void desactiverPid() {
+        pidActif = false;
     }
 
     public void stop () {

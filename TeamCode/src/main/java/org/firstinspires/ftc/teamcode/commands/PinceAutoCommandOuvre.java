@@ -1,26 +1,25 @@
 package org.firstinspires.ftc.teamcode.commands;
 
-import org.firstinspires.ftc.teamcode.subsystems.BrasSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.PinceSubsystem;
 
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class BrasCommandPos2 extends Command{
+public class PinceAutoCommandOuvre extends Command{
 
-    private final BrasSubsystem mBrasSubsystem;
+    private final PinceSubsystem mPinceSubsystem;
 
-    private final double mPos;
 
-    public BrasCommandPos2(BrasSubsystem brasSubsystem, double pos) {
-        mPos = pos;
-        mBrasSubsystem = brasSubsystem;
+    public PinceAutoCommandOuvre(PinceSubsystem pinceSubsystem) {
+        mPinceSubsystem = pinceSubsystem;
 
-        addRequirements();
+        addRequirements(pinceSubsystem);
     }
 
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        mBrasSubsystem.setTarget(mPos);
+        mPinceSubsystem.Ouvre();
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -39,8 +38,6 @@ public class BrasCommandPos2 extends Command{
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        // Commande infinie car la commande sera appellée avec un withTimeout()
-        // donc elle sera interrompue à la fin du timeout
         return true;
     }
 }

@@ -13,12 +13,12 @@ public class DriveAutoCommand extends Command {
 
     private double mYSpeed;
 
-    public DriveAutoCommand(DriveSubsystem driveSubsystem, double x, double z, double y) {
+    public DriveAutoCommand(DriveSubsystem driveSubsystem, double x, double y, double z) {
         mDriveSubsystem = driveSubsystem;
 
         mXSpeed = x;
-        mZRotation = z;
         mYSpeed = y;
+        mZRotation = z;
 
         addRequirements(driveSubsystem);
     }
@@ -26,18 +26,20 @@ public class DriveAutoCommand extends Command {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
+        mDriveSubsystem.activerPid();
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        mDriveSubsystem.mecanumDrive(mXSpeed, mZRotation, mYSpeed);
+        mDriveSubsystem.mecanumDrive(mXSpeed, mYSpeed, mZRotation);
     }
 
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
         mDriveSubsystem.stop();
+        mDriveSubsystem.desactiverPid();
     }
 
     // Returns true when the command should end.
