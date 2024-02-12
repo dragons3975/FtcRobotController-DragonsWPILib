@@ -8,12 +8,14 @@ public class AvanceAutoCommand extends Command {
 
     private final DriveSubsystem mDriveSubsystem;
 
-    private int mXSpeed;
+    private final int mXSpeed, mYspeed, mZrotation;
 
-    public AvanceAutoCommand(DriveSubsystem driveSubsystem, int x) {
+    public AvanceAutoCommand(DriveSubsystem driveSubsystem, int x, int y, int z) {
         mDriveSubsystem = driveSubsystem;
 
         mXSpeed = x;
+        mYspeed = y;
+        mZrotation = z;
 
         addRequirements(driveSubsystem);
     }
@@ -26,7 +28,7 @@ public class AvanceAutoCommand extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        //mDriveSubsystem.MecanumDrive(mXSpeed, 0, );
+        mDriveSubsystem.mecanumDrive(mXSpeed, mYspeed, mZrotation);
     }
 
     // Called once the command ends or is interrupted.

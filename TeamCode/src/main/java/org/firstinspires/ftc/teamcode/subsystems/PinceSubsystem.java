@@ -12,11 +12,13 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 
 public class PinceSubsystem extends Subsystem {
 
-    private final FtcServo mMotorPince = new FtcServo("pinceRotation");
+    private final FtcServo mMotorPince = new FtcServo("pince test");
 
-    private final FtcServo mMotorPinceG = new FtcServo("pinceGauche");
+    //private final FtcServo mMotorPince = new FtcServo("pinceRotation");
 
-    private final FtcServo mMotorPinceD = new FtcServo("pinceDroite");
+    //private final FtcServo mMotorPinceG = new FtcServo("pinceGauche");
+
+    //private final FtcServo mMotorPinceD = new FtcServo("pinceDroite");
     private boolean mOuverte = true;
 
     private double pos = 0;
@@ -25,39 +27,28 @@ public class PinceSubsystem extends Subsystem {
     }
 
 
-    public void ModifInclinaison(double pos) {
-        mMotorPince.setPosition(pos);
-    }
+    //public void ModifInclinaison(double pos) {
+    //    mMotorPince.setPosition(pos);
+    //}
 
-
-    public void Ouvrir() {
-        //mMotorPince.setposition (0.5,ouvert);
-        mOuverte = true;
-
-    }
-
-    public void Fermer() {
-        //mMotorPince.setPosition(-0.5, fermer);
-        mOuverte = false;
-    }
 
     public void Ferme() {
-        mMotorPinceG.setPosition(Constants.ConstantsPince.etenduePince);
-        mMotorPinceD.setPosition(0);
+        mMotorPince.setPosition(Constants.ConstantsPince.ouvreMin);
 
     }
 
     public void Ouvre() {
-        mMotorPinceG.setPosition(0);
-        mMotorPinceD.setPosition(Constants.ConstantsPince.etenduePince);
+        mMotorPince.setPosition(Constants.ConstantsPince.ouvreMax);
     }
 
     public void Toggle(){
         if (mOuverte) {
-            //Fermer();
+            mOuverte = false;
+            Ferme();
         }
         else {
-            //Ouvrir();
+            mOuverte = true;
+            Ouvre();
         }
     }
 

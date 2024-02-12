@@ -12,8 +12,8 @@ import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 
 public class DriveSubsystem extends Subsystem {
-    private final FtcMotorSimple m_frontLeftMotor = new FtcMotorSimple("fleft");
-    private final FtcMotorSimple m_frontRightMotor = new FtcMotorSimple("fright");
+    private final FtcMotor m_frontLeftMotor = new FtcMotor("fleft");
+    private final FtcMotor m_frontRightMotor = new FtcMotor("fright");
     private final FtcMotor m_rearLeftMotor = new FtcMotor("rleft");
     private final FtcMotor m_rearRightMotor = new FtcMotor("rright");
     private final MecanumDrive m_robotDrive = new MecanumDrive(m_frontLeftMotor, m_frontRightMotor,m_rearLeftMotor, m_rearRightMotor);
@@ -49,11 +49,24 @@ public class DriveSubsystem extends Subsystem {
         }
 
         m_robotDrive.driveCartesian(m_xSpeed, m_ySpeed, m_zRotation);
+
+        DriverStationJNI.getTelemetry().addData("y", getY());
+        DriverStationJNI.getTelemetry().addData("x", getX());
+
+
+    }
+
+    public double getY() {
+        return (m_frontRightMotor.getCurrentPosition() + m_rearLeftMotor.getCurrentPosition()) - (m_frontLeftMotor.getCurrentPosition() + m_rearRightMotor.getCurrentPosition()) / 4.0 / Constants.ConstantsDrive.distanceCalcul;
+    }
+
+    public double getX() {
+        return (m_frontRightMotor.getCurrentPosition() + m_rearLeftMotor.getCurrentPosition()) + (m_frontLeftMotor.getCurrentPosition() + m_rearRightMotor.getCurrentPosition()) / 4.0 / Constants.ConstantsDrive.distanceCalcul;
     }
 
 
     public double getDistanceX() {
-        return m_rearLeftMotor.getCurrentPosition() / (8192/(Math.PI * 5.08));
+        return m_rearLeftMotor.getCurrentPosition() / (Constants.ConstantsDrive.tacho1Tour/(Math.PI * Constants.ConstantsDrive.diametre));
     }
 
     public void mecanumDrive(double xSpeed, double ySpeed, double zRotation){

@@ -1,19 +1,16 @@
 package org.firstinspires.ftc.teamcode.commands;
 
+
 import org.firstinspires.ftc.teamcode.subsystems.PinceSubsystem;
 
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class PinceCommandFerme extends Command{
+public class PinceCommandToggle extends Command{
 
     private final PinceSubsystem mPinceSubsystem;
 
-    private  final XboxController mXboxControler;
-
-    public PinceCommandFerme(PinceSubsystem pinceSubsystem, XboxController xboxController) {
+    public PinceCommandToggle(PinceSubsystem pinceSubsystem) {
         mPinceSubsystem = pinceSubsystem;
-        mXboxControler = xboxController;
 
         addRequirements(pinceSubsystem);
     }
@@ -21,13 +18,12 @@ public class PinceCommandFerme extends Command{
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        mPinceSubsystem.Ferme();
+        mPinceSubsystem.Toggle();
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-
     }
 
 
@@ -40,7 +36,7 @@ public class PinceCommandFerme extends Command{
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return true;
+        return false;
     }
 }
 

@@ -26,7 +26,7 @@ public class BrasCommandExtention extends Command{
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        mBrasSubsystem.extention(mExt);
+        //mBrasSubsystem.extention(mExt);
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -38,7 +38,7 @@ public class BrasCommandExtention extends Command{
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-        mBrasSubsystem.extention(0);
+        //.extention(0);
 
 
     }

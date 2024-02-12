@@ -21,9 +21,19 @@ public final class Constants {
 
         public static final double etenduePince = 0.3;
 
-        public static final double ouvreMax = 0.5;
+        public static final double ouvreMax = 0.1;
 
-        public static final double ouvreMin = 0.01;
+        public static final double ouvreMin = 0;
+    }
+
+    public static final class ConstantsDrive {
+        public static final double tacho1Tour = 8192.0 / 3.0;
+
+        public static final double diametre = 10;
+
+        public static final double distanceCalcul = (ConstantsDrive.tacho1Tour/(Math.PI * Constants.ConstantsDrive.diametre));
+
+
     }
     
 }
