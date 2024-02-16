@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.commands;
 
 import org.firstinspires.ftc.teamcode.subsystems.PinceSubsystem;
 
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class OuvrePinceCommand extends Command{
