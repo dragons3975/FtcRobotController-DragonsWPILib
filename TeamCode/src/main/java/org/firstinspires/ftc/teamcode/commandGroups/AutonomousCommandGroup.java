@@ -21,13 +21,13 @@ public class AutonomousCommandGroup extends SequentialCommandGroup {
         ParallelRaceGroup avancer2sec = new DriveAutoCommand(driveSubsystem, 0, 1, 0).withTimeout(2.5);
 
         ParallelRaceGroup tourner1sec = new DriveAutoCommand(driveSubsystem, 0, 0, 1).withTimeout(1);
-        ParallelRaceGroup reculer4sec = new DriveAutoCommand(driveSubsystem, 0, -1, 0).withTimeout(4);
+        ParallelRaceGroup reculer1sec = new DriveAutoCommand(driveSubsystem, 0, -1, 0).withTimeout(1);
         FermePinceCommand ferme = new FermePinceCommand(pinceSubsystem);
         OuvrePinceCommand ouvre = new OuvrePinceCommand(pinceSubsystem);
         WaitCommand attendre1sec = new WaitCommand(1);
         WaitCommand attendre2sec = new WaitCommand(1);
-        ParallelRaceGroup allerDroite5sec = new DriveAutoCommand(driveSubsystem, 1, 0, 0).withTimeout(5);
-        ParallelRaceGroup allerDroite3sec = new DriveAutoCommand(driveSubsystem, 1, 0, 0).withTimeout(3);
+        ParallelRaceGroup allerDroite4sec = new DriveAutoCommand(driveSubsystem, 1, 0, 0).withTimeout(4);
+        ParallelRaceGroup allerDroite2sec = new DriveAutoCommand(driveSubsystem, 1, 0, 0).withTimeout(2);
 
         GoToPositionBrasCommand goTo200 = new GoToPositionBrasCommand(brasSubsystem, 200);
 
@@ -36,13 +36,13 @@ public class AutonomousCommandGroup extends SequentialCommandGroup {
                 attendre1sec,
                 avancer4sec,
                 attendre2sec,
-                allerDroite5sec,
+                allerDroite4sec,
                 tourner1sec,
                 goTo200,
-                allerDroite3sec,
+                allerDroite2sec,
                 avancer2sec,
                 ouvre,
-                reculer4sec
+                reculer1sec
         );
     }
 

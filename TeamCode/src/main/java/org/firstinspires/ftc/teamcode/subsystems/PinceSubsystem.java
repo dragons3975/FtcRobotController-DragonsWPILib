@@ -15,7 +15,7 @@ public class PinceSubsystem extends Subsystem {
 
     public void ouvre() {
         mPince1.setPosition(0.3);
-        mPince2.setPosition(0);
+        mPince2.setPosition(0);-
     }
     public void ferme() {
         mPince1.setPosition(0);
