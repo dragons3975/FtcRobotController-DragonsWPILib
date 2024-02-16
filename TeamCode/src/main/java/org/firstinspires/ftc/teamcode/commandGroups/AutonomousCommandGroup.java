@@ -22,8 +22,8 @@ public class AutonomousCommandGroup extends SequentialCommandGroup {
 
         ParallelRaceGroup tourner1sec = new DriveAutoCommand(driveSubsystem, 0, 0, 1).withTimeout(1);
         ParallelRaceGroup reculer4sec = new DriveAutoCommand(driveSubsystem, 0, -1, 0).withTimeout(4);
-        FermePinceCommand ferme = new FermePinceCommand(pinceSubsystem, mXboxController2);
-        OuvrePinceCommand ouvre = new OuvrePinceCommand(pinceSubsystem, mXboxController2);
+        FermePinceCommand ferme = new FermePinceCommand(pinceSubsystem);
+        OuvrePinceCommand ouvre = new OuvrePinceCommand(pinceSubsystem);
         WaitCommand attendre1sec = new WaitCommand(1);
         WaitCommand attendre2sec = new WaitCommand(1);
         ParallelRaceGroup allerDroite5sec = new DriveAutoCommand(driveSubsystem, 1, 0, 0).withTimeout(5);
