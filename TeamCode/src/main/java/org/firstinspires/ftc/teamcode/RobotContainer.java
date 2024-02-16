@@ -43,15 +43,15 @@ public class RobotContainer {
     }
 
     private void configureButtonBindings() {
-        JoystickButton buttonX = new JoystickButton(mXboxController, XboxController.Button.kX.value);
+        JoystickButton buttonX = new JoystickButton(mXboxController2, XboxController.Button.kX.value);
         buttonX.onTrue(mOuvrePinceCommand);
-        JoystickButton buttonB = new JoystickButton(mXboxController, XboxController.Button.kB.value);
+        JoystickButton buttonB = new JoystickButton(mXboxController2, XboxController.Button.kB.value);
         buttonB.onTrue(mFermePinceCommand);
 
-        JoystickButton buttonflechehaut = new JoystickButton(mXboxController, XboxController.Button.kUp.value);
+        JoystickButton buttonflechehaut = new JoystickButton(mXboxController2, XboxController.Button.kUp.value);
         buttonflechehaut.whileTrue(mMonteBrasCommand);
 
-        JoystickButton buttonflechebas = new JoystickButton(mXboxController, XboxController.Button.kDown.value);
+        JoystickButton buttonflechebas = new JoystickButton(mXboxController2, XboxController.Button.kDown.value);
         buttonflechebas.whileTrue(mDescendBrasCommand);
     }
 
