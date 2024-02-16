@@ -4,26 +4,17 @@ import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
 
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class AvancerCommand extends Command {
+public class TourneAutoCommand extends Command {
 
     private final DriveSubsystem mDriveSubsystem;
 
-    private double mXSpeed;
-    private double mZRotation;
+    private final int mRotation;
 
-    private double mDistance;
 
-    private double mYSpeed;
-
-    private double distInit = 0;
-
-    public AvancerCommand(DriveSubsystem driveSubsystem, double x, double z, double y, double distance) {
+    public TourneAutoCommand(DriveSubsystem driveSubsystem, int rotation) {
         mDriveSubsystem = driveSubsystem;
-        mDistance = distance;
 
-        mXSpeed = x;
-        mZRotation = z;
-        mYSpeed = y;
+        mRotation = rotation;
 
         addRequirements(driveSubsystem);
     }
@@ -31,24 +22,22 @@ public class AvancerCommand extends Command {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        distInit = mDriveSubsystem.getDistanceX();
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        mDriveSubsystem.mecanumDrive(mXSpeed, mZRotation, mYSpeed);
+        mDriveSubsystem.mecanumDrive(0, 0, mRotation);
     }
 
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-        mDriveSubsystem.stop();
     }
 
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return (mDriveSubsystem.getDistanceX() >= mDistance + distInit);
+        return mDriveSubsystem.isAtSetPoint();
     }
 }

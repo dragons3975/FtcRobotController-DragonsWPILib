@@ -1,26 +1,34 @@
 package org.firstinspires.ftc.teamcode.commandGroups;
 
 import org.firstinspires.ftc.teamcode.commands.AvanceAutoCommand;
-import org.firstinspires.ftc.teamcode.commands.DriveAutoCommand;
+import org.firstinspires.ftc.teamcode.commands.PinceAutoOuvreCommand;
+import org.firstinspires.ftc.teamcode.commands.PinceCommandToggle;
+import org.firstinspires.ftc.teamcode.commands.RamasseAutoCommand;
+import org.firstinspires.ftc.teamcode.commands.TasseAutoCommand;
+import org.firstinspires.ftc.teamcode.commands.TourneAutoCommand;
 import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.PinceSubsystem;
 
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 public class AutonomousCommandGroup extends SequentialCommandGroup {
 
-    public AutonomousCommandGroup(DriveSubsystem driveSubsystem) {
+    public AutonomousCommandGroup(DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem, PinceSubsystem pinceSubsystem) {
 
         //ParallelRaceGroup calibration = new CalibreBrasCommand(brasSubsystem).withTimeout(0);
-        ParallelRaceGroup avance = new AvanceAutoCommand(driveSubsystem, 0, 1, 0).withTimeout(3);
-        ParallelRaceGroup tasse = new AvanceAutoCommand(driveSubsystem, 1, 0, 0).withTimeout(3);
-        ParallelRaceGroup tourne = new AvanceAutoCommand(driveSubsystem, 0, 0, 1).withTimeout(3);
-
-
+        AvanceAutoCommand avancer = new AvanceAutoCommand(driveSubsystem, 0.5, 100);
+        TasseAutoCommand tasser = new TasseAutoCommand(driveSubsystem, 0.5, 100);
+        TourneAutoCommand tourner = new TourneAutoCommand(driveSubsystem, 30);
+        ParallelRaceGroup ramasse = new RamasseAutoCommand(intakeSubsystem).withTimeout(2);
+        PinceAutoOuvreCommand ouvre = new PinceAutoOuvreCommand(pinceSubsystem);
         addCommands(
-                avance,
-                tasse,
-                tourne
+                avancer,
+                tasser,
+                tourner,
+                ramasse,
+                ouvre
                 //calibration
                 );
     }

@@ -11,15 +11,14 @@ public class BrasSubsystem extends Subsystem {
 
     private final FtcTouchSensor mTouchSensor = new FtcTouchSensor("TouchSensor");
 
-    //private final FtcMotor m_MotorBras = new FtcMotor("bras");
+    private final FtcMotor m_MotorBras = new FtcMotor("bras");
+    private final FtcMotor m_MoteurExtention = new FtcMotor("extention");
 
-    //private final FtcMotor m_MoteurExtention = new FtcMotor("extention");
-
-    private final PIDController m_zPID = new PIDController(0.005, 0, 0);
+    private final PIDController m_zPID = new PIDController(0.01, 0, 0);
 
     private double m_posTarget = 0;
 
-    private boolean pidActive = false;
+    private boolean pidActive = true;
 
     private double init = 0;
 
@@ -30,10 +29,10 @@ public class BrasSubsystem extends Subsystem {
     @Override
     public void periodic() {
         if (pidActive) {
-            //double consigne = m_zPID.calculate(m_MotorBras.getCurrentPosition(), m_posTarget);
-            //DriverStationJNI.getTelemetry().addData("currentPosition", m_MotorBras.getCurrentPosition());
+            double consigne = m_zPID.calculate(m_MotorBras.getCurrentPosition(), m_posTarget);
+            DriverStationJNI.getTelemetry().addData("currentPosition", m_MotorBras.getCurrentPosition());
             DriverStationJNI.getTelemetry().addData("target", m_posTarget);
-            //m_MotorBras.set(consigne);
+            m_MotorBras.set(consigne);
         }
     }
 
@@ -43,22 +42,22 @@ public class BrasSubsystem extends Subsystem {
     }
 
     public void setTarget(double target) {
-        //m_MotorBras.setInverted(true);
+        m_MotorBras.setInverted(true);
         m_posTarget = init + target;
     }
 
 
     public void calibreActif() {
         pidActive = false;
-        //m_MotorBras.set(-0.01);
+        m_MotorBras.set(-0.01);
     }
 
-    //public void extention(double ex) {
-        //m_MoteurExtention.set(ex);
-    //}
+    public void extention(double ex) {
+        m_MoteurExtention.set(ex);
+    }
 
     public void calibreDesactif() {
-        //init = m_MotorBras.getCurrentPosition();
+        init = m_MotorBras.getCurrentPosition();
         setTarget(0);
         pidActive = true;
     }

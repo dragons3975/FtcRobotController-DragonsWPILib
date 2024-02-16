@@ -3,9 +3,13 @@ package org.firstinspires.ftc.teamcode;
 import org.firstinspires.ftc.teamcode.commandGroups.AutonomousCommandGroup;
 import org.firstinspires.ftc.teamcode.commands.BrasCommandPos1;
 import org.firstinspires.ftc.teamcode.commands.DriveCommand;
+import org.firstinspires.ftc.teamcode.commands.GrimpeurFermeCommand;
+import org.firstinspires.ftc.teamcode.commands.GrimpeurOuvreCommand;
 import org.firstinspires.ftc.teamcode.commands.IntakeCommand;
 import org.firstinspires.ftc.teamcode.commands.PinceCommandToggle;
+import org.firstinspires.ftc.teamcode.commands.TourneAutoCommand;
 import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.GrimpeurSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem;
 import org.firstinspires.ftc.teamcode.commands.BrasCommand;
 import org.firstinspires.ftc.teamcode.subsystems.BrasSubsystem;
@@ -42,32 +46,38 @@ public class RobotContainer {
 
     private final PinceCommandToggle mPinceCommandToggle = new PinceCommandToggle(mPinceSubsystem);
 
-    private final AutonomousCommandGroup mAutonomousCommandGroup = new AutonomousCommandGroup(mDriveSubsystem);
+    private final GrimpeurSubsystem mGrimpeurSubsystem = new GrimpeurSubsystem();
 
+    private final GrimpeurOuvreCommand mGrimpeurOuvreCommand = new GrimpeurOuvreCommand(mGrimpeurSubsystem);
+
+    private final GrimpeurFermeCommand mGrimpeurFermeCommand = new GrimpeurFermeCommand(mGrimpeurSubsystem);
+
+    private final AutonomousCommandGroup mAutonomousCommandGroup = new AutonomousCommandGroup(mDriveSubsystem, mIntakeSubsystem, mPinceSubsystem);
     public RobotContainer() {
         configureButtonBindings();
         configureDefaultCommands();
     }
 
     private void configureButtonBindings() {
-        JoystickButton buttonX = new JoystickButton(mXboxController2, XboxController.Button.kX.value);
-        buttonX.whileTrue(mBrasCommandPos1);
-
-        JoystickButton buttonY = new JoystickButton(mXboxController2, XboxController.Button.kY.value);
-        buttonY.whileTrue(mBrasCommandPos2);
-
-        JoystickButton buttonA = new JoystickButton(mXboxController2, XboxController.Button.kA.value);
-        buttonA.onTrue(mCalibreBrasCommand);
 
         JoystickButton buttonB = new JoystickButton(mXboxController, XboxController.Button.kB.value);
         buttonB.whileTrue(mIntakeCommand);
 
+        JoystickButton buttonX = new JoystickButton(mXboxController, XboxController.Button.kX.value);
+        buttonX.onTrue(mGrimpeurOuvreCommand);
+
+        JoystickButton buttonY = new JoystickButton(mXboxController, XboxController.Button.kY.value);
+        buttonY.onTrue(mGrimpeurFermeCommand);
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        //JoystickButton buttonA2 = new JoystickButton(mXboxController2, XboxController.Button.kA.value);
-        //buttonA2.onTrue(mPinceCommandToggle0);
+        JoystickButton buttonX2 = new JoystickButton(mXboxController2, XboxController.Button.kX.value);
+        buttonX2.whileTrue(mBrasCommandPos1);
 
         JoystickButton buttonB2 = new JoystickButton(mXboxController2, XboxController.Button.kB.value);
         buttonB2.onTrue(mPinceCommandToggle);
+
+        JoystickButton buttonY2 = new JoystickButton(mXboxController2, XboxController.Button.kY.value);
+        buttonY2.whileTrue(mBrasCommandPos2);
 
 
 

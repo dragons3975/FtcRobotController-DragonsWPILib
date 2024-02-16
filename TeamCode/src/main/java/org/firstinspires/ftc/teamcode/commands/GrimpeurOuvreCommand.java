@@ -1,33 +1,30 @@
 package org.firstinspires.ftc.teamcode.commands;
 
+
+import org.firstinspires.ftc.teamcode.subsystems.GrimpeurSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.PinceSubsystem;
 
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class PinceCommandOuvre extends Command{
+public class GrimpeurOuvreCommand extends Command{
 
-    private final PinceSubsystem mPinceSubsystem;
+    private final GrimpeurSubsystem mGrimpeurSubsystem;
 
-    private  final XboxController mXboxControler;
+    public GrimpeurOuvreCommand(GrimpeurSubsystem grimpeurSubsystem) {
+        mGrimpeurSubsystem = grimpeurSubsystem;
 
-    public PinceCommandOuvre(PinceSubsystem pinceSubsystem, XboxController xboxController) {
-        mPinceSubsystem = pinceSubsystem;
-        mXboxControler = xboxController;
-
-        addRequirements(pinceSubsystem);
+        addRequirements(grimpeurSubsystem);
     }
 
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        mPinceSubsystem.Ouvre();
+        mGrimpeurSubsystem.Ouvre();
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-
     }
 
 
@@ -43,4 +40,3 @@ public class PinceCommandOuvre extends Command{
         return true;
     }
 }
-

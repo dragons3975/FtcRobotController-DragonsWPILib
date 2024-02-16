@@ -21,7 +21,7 @@ public final class Constants {
 
         public static final double etenduePince = 0.3;
 
-        public static final double ouvreMax = 0.1;
+        public static final double ouvreMax = 1;
 
         public static final double ouvreMin = 0;
     }

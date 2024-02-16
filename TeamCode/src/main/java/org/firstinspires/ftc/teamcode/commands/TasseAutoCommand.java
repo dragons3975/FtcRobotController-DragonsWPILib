@@ -2,23 +2,24 @@ package org.firstinspires.ftc.teamcode.commands;
 
 import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
 
+import java.util.Objects;
+
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class DriveAutoCommand extends Command {
+public class TasseAutoCommand extends Command {
 
     private final DriveSubsystem mDriveSubsystem;
 
-    private double mXSpeed;
-    private double mZRotation;
+    private final double mYSpeed, mDistance;
+    private double DistanceInitiale = 0;
 
-    private double mYSpeed;
-
-    public DriveAutoCommand(DriveSubsystem driveSubsystem, double x, double y, double z) {
+    public TasseAutoCommand(DriveSubsystem driveSubsystem, double y, int distance) {
         mDriveSubsystem = driveSubsystem;
 
-        mXSpeed = x;
+        mDistance = distance;
+
         mYSpeed = y;
-        mZRotation = z;
 
         addRequirements(driveSubsystem);
     }
@@ -26,27 +27,25 @@ public class DriveAutoCommand extends Command {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        mDriveSubsystem.activerPid();
+        DistanceInitiale = mDriveSubsystem.getY();
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        mDriveSubsystem.mecanumDrive(mXSpeed, mYSpeed, mZRotation);
+        mDriveSubsystem.mecanumDrive(0, mYSpeed, 0);
     }
 
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
         mDriveSubsystem.stop();
-        mDriveSubsystem.desactiverPid();
     }
 
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        // Commande infinie car la commande sera appellée avec un withTimeout()
-        // donc elle sera interrompue à la fin du timeout
-        return false;
+        return (mYSpeed > 0 && mDriveSubsystem.getY() > DistanceInitiale + mDistance) || (mYSpeed < 0 && mDriveSubsystem.getY() < DistanceInitiale - mDistance);
     }
+
 }

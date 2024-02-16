@@ -5,11 +5,11 @@ import org.firstinspires.ftc.teamcode.subsystems.PinceSubsystem;
 
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class PinceCommandToggle extends Command{
+public class PinceAutoOuvreCommand extends Command{
 
     private final PinceSubsystem mPinceSubsystem;
 
-    public PinceCommandToggle(PinceSubsystem pinceSubsystem) {
+    public PinceAutoOuvreCommand(PinceSubsystem pinceSubsystem) {
         mPinceSubsystem = pinceSubsystem;
 
         addRequirements(pinceSubsystem);
@@ -18,7 +18,7 @@ public class PinceCommandToggle extends Command{
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        mPinceSubsystem.Toggle();
+        mPinceSubsystem.Ouvre();
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -39,4 +39,3 @@ public class PinceCommandToggle extends Command{
         return true;
     }
 }
-
