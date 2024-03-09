@@ -9,8 +9,6 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 
 public class BrasSubsystem extends Subsystem {
 
-    private final FtcTouchSensor mTouchSensor = new FtcTouchSensor("TouchSensor");
-
     private final FtcMotor m_MotorBras = new FtcMotor("bras");
     private final FtcMotor mMotorBras2 = new FtcMotor("bras2");
     private final FtcMotor m_MoteurExtention = new FtcMotor("extention");
