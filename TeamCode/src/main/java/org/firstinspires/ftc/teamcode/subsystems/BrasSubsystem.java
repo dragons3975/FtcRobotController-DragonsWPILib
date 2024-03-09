@@ -12,6 +12,7 @@ public class BrasSubsystem extends Subsystem {
     private final FtcTouchSensor mTouchSensor = new FtcTouchSensor("TouchSensor");
 
     private final FtcMotor m_MotorBras = new FtcMotor("bras");
+    private final FtcMotor mMotorBras2 = new FtcMotor("bras2");
     private final FtcMotor m_MoteurExtention = new FtcMotor("extention");
 
     private final PIDController m_zPID = new PIDController(0.01, 0, 0);
@@ -23,7 +24,10 @@ public class BrasSubsystem extends Subsystem {
     private double init = 0;
 
     public BrasSubsystem() {
+
         m_zPID.setTolerance(2);
+        mMotorBras2.setInverted(true);
+
     }
 
     @Override
@@ -33,7 +37,9 @@ public class BrasSubsystem extends Subsystem {
             DriverStationJNI.getTelemetry().addData("currentPosition", m_MotorBras.getCurrentPosition());
             DriverStationJNI.getTelemetry().addData("target", m_posTarget);
             m_MotorBras.set(consigne);
+            mMotorBras2.set(consigne);
         }
+
     }
 
 

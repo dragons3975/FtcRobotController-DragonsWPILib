@@ -13,9 +13,10 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 
 public class GrimpeurSubsystem extends Subsystem {
 
-    private final FtcServo mMotorLeft = new FtcServo("grimpeur left");
+    //private final FtcServo mMotorLeft = new FtcServo("grimpeur left");
 
-    private final FtcServo mMotorRight = new FtcServo("grimpeur right");
+    //private final FtcServo mMotorRight = new FtcServo("grimpeur right");
+
 
     public GrimpeurSubsystem() {
     }
@@ -30,13 +31,13 @@ public class GrimpeurSubsystem extends Subsystem {
 
 
     public void Ferme() {
-        mMotorLeft.setPosition(0);
-        mMotorRight.setPosition(0);
+        //mMotorLeft.setPosition(0);
+        //mMotorRight.setPosition(0);
     }
 
     public void Ouvre() {
-        mMotorLeft.setPosition(0.5);
-        mMotorRight.setPosition(0.5);
+        //mMotorLeft.setPosition(0.5);
+        //mMotorRight.setPosition(0.5);
     }
 
 }
