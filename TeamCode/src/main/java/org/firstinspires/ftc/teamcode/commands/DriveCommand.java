@@ -28,8 +28,8 @@ public class DriveCommand extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        mX = mXboxController.getLeftY();
-        mY = mXboxController.getLeftX();
+        mX = mXboxController.getLeftX();
+        mY = -mXboxController.getLeftY();
         mZ = mXboxController.getRightX();
 
         mDriveSubsystem.mecanumDrive(mX, mY, mZ);

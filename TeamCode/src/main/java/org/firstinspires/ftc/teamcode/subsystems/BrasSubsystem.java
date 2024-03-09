@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.subsystems;
 
 
 import dragons.rev.FtcMotor;
+import dragons.rev.FtcServo;
 import dragons.rev.FtcTouchSensor;
 import edu.wpi.first.hal.DriverStationJNI;
 import edu.wpi.first.math.controller.PIDController;
@@ -9,64 +10,52 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 
 public class BrasSubsystem extends Subsystem {
 
-    private final FtcTouchSensor mTouchSensor = new FtcTouchSensor("TouchSensor");
 
-    private final FtcMotor m_MotorBras = new FtcMotor("bras");
-    private final FtcMotor mMotorBras2 = new FtcMotor("bras2");
-    private final FtcMotor m_MoteurExtention = new FtcMotor("extention");
+    private final FtcMotor m_MotorBras = new FtcMotor("motor0");
+    private final FtcServo m_ServoRotationPince = new FtcServo("servo1");
+    private final FtcServo m_ServoAvantBras = new FtcServo("servo2");
 
-    private final PIDController m_zPID = new PIDController(0.01, 0, 0);
-
-    private double m_posTarget = 0;
-
-    private boolean pidActive = true;
-
-    private double init = 0;
+    private double m_PosRotationPince = 0;
+    private double m_PosAvantBras = 0.4;
+    private int m_PosBrasMoteur;
 
     public BrasSubsystem() {
-
-        m_zPID.setTolerance(2);
-        mMotorBras2.setInverted(true);
-
+        m_PosBrasMoteur = m_MotorBras.getCurrentPosition();
     }
 
     @Override
     public void periodic() {
-        if (pidActive) {
-            double consigne = m_zPID.calculate(m_MotorBras.getCurrentPosition(), m_posTarget);
-            DriverStationJNI.getTelemetry().addData("currentPosition", m_MotorBras.getCurrentPosition());
-            DriverStationJNI.getTelemetry().addData("target", m_posTarget);
-            m_MotorBras.set(consigne);
-            mMotorBras2.set(consigne);
+        DriverStationJNI.getTelemetry().addData("Encodeur bras", m_MotorBras.getCurrentPosition());
+        DriverStationJNI.getTelemetry().addData("Variable Moteur", m_PosBrasMoteur);
+        DriverStationJNI.getTelemetry().addData("Variable PosAvantBras", m_PosAvantBras);
+        DriverStationJNI.getTelemetry().addData("Variable PosRotationPince", m_PosRotationPince);
+        m_MotorBras.setTargetPosition(m_PosBrasMoteur);
+        m_ServoRotationPince.setPosition(m_PosRotationPince);
+        m_ServoAvantBras.setPosition(m_PosAvantBras);
+    }
+
+    public void armPosition(int position){
+        if (position == 0) { //TODO mettre les positions aux moteurs
+
         }
-
+    }
+    public void armPosIncrement(int motorBras, double servoRotationPince, double servoAvantBras){
+        m_PosBrasMoteur += motorBras;
+        m_PosAvantBras += servoAvantBras;
+        m_PosRotationPince += servoRotationPince;
+    }
+    public void armGoTo(int motorBras, double servoRotationPince, double servoAvantBras){
+        if (motorBras != -1){
+            m_PosBrasMoteur = motorBras;
+        }
+        if (servoAvantBras != -1){
+            m_PosAvantBras = servoAvantBras;
+        }
+        if (servoRotationPince != -1){
+            m_PosRotationPince = servoRotationPince;
+        }
     }
 
-
-    public void incrementTarget(double target) {
-        m_posTarget += target;
-    }
-
-    public void setTarget(double target) {
-        m_MotorBras.setInverted(true);
-        m_posTarget = init + target;
-    }
-
-
-    public void calibreActif() {
-        pidActive = false;
-        m_MotorBras.set(-0.01);
-    }
-
-    public void extention(double ex) {
-        m_MoteurExtention.set(ex);
-    }
-
-    public void calibreDesactif() {
-        init = m_MotorBras.getCurrentPosition();
-        setTarget(0);
-        pidActive = true;
-    }
 }
 
 

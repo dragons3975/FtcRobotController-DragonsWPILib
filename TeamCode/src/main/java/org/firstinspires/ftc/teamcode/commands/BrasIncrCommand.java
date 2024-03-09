@@ -1,32 +1,29 @@
 package org.firstinspires.ftc.teamcode.commands;
 
-import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.subsystems.BrasSubsystem;
 
-import edu.wpi.first.hal.DriverStationJNI;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class BrasCommandExtention extends Command{
 
-    private  final BrasSubsystem mBrasSubsystem;
+public class BrasIncrCommand extends Command{
 
-    private  final XboxController mXboxControler;
+    private final BrasSubsystem mBrasSubsystem;
+    private int incrMoteur = 0;
+    double incrAvantBras;
+    double incrRotation;
 
-    private double mExt = 0;
-
-    public BrasCommandExtention(BrasSubsystem brasSubsystem, XboxController xboxController, double ext) {
-        mExt = ext;
+    public BrasIncrCommand(BrasSubsystem brasSubsystem, int _incrMoteur, double _incrAvantBras, double _incrRotation){
         mBrasSubsystem = brasSubsystem;
-        mXboxControler = xboxController;
-
         addRequirements(brasSubsystem);
+        incrMoteur = _incrMoteur;
+        incrAvantBras = _incrAvantBras;
+        incrRotation = _incrRotation;
     }
 
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        //mBrasSubsystem.extention(mExt);
+       mBrasSubsystem.armPosIncrement(incrMoteur,incrRotation,incrAvantBras);
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -38,15 +35,13 @@ public class BrasCommandExtention extends Command{
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-        //.extention(0);
-
 
     }
 
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return false;
+        return true;
     }
 }
 
