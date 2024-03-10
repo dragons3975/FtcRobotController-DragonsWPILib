@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import org.firstinspires.ftc.teamcode.commandGroups.AutonomousCommandGroup;
 import org.firstinspires.ftc.teamcode.commands.BrasIncrCommand;
 import org.firstinspires.ftc.teamcode.commands.DriveCommand;
+import org.firstinspires.ftc.teamcode.commands.PinceCommand;
 import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.BrasSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.PinceSubsystem;
@@ -23,12 +24,13 @@ public class RobotContainer {
 
     private final DriveCommand mDriveCommand = new DriveCommand(mDriveSubsystem, mXboxController);
 
-    private final BrasIncrCommand mIncr1 = new BrasIncrCommand(mBrasSubsystem, 40, 0,0);
-    private final BrasIncrCommand mIncr2 = new BrasIncrCommand(mBrasSubsystem, -40, 0,0);
-    private final BrasIncrCommand mIncr3 = new BrasIncrCommand(mBrasSubsystem, 0, 0.05,0);
-    private final BrasIncrCommand mIncr4 = new BrasIncrCommand(mBrasSubsystem, 0, -0.05,0);
-    private final BrasIncrCommand mIncr5 = new BrasIncrCommand(mBrasSubsystem, 0, 0,0.05);
-    private final BrasIncrCommand mIncr6 = new BrasIncrCommand(mBrasSubsystem, 0, 0,-0.05);
+    private final BrasIncrCommand mIncrBrasPlus = new BrasIncrCommand(mBrasSubsystem, Constants.BrasIncr.Bras, 0,0);
+    private final BrasIncrCommand mIncrBrasMinus = new BrasIncrCommand(mBrasSubsystem, -Constants.BrasIncr.Bras, 0,0);
+    private final BrasIncrCommand mIncrCoudePlus = new BrasIncrCommand(mBrasSubsystem, 0, Constants.BrasIncr.Coude,0);
+    private final BrasIncrCommand mIncrCoudeMinus = new BrasIncrCommand(mBrasSubsystem, 0, -Constants.BrasIncr.Coude,0);
+    private final BrasIncrCommand mIncrRotationPlus = new BrasIncrCommand(mBrasSubsystem, 0, 0,Constants.BrasIncr.Rotation);
+    private final BrasIncrCommand mIncrRotationMinus = new BrasIncrCommand(mBrasSubsystem, 0, 0,-Constants.BrasIncr.Rotation);
+    private final PinceCommand mMovePince = new PinceCommand(mPinceSubsystem);
 
 
 
@@ -43,22 +45,26 @@ public class RobotContainer {
     private void configureButtonBindings() {
 
         JoystickButton buttonB = new JoystickButton(mXboxController, XboxController.Button.kB.value);
-        buttonB.onTrue(mIncr1);
+        buttonB.onTrue(mIncrBrasPlus);
 
         JoystickButton buttonX = new JoystickButton(mXboxController, XboxController.Button.kX.value);
-        buttonX.onTrue(mIncr2);
+        buttonX.onTrue(mIncrBrasMinus);
 
         JoystickButton buttonY = new JoystickButton(mXboxController, XboxController.Button.kY.value);
-        buttonY.onTrue(mIncr3);
+        buttonY.onTrue(mIncrCoudePlus);
 
         JoystickButton buttonA = new JoystickButton(mXboxController, XboxController.Button.kA.value);
-        buttonA.onTrue(mIncr4);
+        buttonA.onTrue(mIncrCoudeMinus);
 
         JoystickButton DpadUp = new JoystickButton(mXboxController, XboxController.Button.kUp.value);
-        DpadUp.onTrue(mIncr5);
+        DpadUp.onTrue(mIncrRotationPlus);
 
         JoystickButton DpadDown = new JoystickButton(mXboxController, XboxController.Button.kDown.value);
-        DpadDown.onTrue(mIncr6);
+        DpadDown.onTrue(mIncrRotationMinus);
+
+        JoystickButton DpadRight = new JoystickButton(mXboxController, XboxController.Button.kRight.value);
+        DpadRight.onTrue(mMovePince);
+
     }
     private void configureDefaultCommands() {
         mDriveSubsystem.setDefaultCommand(mDriveCommand);

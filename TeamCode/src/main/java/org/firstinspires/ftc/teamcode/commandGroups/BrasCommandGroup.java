@@ -12,9 +12,9 @@ public class BrasCommandGroup extends SequentialCommandGroup {
 
 
 
-    public BrasCommandGroup(BrasSubsystem brasSubsystem, int posMoteur, double posAvantBras, double posRotationMain) {
+    public BrasCommandGroup(BrasSubsystem brasSubsystem, int posMoteur, int posCoude, double posRotationMain) {
 
-        BrasPosCommand command1 = new BrasPosCommand(brasSubsystem,posMoteur ,posAvantBras , -1);
+        BrasPosCommand command1 = new BrasPosCommand(brasSubsystem,posMoteur ,posCoude , -1);
         WaitCommand wait = new WaitCommand(3);
         BrasPosCommand command2 = new BrasPosCommand(brasSubsystem,-1  ,-1, posRotationMain);
 

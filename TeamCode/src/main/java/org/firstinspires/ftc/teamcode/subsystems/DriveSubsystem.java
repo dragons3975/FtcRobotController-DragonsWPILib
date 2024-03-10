@@ -10,9 +10,9 @@ import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 
 public class DriveSubsystem extends Subsystem {
-    private final FtcMotor m_frontLeftMotor = new FtcMotor("motor1");
+    private final FtcMotor m_frontLeftMotor = new FtcMotor("motor2");
     private final FtcMotor m_frontRightMotor = new FtcMotor("exMotor0");
-    private final FtcMotor m_rearLeftMotor = new FtcMotor("motor2");
+    private final FtcMotor m_rearLeftMotor = new FtcMotor("motor3");
     private final FtcMotor m_rearRightMotor = new FtcMotor("exMotor1");
     private final MecanumDrive m_robotDrive = new MecanumDrive(m_frontLeftMotor, m_frontRightMotor ,m_rearLeftMotor, m_rearRightMotor);
     private final FtcGyro mGyro = new FtcGyro();

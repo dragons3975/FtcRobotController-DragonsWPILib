@@ -1,30 +1,24 @@
 package org.firstinspires.ftc.teamcode.commands;
 
 import org.firstinspires.ftc.teamcode.subsystems.BrasSubsystem;
-
+import org.firstinspires.ftc.teamcode.subsystems.PinceSubsystem;
 
 import edu.wpi.first.wpilibj2.command.Command;
 
 
-public class BrasIncrCommand extends Command{
+public class PinceCommand extends Command{
 
-    private final BrasSubsystem mBrasSubsystem;
-    private final int incrBras;
-    int incrCoude;
-    double incrRotation;
+    private final PinceSubsystem mPinceSubsystem;
 
-    public BrasIncrCommand(BrasSubsystem brasSubsystem, int _incrBras, int _incrCoude, double _incrRotation){
-        mBrasSubsystem = brasSubsystem;
-        addRequirements(brasSubsystem);
-        incrBras = _incrBras;
-        incrCoude = _incrCoude;
-        incrRotation = _incrRotation;
+    public PinceCommand(PinceSubsystem pinceSubsystem){
+        mPinceSubsystem=pinceSubsystem;
+        addRequirements(pinceSubsystem);
     }
 
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-       mBrasSubsystem.armPosIncrement(incrBras, incrCoude, incrRotation);
+       mPinceSubsystem.ChangeState();
     }
 
     // Called every time the scheduler runs while the command is scheduled.

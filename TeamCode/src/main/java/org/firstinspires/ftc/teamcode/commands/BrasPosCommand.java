@@ -3,28 +3,28 @@ package org.firstinspires.ftc.teamcode.commands;
 import org.firstinspires.ftc.teamcode.subsystems.BrasSubsystem;
 
 import edu.wpi.first.wpilibj2.command.Command;
-
+//TODO REWORK WITH COUDE
 
 public class BrasPosCommand extends Command{
 
     private final BrasSubsystem mBrasSubsystem;
-    private int posMoteur = 0;
-    double posAvantBras;
-    double posRotation;
+    private final int posMoteur;
+    private final int posCoude;
+    private final double posRotation;
 
-    public BrasPosCommand(BrasSubsystem brasSubsystem, int _posMoteur, double _posAvantBras, double _posRotation){
+    public BrasPosCommand(BrasSubsystem brasSubsystem, int _posMoteur, int _poseCoude, double _posRotation){
 
         mBrasSubsystem = brasSubsystem;
         addRequirements(brasSubsystem);
         posMoteur = _posMoteur;
-        posAvantBras = _posAvantBras;
+        posCoude = _poseCoude;
         posRotation = _posRotation;
     }
 
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-       mBrasSubsystem.armGoTo(posMoteur, posRotation, posAvantBras);
+       mBrasSubsystem.armGoTo(posMoteur, posRotation, posCoude);
     }
 
     // Called every time the scheduler runs while the command is scheduled.

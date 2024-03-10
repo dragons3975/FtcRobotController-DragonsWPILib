@@ -3,56 +3,65 @@ package org.firstinspires.ftc.teamcode.subsystems;
 
 import dragons.rev.FtcMotor;
 import dragons.rev.FtcServo;
-import dragons.rev.FtcTouchSensor;
 import edu.wpi.first.hal.DriverStationJNI;
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 
 public class BrasSubsystem extends Subsystem {
 
 
-    private final FtcMotor m_MotorBras = new FtcMotor("motor0");
-    private final FtcServo m_ServoRotationPince = new FtcServo("servo1");
-    private final FtcServo m_ServoAvantBras = new FtcServo("servo2");
+    private final FtcMotor mMotorBras = new FtcMotor("motor0");
+    private final FtcMotor mMotorCoude = new FtcMotor("motor1");
+    private final FtcServo mServoRotationPince = new FtcServo("servo1");
 
-    private double m_PosRotationPince = 0;
-    private double m_PosAvantBras = 0.4;
-    private int m_PosBrasMoteur;
+
+    private double mPosRotationPince = 0.5;
+    private int mPosCoude;
+    private int mPosBrasMoteur;
 
     public BrasSubsystem() {
-        m_PosBrasMoteur = m_MotorBras.getCurrentPosition();
+        mPosBrasMoteur = mMotorBras.getCurrentPosition();
     }
 
     @Override
     public void periodic() {
-        DriverStationJNI.getTelemetry().addData("Encodeur bras", m_MotorBras.getCurrentPosition());
-        DriverStationJNI.getTelemetry().addData("Variable Moteur", m_PosBrasMoteur);
-        DriverStationJNI.getTelemetry().addData("Variable PosAvantBras", m_PosAvantBras);
-        DriverStationJNI.getTelemetry().addData("Variable PosRotationPince", m_PosRotationPince);
-        m_MotorBras.setTargetPosition(m_PosBrasMoteur);
-        m_ServoRotationPince.setPosition(m_PosRotationPince);
-        m_ServoAvantBras.setPosition(m_PosAvantBras);
+        DriverStationJNI.getTelemetry().addData("Encodeur bras", mMotorBras.getCurrentPosition());
+        DriverStationJNI.getTelemetry().addData("Variable Moteur", mPosBrasMoteur);
+        DriverStationJNI.getTelemetry().addData("Encodeur PosCoude", mMotorCoude.getCurrentPosition());
+        DriverStationJNI.getTelemetry().addData("Variable PosCoude", mPosCoude);
+        DriverStationJNI.getTelemetry().addData("Variable PosRotationPince", mPosRotationPince);
+        mMotorBras.setTargetPosition(mPosBrasMoteur);
+        mServoRotationPince.setPosition(mPosRotationPince);
+        mMotorCoude.setTargetPosition(mPosCoude);
     }
 
     public void armPosition(int position){
         if (position == 0) { //TODO mettre les positions aux moteurs
 
         }
-    }
-    public void armPosIncrement(int motorBras, double servoRotationPince, double servoAvantBras){
-        m_PosBrasMoteur += motorBras;
-        m_PosAvantBras += servoAvantBras;
-        m_PosRotationPince += servoRotationPince;
-    }
-    public void armGoTo(int motorBras, double servoRotationPince, double servoAvantBras){
-        if (motorBras != -1){
-            m_PosBrasMoteur = motorBras;
+        if (position == 1) { //TODO mettre les positions aux moteurs
+
         }
-        if (servoAvantBras != -1){
-            m_PosAvantBras = servoAvantBras;
+        if (position == 2) { //TODO mettre les positions aux moteurs
+
+        }
+        if (position == 3) { //TODO mettre les positions aux moteurs
+
+        }
+    }
+    public void armPosIncrement(int motorBras, int motorCoude, double servoRotationPince){
+        mPosBrasMoteur += motorBras;
+        mPosCoude += motorCoude;
+        mPosRotationPince += servoRotationPince;
+    }
+    public void armGoTo(int motorBras, double servoRotationPince, int motorCoude){
+        if (motorBras != -1){
+            mPosBrasMoteur = motorBras;
+        }
+        if (motorCoude != -1){
+            mPosCoude = motorCoude;
         }
         if (servoRotationPince != -1){
-            m_PosRotationPince = servoRotationPince;
+            mPosRotationPince = servoRotationPince;
         }
     }
 
