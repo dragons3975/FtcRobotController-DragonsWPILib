@@ -29,9 +29,10 @@ public class BrasSubsystem extends Subsystem {
         DriverStationJNI.getTelemetry().addData("Encodeur PosCoude", mMotorCoude.getCurrentPosition());
         DriverStationJNI.getTelemetry().addData("Variable PosCoude", mPosCoude);
         DriverStationJNI.getTelemetry().addData("Variable PosRotationPince", mPosRotationPince);
-        mMotorBras.setTargetPosition(mPosBrasMoteur);
+        mMotorBras.setTargetPosition(mPosBrasMoteur, 0.25);
+        mMotorCoude.setTargetPosition(mPosCoude, 0.25);
         mServoRotationPince.setPosition(mPosRotationPince);
-        mMotorCoude.setTargetPosition(mPosCoude);
+
     }
 
     public void armPosition(int position){

@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import org.firstinspires.ftc.teamcode.commandGroups.AutonomousCommandGroup;
+import org.firstinspires.ftc.teamcode.commandGroups.LeverBrasCommandGroup;
 import org.firstinspires.ftc.teamcode.commands.BrasIncrCommand;
 import org.firstinspires.ftc.teamcode.commands.DriveCommand;
 import org.firstinspires.ftc.teamcode.commands.PinceCommand;
@@ -14,16 +15,16 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 public class RobotContainer {
     private final XboxController mXboxController = new XboxController(Constants.OIConstants.kDriverControllerPort);
-    //private final XboxController mXboxController2 = new XboxController(Constants.OIConstants.kDriverControllerPort2);
+    private final XboxController mXboxController2 = new XboxController(Constants.OIConstants.kDriverControllerPort2);
 
+    //Subsytems
     private final DriveSubsystem mDriveSubsystem = new DriveSubsystem();
-
     private final  PinceSubsystem mPinceSubsystem = new PinceSubsystem();
-
     private final BrasSubsystem mBrasSubsystem = new BrasSubsystem();
-
     private final DriveCommand mDriveCommand = new DriveCommand(mDriveSubsystem, mXboxController);
 
+
+    //Commands
     private final BrasIncrCommand mIncrBrasPlus = new BrasIncrCommand(mBrasSubsystem, Constants.BrasIncr.Bras, 0,0);
     private final BrasIncrCommand mIncrBrasMinus = new BrasIncrCommand(mBrasSubsystem, -Constants.BrasIncr.Bras, 0,0);
     private final BrasIncrCommand mIncrCoudePlus = new BrasIncrCommand(mBrasSubsystem, 0, Constants.BrasIncr.Coude,0);
@@ -31,6 +32,7 @@ public class RobotContainer {
     private final BrasIncrCommand mIncrRotationPlus = new BrasIncrCommand(mBrasSubsystem, 0, 0,Constants.BrasIncr.Rotation);
     private final BrasIncrCommand mIncrRotationMinus = new BrasIncrCommand(mBrasSubsystem, 0, 0,-Constants.BrasIncr.Rotation);
     private final PinceCommand mMovePince = new PinceCommand(mPinceSubsystem);
+    private final LeverBrasCommandGroup mLeverBrasCommandGroup = new LeverBrasCommandGroup(mBrasSubsystem);
 
 
 
@@ -44,6 +46,7 @@ public class RobotContainer {
 
     private void configureButtonBindings() {
 
+        //TestController
         JoystickButton buttonB = new JoystickButton(mXboxController, XboxController.Button.kB.value);
         buttonB.onTrue(mIncrBrasPlus);
 
@@ -64,6 +67,11 @@ public class RobotContainer {
 
         JoystickButton DpadRight = new JoystickButton(mXboxController, XboxController.Button.kRight.value);
         DpadRight.onTrue(mMovePince);
+
+        JoystickButton ButtonA2 = new JoystickButton(mXboxController2, XboxController.Button.kA.value);
+        ButtonA2.onTrue(mLeverBrasCommandGroup);
+
+
 
     }
     private void configureDefaultCommands() {
