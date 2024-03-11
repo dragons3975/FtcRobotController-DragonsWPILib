@@ -53,6 +53,8 @@ public class RobotAutonomous extends OpMode{
     public void loop() {
         DriverStation.refreshData();
         CommandScheduler.getInstance().run();
+		Thread.sleep(19); //Deja un sleep de 1ms dans le internalRunOpMode. On veut du 20ms a peu près... Voir pour utiliser un timer.
+
     }
 
     /*
