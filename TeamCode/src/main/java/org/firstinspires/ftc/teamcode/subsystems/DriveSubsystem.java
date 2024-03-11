@@ -24,6 +24,11 @@ public class DriveSubsystem extends Subsystem {
     public DriveSubsystem() {
         m_frontLeftMotor.setInverted(true);
         m_frontRightMotor.setInverted(true);
+
+        m_frontRightMotor.brakeOnZeroPower(true);
+        m_frontLeftMotor.brakeOnZeroPower(true);
+        m_rearRightMotor.brakeOnZeroPower(true);
+        m_rearLeftMotor.brakeOnZeroPower(true);
     }
 
     @Override

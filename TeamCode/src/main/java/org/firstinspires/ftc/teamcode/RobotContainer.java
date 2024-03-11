@@ -2,9 +2,11 @@ package org.firstinspires.ftc.teamcode;
 
 import org.firstinspires.ftc.teamcode.commandGroups.AutonomousCommandGroup;
 import org.firstinspires.ftc.teamcode.commandGroups.LeverBrasCommandGroup;
+import org.firstinspires.ftc.teamcode.commands.BoucheCommand;
 import org.firstinspires.ftc.teamcode.commands.BrasIncrCommand;
 import org.firstinspires.ftc.teamcode.commands.DriveCommand;
 import org.firstinspires.ftc.teamcode.commands.PinceCommand;
+import org.firstinspires.ftc.teamcode.subsystems.BoucheSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.BrasSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.PinceSubsystem;
@@ -22,6 +24,7 @@ public class RobotContainer {
     private final  PinceSubsystem mPinceSubsystem = new PinceSubsystem();
     private final BrasSubsystem mBrasSubsystem = new BrasSubsystem();
     private final DriveCommand mDriveCommand = new DriveCommand(mDriveSubsystem, mXboxController);
+    private final BoucheSubsystem mBoucheSubsystem = new BoucheSubsystem();
 
 
     //Commands
@@ -33,6 +36,8 @@ public class RobotContainer {
     private final BrasIncrCommand mIncrRotationMinus = new BrasIncrCommand(mBrasSubsystem, 0, 0,-Constants.BrasIncr.Rotation);
     private final PinceCommand mMovePince = new PinceCommand(mPinceSubsystem);
     private final LeverBrasCommandGroup mLeverBrasCommandGroup = new LeverBrasCommandGroup(mBrasSubsystem);
+
+    private final BoucheCommand mBoucheCommand = new BoucheCommand(mBoucheSubsystem);
 
 
 
@@ -70,6 +75,11 @@ public class RobotContainer {
 
         JoystickButton ButtonA2 = new JoystickButton(mXboxController2, XboxController.Button.kA.value);
         ButtonA2.onTrue(mLeverBrasCommandGroup);
+
+        JoystickButton LeftTrigger = new JoystickButton(mXboxController2, XboxController.Axis.kRightTrigger.value);
+        LeftTrigger.whileTrue(mBoucheCommand);
+
+
 
 
 

@@ -29,8 +29,8 @@ public class BrasSubsystem extends Subsystem {
         DriverStationJNI.getTelemetry().addData("Encodeur PosCoude", mMotorCoude.getCurrentPosition());
         DriverStationJNI.getTelemetry().addData("Variable PosCoude", mPosCoude);
         DriverStationJNI.getTelemetry().addData("Variable PosRotationPince", mPosRotationPince);
-        mMotorBras.setTargetPosition(mPosBrasMoteur, 0.25);
-        mMotorCoude.setTargetPosition(mPosCoude, 0.25);
+        mMotorBras.setTargetPosition(mPosBrasMoteur, 0.15); //TODO tester si tiens power (devrait mais on sait pas)
+        mMotorCoude.setTargetPosition(mPosCoude, 0.15);
         mServoRotationPince.setPosition(mPosRotationPince);
 
     }
