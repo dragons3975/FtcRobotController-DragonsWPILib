@@ -8,9 +8,9 @@ import org.firstinspires.ftc.teamcode.subsystems.PixelDetectionSubsystem;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
-public class AutonomousCommandGroup extends SequentialCommandGroup {
+public class Gauche extends SequentialCommandGroup {
 
-    public AutonomousCommandGroup(DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem, PinceSubsystem pinceSubsystem, PixelDetectionSubsystem pixelDetectionSubsystem) {
+    public Gauche(DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem, PinceSubsystem pinceSubsystem, PixelDetectionSubsystem pixelDetectionSubsystem) {
 
         //ParallelRaceGroup calibration = new CalibreBrasCommand(brasSubsystem).withTimeout(0);
         AvanceAutoCommand avancer = new AvanceAutoCommand(driveSubsystem, 0.5, 100);
@@ -19,7 +19,7 @@ public class AutonomousCommandGroup extends SequentialCommandGroup {
         addCommands(
                 avancer
                 //detect
-                );
+        );
     }
 
 }
