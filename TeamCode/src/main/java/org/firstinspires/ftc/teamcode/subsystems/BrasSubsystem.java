@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.subsystems;
 
 
 import dragons.rev.FtcMotor;
-import dragons.rev.FtcTouchSensor;
 import edu.wpi.first.hal.DriverStationJNI;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Subsystem;
@@ -46,7 +45,6 @@ public class BrasSubsystem extends Subsystem {
     }
 
     public void setTarget(double target) {
-        m_MotorBras.setInverted(true);
         m_posTarget = init + target;
     }
 

@@ -1,15 +1,15 @@
 package org.firstinspires.ftc.teamcode.commands;
 
 
-import org.firstinspires.ftc.teamcode.subsystems.PixelDetectionSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.VisionSubsystem;
 
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class PixelDetectionStopCommand extends Command{
 
-    private final PixelDetectionSubsystem mPixelDetectionSubsystem;
+    private final VisionSubsystem mPixelDetectionSubsystem;
 
-    public PixelDetectionStopCommand(PixelDetectionSubsystem pixelDetectionSubsystem) {
+    public PixelDetectionStopCommand(VisionSubsystem pixelDetectionSubsystem) {
         mPixelDetectionSubsystem = pixelDetectionSubsystem;
 
         addRequirements(pixelDetectionSubsystem);
@@ -18,7 +18,7 @@ public class PixelDetectionStopCommand extends Command{
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        mPixelDetectionSubsystem.stopCamera();
+        //mPixelDetectionSubsystem.stopCamera();
     }
 
     // Called every time the scheduler runs while the command is scheduled.

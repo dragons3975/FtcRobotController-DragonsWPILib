@@ -2,13 +2,35 @@ package org.firstinspires.ftc.teamcode;
 
 public final class Constants {
 
+    public static final class ConfigConstants {
+        public static final int kRouge = 0;
+        public static final int kBleu = 1;
+        public static final int kGauche = 0;
+        public static final int kDroite = 1;
+    }
+
+
+    public static final class AutonomousConstants {
+
+        //POSITION 1, AVANCEMENT INITIAL
+        public static final int kPos1AvanceGauche = 10;//
+        public static final int kPos1AvanceMilieu = 20;
+        public static final int kPos1AvanceDroite = 30;
+        //POSITION 1, APPROCHE AU TABLEAU
+
+
+        public static final int kApproche = 20;
+        //POSITION 2, AVANCEMENT INITIAL
+
+    }
+
     public static final class OIConstants {
         public static final int kDriverControllerPort = 0;
         public static final int kDriverControllerPort2 = 1;
     }
 
     public static final class ConstantsDrivePID {
-        public static final double kP = 0.005;
+        public static final double kP = 0.017;
         public static final double kI = 0;
         public static final double kD = 0;
     }
@@ -35,5 +57,20 @@ public final class Constants {
 
 
     }
+
+    public static final class VisionConstants {
+        public static final String kTfodModelFile = "/sdcard/FIRST/tflitemodels/red_and_blue_camera_robot.tflite";
+
+        public static final int kLimiteG = 640;
+
+        public static final int kLimiteD = 1280;
+
+        public static final int kTeamPropGauche = 0;
+        public static final int kTeamPropMilieu = 1;
+        public static final int kTeamPropDroite = 2;
+
+    }
+
+
     
 }

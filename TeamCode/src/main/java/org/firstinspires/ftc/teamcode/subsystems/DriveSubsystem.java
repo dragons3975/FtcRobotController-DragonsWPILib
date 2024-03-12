@@ -36,6 +36,8 @@ public class DriveSubsystem extends Subsystem {
         m_frontRightMotor.setInverted(true);
 
         activerPid();
+
+        mPIDz.enableContinuousInput(-180, 180);
     }
 
     @Override
@@ -46,7 +48,7 @@ public class DriveSubsystem extends Subsystem {
 
         if (pidActif) {
             m_zRotation = mPIDz.calculate(mAngle, angleConsigne);
-            DriverStationJNI.getTelemetry().addData("m_zRotation", m_zRotation);
+            DriverStationJNI.getTelemetry().addData("m_zRotation", angleConsigne);
         }
 
         // On inverse volontairement x et y pour avoir le x vers l'avant
@@ -71,10 +73,10 @@ public class DriveSubsystem extends Subsystem {
     }
 
     public void mecanumDrive(double xSpeed, double ySpeed, double zRotation){
-        m_xSpeed = -xSpeed;
-        m_ySpeed = -ySpeed;
+        m_xSpeed = xSpeed;
+        m_ySpeed = ySpeed;
         //m_zRotation = zRotation;
-        angleConsigne+=zRotation;
+        angleConsigne += zRotation;
     }
     public void getFrontLeft() {
         //m_frontLeftMotor.getCurrentPosition();

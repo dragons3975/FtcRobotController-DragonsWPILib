@@ -45,7 +45,8 @@ public class AvanceAutoCommand extends Command {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return (mXSpeed > 0 && mDriveSubsystem.getX() > mDistanceInit + mDistance) || (mXSpeed < 0 && mDriveSubsystem.getX() < mDistanceInit - mDistance);
+        return (mXSpeed > 0 && mDriveSubsystem.getX() > mDistanceInit + mDistance)
+                || (mXSpeed < 0 && mDriveSubsystem.getX() < mDistanceInit - mDistance);
     }
 
 }
