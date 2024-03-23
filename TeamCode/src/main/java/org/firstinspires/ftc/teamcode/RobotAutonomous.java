@@ -31,6 +31,7 @@ public class RobotAutonomous extends OpMode{
     public void init_loop() {
         DriverStation.refreshData();
         CommandScheduler.getInstance().run();
+
     }
 
     /*
@@ -38,6 +39,8 @@ public class RobotAutonomous extends OpMode{
      */
     @Override
     public void start() {
+
+        mRobotContainer.init();
         mAutonomousCommand = mRobotContainer.getAutonomousCommand();
 
         // schedule the autonomous command (example)

@@ -29,8 +29,8 @@ public class DriveCommand extends Command {
     @Override
     public void execute() {
         mX = -mXboxController.getLeftY();
-        mY = mXboxController.getLeftX();
-        mZ = -mXboxController.getRightX() * 7;
+        mY = -mXboxController.getLeftX();
+        mZ = mXboxController.getRightX() * 7;
 
         mDriveSubsystem.mecanumDrive(mX, mY, mZ);
     }

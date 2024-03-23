@@ -7,6 +7,7 @@ public final class Constants {
         public static final int kBleu = 1;
         public static final int kGauche = 0;
         public static final int kDroite = 1;
+
     }
 
 
@@ -30,20 +31,25 @@ public final class Constants {
     }
 
     public static final class ConstantsDrivePID {
-        public static final double kP = 0.017;
+        public static final double kP = 0.03;
         public static final double kI = 0;
         public static final double kD = 0;
     }
 
     public static final class ConstantsBras {
         public static final double coeficiant = 0.01;
+
+        public static final double kmax = 970;
+
+        public static final double kmaxExt = 47200;
+
     }
 
     public static final class ConstantsPince {
 
         public static final double etenduePince = 0.3;
 
-        public static final double ouvreMax = 1;
+        public static final double ouvreMax = 0.1;
 
         public static final double ouvreMin = 0;
     }
@@ -61,9 +67,9 @@ public final class Constants {
     public static final class VisionConstants {
         public static final String kTfodModelFile = "/sdcard/FIRST/tflitemodels/red_and_blue_camera_robot.tflite";
 
-        public static final int kLimiteG = 640;
+        public static final int kLimiteG = 250;
 
-        public static final int kLimiteD = 1280;
+        public static final int kLimiteD = 650;
 
         public static final int kTeamPropGauche = 0;
         public static final int kTeamPropMilieu = 1;
