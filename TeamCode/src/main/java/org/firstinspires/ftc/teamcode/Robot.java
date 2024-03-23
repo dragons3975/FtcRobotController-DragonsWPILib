@@ -10,6 +10,8 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 @TeleOp
 public class Robot extends OpMode {
 
+    private RobotContainer mRobotContainer;
+
     /*
      * Code to run ONCE when the driver hits INIT
      */
@@ -17,7 +19,7 @@ public class Robot extends OpMode {
     public void init() {
         CommandScheduler.getInstance().reset();
         DriverStationJNI.init(gamepad1, gamepad2, telemetry, hardwareMap, DriverStationJNI.Modes.teleop);
-        new RobotContainer();
+        mRobotContainer = new RobotContainer();
     }
 
     /*
@@ -35,6 +37,7 @@ public class Robot extends OpMode {
      */
     @Override
     public void start() {
+        mRobotContainer.init();
     }
 
     /*

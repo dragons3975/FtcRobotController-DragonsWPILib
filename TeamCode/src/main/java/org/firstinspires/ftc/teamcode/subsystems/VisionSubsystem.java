@@ -25,7 +25,7 @@ public class VisionSubsystem extends Subsystem {
             "red"
     };
 
-    private double mTeamPropX;
+    private double mTeamPropX = 700;
     private boolean mIsRedDetected = false;
     private boolean mIsBlueDetected = false;
 
@@ -106,7 +106,9 @@ public class VisionSubsystem extends Subsystem {
     }*/
 
     public int getTeamPropLocation() {
-        return mConfigSubsystem.temporaryTeamPropLocation(); //temporaire tant que pas de vision
+        return Constants.VisionConstants.kTeamPropMilieu;
+
+        //return mConfigSubsystem.temporaryTeamPropLocation(); //temporaire tant que pas de vision
         /*if (mTeamPropX < Constants.VisionConstants.kLimiteG) {
             return Constants.VisionConstants.kTeamPropGauche;
         }

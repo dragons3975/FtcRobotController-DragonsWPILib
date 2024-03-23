@@ -14,6 +14,11 @@ public class IntakeSubsystem extends Subsystem {
 
 
     public IntakeSubsystem() {
+        m_Motor.setInverted(true);
+    }
+    @Override
+    public void periodic() {
+        DriverStationJNI.getTelemetry().addData("ramasseur position", getPosition());
     }
 
 
@@ -25,11 +30,9 @@ public class IntakeSubsystem extends Subsystem {
         m_Motor.stopMotor();
     }
 
-    @Override
-    public void periodic() {
-
+    public double getPosition() {
+        return m_Motor.getCurrentPosition();
     }
-
 
 }
 

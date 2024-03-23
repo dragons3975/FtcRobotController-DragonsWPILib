@@ -37,7 +37,7 @@ public void toggleTemporaryTeamPropPosition() {
     if (++mTemporaryTeamPropLocation > 2) mTemporaryTeamPropLocation = 0;
 }
 
-public int allianceColor() {
+public int  allianceColor() {
         return mAllianceColor;
 }
 private String allianceColorToString() {
