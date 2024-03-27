@@ -14,7 +14,6 @@ import org.firstinspires.ftc.teamcode.commandGroups.Rouge.Gauche.RougeGaucheTeam
 import org.firstinspires.ftc.teamcode.commandGroups.Rouge.Gauche.RougeGaucheTeamPropMilieu;
 import org.firstinspires.ftc.teamcode.commandGroups.Rouge.Droite.RougeDroiteTeamPropDroite;
 import org.firstinspires.ftc.teamcode.commandGroups.Rouge.Droite.RougeDroiteTeamPropGauche;
-import org.firstinspires.ftc.teamcode.commands.AvanceAutoCommand;
 import org.firstinspires.ftc.teamcode.commands.BrasCommandPos1;
 import org.firstinspires.ftc.teamcode.commands.LanceurCommand;
 import org.firstinspires.ftc.teamcode.commands.ToggleAllianceColorCommand;
@@ -22,7 +21,6 @@ import org.firstinspires.ftc.teamcode.commands.ToggleAlliancePositionCommand;
 import org.firstinspires.ftc.teamcode.commands.DriveCommand;
 import org.firstinspires.ftc.teamcode.commands.IntakeCommand;
 import org.firstinspires.ftc.teamcode.commands.PinceCommandToggle;
-import org.firstinspires.ftc.teamcode.commands.PixelDetectionStopCommand;
 import org.firstinspires.ftc.teamcode.commands.ToggleTemporaryTeamPropPositionCommand;
 import org.firstinspires.ftc.teamcode.subsystems.ConfigSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
@@ -45,8 +43,8 @@ public class RobotContainer {
 
     private final DriveSubsystem mDriveSubsystem = new DriveSubsystem();
     private final IntakeSubsystem mIntakeSubsystem = new IntakeSubsystem();
-    private ConfigSubsystem mConfigSubsystem = new ConfigSubsystem();
-    private VisionSubsystem mVisionSubsystem = new VisionSubsystem(mConfigSubsystem);
+    private final ConfigSubsystem mConfigSubsystem = new ConfigSubsystem();
+    private final VisionSubsystem mVisionSubsystem = new VisionSubsystem();
 
     private final  PinceSubsystem mPinceSubsystem = new PinceSubsystem();
     private final DriveCommand mDriveCommand = new DriveCommand(mDriveSubsystem, mXboxController);

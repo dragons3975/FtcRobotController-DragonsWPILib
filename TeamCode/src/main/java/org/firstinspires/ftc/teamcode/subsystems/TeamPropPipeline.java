@@ -37,8 +37,8 @@ public class TeamPropPipeline extends OpenCvPipeline {
         // We create a HSV range for yellow to detect regular stones
         // NOTE: In OpenCV's implementation,
         // Hue values are half the real value
-        Scalar lowHSV = new Scalar(20, 100, 100); // lower bound HSV for yellow
-        Scalar highHSV = new Scalar(30, 255, 255); // higher bound HSV for yellow
+        Scalar lowHSV = new Scalar(20, 100, 100);
+        Scalar highHSV = new Scalar(30, 255, 255);
         Mat thresh = new Mat();
 
         // We'll get a black and white image. The white regions represent the regular stones.
