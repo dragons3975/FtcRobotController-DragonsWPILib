@@ -14,6 +14,12 @@ import edu.wpi.first.hal.DriverStationJNI;
 public class TeamPropPipeline extends OpenCvPipeline {
     private final int width = Constants.VisionConstants.kWidth; // width of the image
     private final int height = Constants.VisionConstants.kHeight;
+
+    private double leftTreshold = 0.1;
+    private double middleTreshold = 0.1;
+    private double rightTreshold = 0.1;
+
+    private double leftPercent, middlePercent, rightPercent;
     private final Rect LEFT_RECTANGLE = new Rect(
             new Point(0.0, 0.25),
             new Point(0.33 * width, height)
@@ -55,9 +61,9 @@ public class TeamPropPipeline extends OpenCvPipeline {
         Mat redAndBlueMat = new Mat();
         Core.bitwise_or(redMat, blueMat, redAndBlueMat);
 
-        double leftPercent = Core.sumElems(redAndBlueMat.submat(LEFT_RECTANGLE)).val[0] / 255;
-        double middlePercent = Core.sumElems(redAndBlueMat.submat(MIDDLE_RECTANGLE)).val[0] / 255;
-        double rightPercent = Core.sumElems(redAndBlueMat.submat(RIGHT_RECTANGLE)).val[0] /255;
+        leftPercent = Core.sumElems(redAndBlueMat.submat(LEFT_RECTANGLE)).val[0] / 255 / LEFT_RECTANGLE.area();
+        middlePercent = Core.sumElems(redAndBlueMat.submat(MIDDLE_RECTANGLE)).val[0] / 255 / MIDDLE_RECTANGLE.area();
+        rightPercent = Core.sumElems(redAndBlueMat.submat(RIGHT_RECTANGLE)).val[0] /255 / RIGHT_RECTANGLE.area();
 
         DriverStationJNI.getTelemetry().addData("leftPercent", leftPercent);
         DriverStationJNI.getTelemetry().addData("middlePercent", middlePercent);
@@ -68,14 +74,14 @@ public class TeamPropPipeline extends OpenCvPipeline {
     }
 
     public int getTeamPropLocation() {
-   /*     if (left) {
+        if (leftPercent > middlePercent && leftPercent > rightPercent && leftPercent > leftTreshold) {
             return 0;
-        } else if (right) {
+        } else if (middlePercent > leftPercent && middlePercent > rightPercent && middlePercent > middleTreshold) {
             return 2;
-        } else {
+        } else if (rightPercent > leftPercent && rightPercent > middlePercent && rightPercent > rightTreshold) {
             return 1;
-        }*/
-        return 0;
+        }
+        return 1;
     }
 
 
