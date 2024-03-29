@@ -66,7 +66,8 @@ public final class Constants {
 
     public static final class VisionConstants {
         public static final String kTfodModelFile = "/sdcard/FIRST/tflitemodels/red_and_blue_camera_robot.tflite";
-
+        public static final int kWidth = 320;
+        public static final int kHeight = 240;
         public static final int kLimiteG = 250;
 
         public static final int kLimiteD = 650;

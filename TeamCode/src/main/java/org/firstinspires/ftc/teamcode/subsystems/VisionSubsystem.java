@@ -1,50 +1,64 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
+import com.qualcomm.robotcore.hardware.HardwareMap;
+
+import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.subsystems.TeamPropPipeline;
+import org.firstinspires.ftc.vision.VisionPortal;
+import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
+import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
+import org.firstinspires.ftc.vision.tfod.TfodProcessor;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 
+import java.sql.Driver;
+import java.util.List;
+
 import edu.wpi.first.hal.DriverStationJNI;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 
 public class VisionSubsystem extends Subsystem {
+
+    private boolean mIsPipelineProp = true;
+    private AprilTagProcessor mAprilTag;
+    private VisionPortal mVisionPortal;
+
     int width = 320;
     int height = 240;
     // store as variable here so we can access the location
     TeamPropPipeline mTeamPropPipeline = new TeamPropPipeline();
+    ConceptAprilTagEasy mConceptAprilTagEasy = new ConceptAprilTagEasy();
     OpenCvCamera webcam;
+
+
+
 
     public VisionSubsystem() {
         int cameraMonitorViewId = DriverStationJNI.getHardwareMap().appContext.getResources().getIdentifier("cameraMonitorViewId", "id", DriverStationJNI.getHardwareMap().appContext.getPackageName());
-        webcam = OpenCvCameraFactory.getInstance().createWebcam(DriverStationJNI.getHardwareMap().get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
-        webcam.setPipeline(mTeamPropPipeline);
+
+        if (mIsPipelineProp) {
+            webcam = OpenCvCameraFactory.getInstance().createWebcam(DriverStationJNI.getHardwareMap().get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
+            webcam.setPipeline(mTeamPropPipeline);
+        }
+        else {
+            mVisionPortal = VisionPortal.easyCreateWithDefaults(DriverStationJNI.getHardwareMap().get(WebcamName.class, "Webcam 1"), mAprilTag);
+        }
 
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
+
         {
             @Override
             public void onOpened()
             {
-                /*
-                 * Tell the webcam to start streaming images to us! Note that you must make sure
-                 * the resolution you specify is supported by the camera. If it is not, an exception
-                 * will be thrown.
-                 *
-                 * Keep in mind that the SDK's UVC driver (what OpenCvWebcam uses under the hood) only
-                 * supports streaming from the webcam in the uncompressed YUV image format. This means
-                 * that the maximum resolution you can stream at and still get up to 30FPS is 480p (640x480).
-                 * Streaming at e.g. 720p will limit you to up to 10FPS and so on and so forth.
-                 *
-                 * Also, we specify the rotation that the webcam is used in. This is so that the image
-                 * from the camera sensor can be rotated such that it is always displayed with the image upright.
-                 * For a front facing camera, rotation is defined assuming the user is looking at the screen.
-                 * For a rear facing camera or a webcam, rotation is defined assuming the camera is facing
-                 * away from the user.
-                 */
-                webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
+                if (mIsPipelineProp) {
+               webcam.startStreaming(Constants.VisionConstants.kWidth, Constants.VisionConstants.kHeight, OpenCvCameraRotation.UPRIGHT);
+                }
+                else {webcam.stopStreaming();
+                mVisionPortal.resumeStreaming();}
             }
 
             @Override
@@ -60,6 +74,9 @@ public class VisionSubsystem extends Subsystem {
     @Override
     public void periodic() {
         DriverStationJNI.getTelemetry().addData("teamPropLocation", getTeamPropLocation());
+        if (!mIsPipelineProp) {telemetryAprilTag();}
+
+        DriverStationJNI.getTelemetry().addData("IsPipeline", mIsPipelineProp);
     }
 
     public int getTeamPropLocation() {
@@ -77,5 +94,33 @@ public class VisionSubsystem extends Subsystem {
             default:
                 return "null";
         }
+    }
+    private void telemetryAprilTag() {
+
+        List<AprilTagDetection> currentDetections = mAprilTag.getDetections();
+        DriverStationJNI.getTelemetry().addData("# AprilTags Detected", currentDetections.size());
+
+        // Step through the list of detections and display info for each one.
+        for (AprilTagDetection detection : currentDetections) {
+            if (detection.metadata != null) {
+                DriverStationJNI.getTelemetry().addLine(String.format("\n==== (ID %d) %s", detection.id, detection.metadata.name));
+                DriverStationJNI.getTelemetry().addLine(String.format("XYZ %6.1f %6.1f %6.1f  (inch)", detection.ftcPose.x, detection.ftcPose.y, detection.ftcPose.z));
+                DriverStationJNI.getTelemetry().addLine(String.format("PRY %6.1f %6.1f %6.1f  (deg)", detection.ftcPose.pitch, detection.ftcPose.roll, detection.ftcPose.yaw));
+                DriverStationJNI.getTelemetry().addLine(String.format("RBE %6.1f %6.1f %6.1f  (inch, deg, deg)", detection.ftcPose.range, detection.ftcPose.bearing, detection.ftcPose.elevation));
+            } else {
+                DriverStationJNI.getTelemetry().addLine(String.format("\n==== (ID %d) Unknown", detection.id));
+                DriverStationJNI.getTelemetry().addLine(String.format("Center %6.0f %6.0f   (pixels)", detection.center.x, detection.center.y));
+            }
+        }   // end for() loop
+
+        // Add "key" information to telemetry
+        DriverStationJNI.getTelemetry().addLine("\nkey:\nXYZ = X (Right), Y (Forward), Z (Up) dist.");
+        DriverStationJNI.getTelemetry().addLine("PRY = Pitch, Roll & Yaw (XYZ Rotation)");
+        DriverStationJNI.getTelemetry().addLine("RBE = Range, Bearing & Elevation");
+
+    }
+
+    public void togglePipeline() {
+        mIsPipelineProp = !mIsPipelineProp;
     }
 }

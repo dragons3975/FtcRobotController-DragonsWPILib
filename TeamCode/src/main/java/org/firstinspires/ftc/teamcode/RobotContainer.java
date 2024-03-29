@@ -22,6 +22,7 @@ import org.firstinspires.ftc.teamcode.commands.DriveCommand;
 import org.firstinspires.ftc.teamcode.commands.IntakeCommand;
 import org.firstinspires.ftc.teamcode.commands.PinceCommandToggle;
 import org.firstinspires.ftc.teamcode.commands.ToggleTemporaryTeamPropPositionCommand;
+import org.firstinspires.ftc.teamcode.commands.ToggleVisionPipelineCommand;
 import org.firstinspires.ftc.teamcode.subsystems.ConfigSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem;
@@ -30,6 +31,7 @@ import org.firstinspires.ftc.teamcode.subsystems.BrasSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.LanceurSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.PinceSubsystem;
 import org.firstinspires.ftc.teamcode.commands.CalibreBrasCommand;
+import org.firstinspires.ftc.teamcode.subsystems.TeamPropPipeline;
 import org.firstinspires.ftc.teamcode.subsystems.VisionSubsystem;
 
 import edu.wpi.first.hal.DriverStationJNI;
@@ -45,6 +47,7 @@ public class RobotContainer {
     private final IntakeSubsystem mIntakeSubsystem = new IntakeSubsystem();
     private final ConfigSubsystem mConfigSubsystem = new ConfigSubsystem();
     private final VisionSubsystem mVisionSubsystem = new VisionSubsystem();
+    public final TeamPropPipeline mTeamPropPipeline = new TeamPropPipeline();
 
     private final  PinceSubsystem mPinceSubsystem = new PinceSubsystem();
     private final DriveCommand mDriveCommand = new DriveCommand(mDriveSubsystem, mXboxController);
@@ -59,6 +62,8 @@ public class RobotContainer {
    private final BrasCommand mBrasCommand = new BrasCommand(mBrasSubsystem, mXboxController2);
 
     private final IntakeCommand mIntakeCommand = new IntakeCommand(mIntakeSubsystem);
+
+    private final ToggleVisionPipelineCommand mToggleVisionPipelineCommand = new ToggleVisionPipelineCommand(mVisionSubsystem);
 
 
     private final PinceCommandToggle mPinceCommandToggle = new PinceCommandToggle(mPinceSubsystem);
@@ -94,6 +99,8 @@ public class RobotContainer {
         buttonX.onTrue(mToggleAlliancePositionCommand);
 
         JoystickButton buttonY = new JoystickButton(mXboxController, XboxController.Button.kY.value);
+        buttonY.onTrue(mToggleVisionPipelineCommand);
+
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
