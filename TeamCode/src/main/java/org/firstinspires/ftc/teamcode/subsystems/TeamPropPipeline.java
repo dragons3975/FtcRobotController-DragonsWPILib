@@ -70,9 +70,9 @@ public class TeamPropPipeline extends OpenCvPipeline {
     }
 
     public int getTeamPropLocation() {
+        double leftTreshold = 0.1;
         double rightTreshold = 0.1;
         double middleTreshold = 0.1;
-        double leftTreshold = 0.1;
         if (leftPercent > middlePercent && leftPercent > rightPercent && leftPercent > leftTreshold) {
             return 0;
         } else if (middlePercent > leftPercent && middlePercent > rightPercent && middlePercent > middleTreshold) {
