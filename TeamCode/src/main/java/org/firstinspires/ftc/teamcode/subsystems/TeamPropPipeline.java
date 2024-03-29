@@ -15,10 +15,6 @@ public class TeamPropPipeline extends OpenCvPipeline {
     private final int width = Constants.VisionConstants.kWidth; // width of the image
     private final int height = Constants.VisionConstants.kHeight;
 
-    private double leftTreshold = 0.1;
-    private double middleTreshold = 0.1;
-    private double rightTreshold = 0.1;
-
     private double leftPercent, middlePercent, rightPercent;
     private final Rect LEFT_RECTANGLE = new Rect(
             new Point(0.0, 0.25),
@@ -74,12 +70,15 @@ public class TeamPropPipeline extends OpenCvPipeline {
     }
 
     public int getTeamPropLocation() {
+        double rightTreshold = 0.1;
+        double middleTreshold = 0.1;
+        double leftTreshold = 0.1;
         if (leftPercent > middlePercent && leftPercent > rightPercent && leftPercent > leftTreshold) {
             return 0;
         } else if (middlePercent > leftPercent && middlePercent > rightPercent && middlePercent > middleTreshold) {
-            return 2;
-        } else if (rightPercent > leftPercent && rightPercent > middlePercent && rightPercent > rightTreshold) {
             return 1;
+        } else if (rightPercent > leftPercent && rightPercent > middlePercent && rightPercent > rightTreshold) {
+            return 2;
         }
         return 1;
     }
