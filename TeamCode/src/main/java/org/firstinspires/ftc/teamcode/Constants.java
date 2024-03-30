@@ -47,7 +47,7 @@ public final class Constants {
 
     public static final class ConstantsPince {
 
-        public static final double etenduePince = 0.3;
+        public static final double Inclinaison = 0.3;
 
         public static final double ouvreMax = 0.1;
 

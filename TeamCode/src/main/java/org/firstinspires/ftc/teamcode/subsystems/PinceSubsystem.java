@@ -13,7 +13,11 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 
 public class PinceSubsystem extends Subsystem {
 
-    private final FtcServo mMotorPince = new FtcServo("pince test");
+    private final FtcServo mMotorPinceInclinaison = new FtcServo("pince inclinaison");
+    private final FtcServo mMotorPinceDroit = new FtcServo("pince droit");
+    private final FtcServo mMotorPinceGauche = new FtcServo("pince gauche");
+
+    private boolean bas = true;
 
     //private final FtcServo mMotorPince = new FtcServo("pinceRotation");
 
@@ -29,7 +33,8 @@ public class PinceSubsystem extends Subsystem {
     @Override
     public void periodic() {
         DriverStationJNI.getTelemetry().addData("etat pince", mOuverte);
-        DriverStationJNI.getTelemetry().addData("etat moteur", mMotorPince.getPosition());
+        DriverStationJNI.getTelemetry().addData("etat servo gauche", mMotorPinceGauche.getPosition());
+        DriverStationJNI.getTelemetry().addData("etat servo droit", mMotorPinceDroit.getPosition());
     }
 
     //public void ModifInclinaison(double pos) {
@@ -38,15 +43,34 @@ public class PinceSubsystem extends Subsystem {
 
 
     public void Ferme() {
-        mMotorPince.setPosition(Constants.ConstantsPince.ouvreMin);
+        mMotorPinceDroit.setPosition(Constants.ConstantsPince.ouvreMin);
+        mMotorPinceGauche.setPosition(Constants.ConstantsPince.ouvreMax);
         mOuverte = false;
     }
 
     public void Ouvre() {
-        mMotorPince.setPosition(Constants.ConstantsPince.ouvreMax);
+        mMotorPinceDroit.setPosition(Constants.ConstantsPince.ouvreMax);
+        mMotorPinceGauche.setPosition(Constants.ConstantsPince.ouvreMin);
         mOuverte = true;
     }
 
+    public void InclineToggle() {
+        if (bas) {
+            mMotorPinceInclinaison.setPosition(0);
+            bas = false;
+        } else {
+            mMotorPinceInclinaison.setPosition(Constants.ConstantsPince.Inclinaison);
+            bas = true;
+        }
+    }
+
+    public void InclineBas() {
+        mMotorPinceInclinaison.setPosition(0);
+    }
+
+    public void InclineHaut() {
+        mMotorPinceInclinaison.setPosition(Constants.ConstantsPince.Inclinaison);
+    }
     public void Toggle(){
         if (mOuverte){
             Ferme();
