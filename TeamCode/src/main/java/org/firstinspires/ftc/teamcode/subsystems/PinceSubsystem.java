@@ -33,13 +33,11 @@ public class PinceSubsystem extends Subsystem {
     @Override
     public void periodic() {
         DriverStationJNI.getTelemetry().addData("etat pince", mOuverte);
+        DriverStationJNI.getTelemetry().addData("etat servo inclinaison", mMotorPinceInclinaison.getPosition());
         DriverStationJNI.getTelemetry().addData("etat servo gauche", mMotorPinceGauche.getPosition());
         DriverStationJNI.getTelemetry().addData("etat servo droit", mMotorPinceDroit.getPosition());
     }
 
-    //public void ModifInclinaison(double pos) {
-    //    mMotorPince.setPosition(pos);
-    //}
 
 
     public void Ferme() {

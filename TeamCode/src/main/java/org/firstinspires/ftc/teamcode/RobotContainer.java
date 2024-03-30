@@ -18,6 +18,9 @@ import org.firstinspires.ftc.teamcode.commands.BrasCommandPos1;
 import org.firstinspires.ftc.teamcode.commands.DeactivateAprilTagPipelineCommand;
 import org.firstinspires.ftc.teamcode.commands.DeactivatePropPipelineCommand;
 import org.firstinspires.ftc.teamcode.commands.LanceurCommand;
+import org.firstinspires.ftc.teamcode.commands.PinceInclinaisonBasCommand;
+import org.firstinspires.ftc.teamcode.commands.PinceInclinaisonHautCommand;
+import org.firstinspires.ftc.teamcode.commands.PinceToggleInclinaisonCommand;
 import org.firstinspires.ftc.teamcode.commands.ToggleAllianceColorCommand;
 import org.firstinspires.ftc.teamcode.commands.ToggleAlliancePositionCommand;
 import org.firstinspires.ftc.teamcode.commands.DriveCommand;
@@ -86,6 +89,12 @@ public class RobotContainer {
     private final ToggleAlliancePositionCommand mToggleAlliancePositionCommand = new ToggleAlliancePositionCommand(mConfigSubsystem);
     private final ToggleTemporaryTeamPropPositionCommand mToggleTemporaryTeamPropPositionCommand = new ToggleTemporaryTeamPropPositionCommand(mConfigSubsystem);
 
+    private final PinceInclinaisonBasCommand mPinceInclinaisonBasCommand = new PinceInclinaisonBasCommand(mPinceSubsystem);
+
+    private final PinceInclinaisonHautCommand mPinceInclinaisonHautCommand = new PinceInclinaisonHautCommand(mPinceSubsystem);
+
+    private final PinceToggleInclinaisonCommand mPinceToggleInclinaisonCommand = new PinceToggleInclinaisonCommand(mPinceSubsystem);
+
     public RobotContainer() {
         configureButtonBindings();
         configureDefaultCommands();
@@ -117,6 +126,11 @@ public class RobotContainer {
 
         JoystickButton buttonY = new JoystickButton(mXboxController, XboxController.Button.kY.value);
         buttonY.onTrue(mToggleVisionPipelineCommand);
+
+        JoystickButton buttonA = new JoystickButton(mXboxController, XboxController.Button.kA.value);
+        buttonA.onTrue(mPinceToggleInclinaisonCommand);
+
+
 
 
 
