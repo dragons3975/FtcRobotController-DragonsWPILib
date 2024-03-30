@@ -7,14 +7,16 @@ import org.firstinspires.ftc.teamcode.commandGroups.Bleu.Gauche.BleuGaucheTeamPr
 import org.firstinspires.ftc.teamcode.commandGroups.Bleu.Gauche.BleuGaucheTeamPropGauche;
 import org.firstinspires.ftc.teamcode.commandGroups.Bleu.Gauche.BleuGaucheTeamPropMilieu;
 import org.firstinspires.ftc.teamcode.commandGroups.Rouge.Droite.RougeDroiteTeamPropMilieu;
-import org.firstinspires.ftc.teamcode.commandGroups.Rouge.Gauche.PoserSol;
-import org.firstinspires.ftc.teamcode.commandGroups.Rouge.Gauche.PoserToile;
 import org.firstinspires.ftc.teamcode.commandGroups.Rouge.Gauche.RougeGaucheTeamPropDroite;
 import org.firstinspires.ftc.teamcode.commandGroups.Rouge.Gauche.RougeGaucheTeamPropGauche;
 import org.firstinspires.ftc.teamcode.commandGroups.Rouge.Gauche.RougeGaucheTeamPropMilieu;
 import org.firstinspires.ftc.teamcode.commandGroups.Rouge.Droite.RougeDroiteTeamPropDroite;
 import org.firstinspires.ftc.teamcode.commandGroups.Rouge.Droite.RougeDroiteTeamPropGauche;
+import org.firstinspires.ftc.teamcode.commands.ActivateAprilTagPipelineCommand;
+import org.firstinspires.ftc.teamcode.commands.ActivatePropPipelineCommand;
 import org.firstinspires.ftc.teamcode.commands.BrasCommandPos1;
+import org.firstinspires.ftc.teamcode.commands.DeactivateAprilTagPipelineCommand;
+import org.firstinspires.ftc.teamcode.commands.DeactivatePropPipelineCommand;
 import org.firstinspires.ftc.teamcode.commands.LanceurCommand;
 import org.firstinspires.ftc.teamcode.commands.ToggleAllianceColorCommand;
 import org.firstinspires.ftc.teamcode.commands.ToggleAlliancePositionCommand;
@@ -65,6 +67,12 @@ public class RobotContainer {
 
     private final ToggleVisionPipelineCommand mToggleVisionPipelineCommand = new ToggleVisionPipelineCommand(mVisionSubsystem);
 
+    private final ActivatePropPipelineCommand mActivatePropPipelineCommand = new ActivatePropPipelineCommand(mVisionSubsystem);
+    private final ActivateAprilTagPipelineCommand mActivateAprilTagPipelineCommand = new ActivateAprilTagPipelineCommand(mVisionSubsystem);
+
+    private final DeactivatePropPipelineCommand mDeactivatePropPipelineCommand = new DeactivatePropPipelineCommand(mVisionSubsystem);
+
+    private final DeactivateAprilTagPipelineCommand mDeactivateAprilTagPipelineCommand = new DeactivateAprilTagPipelineCommand(mVisionSubsystem);
 
     private final PinceCommandToggle mPinceCommandToggle = new PinceCommandToggle(mPinceSubsystem);
 
@@ -89,14 +97,23 @@ public class RobotContainer {
 
     private void configureButtonBindings() {
 
-        JoystickButton buttonB = new JoystickButton(mXboxController, XboxController.Button.kB.value);
-        buttonB.onTrue(mlanceurCommand);
+        JoystickButton kUp = new JoystickButton(mXboxController, XboxController.Button.kUp.value);
+        kUp.onTrue(mActivatePropPipelineCommand);
 
+        JoystickButton kRight = new JoystickButton(mXboxController, XboxController.Button.kRight.value);
+        kRight.onTrue(mActivateAprilTagPipelineCommand);
+
+        JoystickButton kDown = new JoystickButton(mXboxController, XboxController.Button.kDown.value);
+        kDown.onTrue(mDeactivateAprilTagPipelineCommand);
+
+        JoystickButton kLeft = new JoystickButton(mXboxController, XboxController.Button.kLeft.value);
+        kLeft.onTrue(mDeactivatePropPipelineCommand);
+        ///////////////////////////////////////////////////////////////////
         JoystickButton kStart = new JoystickButton(mXboxController, XboxController.Button.kStart.value);
         kStart.onTrue(mToggleAllianceColorCommand);
 
-        JoystickButton buttonX = new JoystickButton(mXboxController, XboxController.Button.kX.value);
-        buttonX.onTrue(mToggleAlliancePositionCommand);
+        JoystickButton kBack = new JoystickButton(mXboxController, XboxController.Button.kBack.value);
+        kBack.onTrue(mToggleAlliancePositionCommand);
 
         JoystickButton buttonY = new JoystickButton(mXboxController, XboxController.Button.kY.value);
         buttonY.onTrue(mToggleVisionPipelineCommand);
@@ -105,7 +122,7 @@ public class RobotContainer {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
         JoystickButton buttonX2 = new JoystickButton(mXboxController2, XboxController.Button.kX.value);
-        //buttonX2.whileTrue(mBrasCommandPos1);
+        buttonX2.whileTrue(mBrasCommandPos1);
 
         JoystickButton buttonB2 = new JoystickButton(mXboxController2, XboxController.Button.kB.value);
         buttonB2.onTrue(mPinceCommandToggle);

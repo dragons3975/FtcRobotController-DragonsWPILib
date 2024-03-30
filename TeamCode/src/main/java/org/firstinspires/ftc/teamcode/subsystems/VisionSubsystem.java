@@ -23,60 +23,30 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 
 public class VisionSubsystem extends Subsystem {
 
-    private boolean mIsPipelineProp = true;
-    private AprilTagProcessor mAprilTag;
+    private boolean mIsPipelineProp = false;
+    private boolean mIsPipelineAprilTag = false;
+    private boolean mIsWebcamInit = true;
+    private AprilTagProcessor mAprilTag = AprilTagProcessor.easyCreateWithDefaults();
     private VisionPortal mVisionPortal;
 
-    int width = 320;
-    int height = 240;
     // store as variable here so we can access the location
     TeamPropPipeline mTeamPropPipeline = new TeamPropPipeline();
-    ConceptAprilTagEasy mConceptAprilTagEasy = new ConceptAprilTagEasy();
     OpenCvCamera webcam;
 
-
-
-
     public VisionSubsystem() {
-        int cameraMonitorViewId = DriverStationJNI.getHardwareMap().appContext.getResources().getIdentifier("cameraMonitorViewId", "id", DriverStationJNI.getHardwareMap().appContext.getPackageName());
-
-        if (mIsPipelineProp) {
-            webcam = OpenCvCameraFactory.getInstance().createWebcam(DriverStationJNI.getHardwareMap().get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
-            webcam.setPipeline(mTeamPropPipeline);
-        }
-        else {
-            mVisionPortal = VisionPortal.easyCreateWithDefaults(DriverStationJNI.getHardwareMap().get(WebcamName.class, "Webcam 1"), mAprilTag);
-        }
-
-        webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
-
-        {
-            @Override
-            public void onOpened()
-            {
-                if (mIsPipelineProp) {
-               webcam.startStreaming(Constants.VisionConstants.kWidth, Constants.VisionConstants.kHeight, OpenCvCameraRotation.UPRIGHT);
-                }
-                else {webcam.stopStreaming();
-                mVisionPortal.resumeStreaming();}
-            }
-
-            @Override
-            public void onError(int errorCode)
-            {
-                /*
-                 * This will be called if the camera could not be opened
-                 */
-            }
-        });
 
     }
+
     @Override
     public void periodic() {
-        DriverStationJNI.getTelemetry().addData("teamPropLocation", getTeamPropLocation());
-        if (!mIsPipelineProp) {telemetryAprilTag();}
+        //DriverStationJNI.getTelemetry().addData("teamPropLocation", getTeamPropLocation());
+        DriverStationJNI.getTelemetry().addData("isPipelineAprilTag", mIsPipelineAprilTag);
+        DriverStationJNI.getTelemetry().addData("isPipelineProp", mIsPipelineProp);
 
-        DriverStationJNI.getTelemetry().addData("IsPipeline", mIsPipelineProp);
+
+        if (mIsPipelineAprilTag) {
+            telemetryAprilTag();
+        }
     }
 
     public int getTeamPropLocation() {
@@ -122,5 +92,54 @@ public class VisionSubsystem extends Subsystem {
 
     public void togglePipeline() {
         mIsPipelineProp = !mIsPipelineProp;
+    }
+
+    public void activateProp() {
+        mIsPipelineProp = true;
+        mIsPipelineAprilTag = false;
+        int cameraMonitorViewId = DriverStationJNI.getHardwareMap().appContext.getResources().getIdentifier("cameraMonitorViewId", "id", DriverStationJNI.getHardwareMap().appContext.getPackageName());
+        webcam = OpenCvCameraFactory.getInstance().createWebcam(DriverStationJNI.getHardwareMap().get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
+        webcam.setPipeline(mTeamPropPipeline);
+        webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
+        {
+            @Override
+            public void onOpened() {
+                webcam.startStreaming(Constants.VisionConstants.kWidth, Constants.VisionConstants.kHeight, OpenCvCameraRotation.UPRIGHT);
+            }
+
+            @Override
+            public void onError(int errorCode)
+            {
+                /*
+                 * This will be called if the camera could not be opened
+                 */
+            }
+        });
+    }
+    public void activateAprilTag() {
+        mIsPipelineAprilTag = true;
+        mIsPipelineProp = false;
+        mVisionPortal = VisionPortal.easyCreateWithDefaults(DriverStationJNI.getHardwareMap().get(WebcamName.class, "Webcam 1"), mAprilTag);
+    }
+    public void deactivateProp() {
+        if (mIsPipelineProp) {
+            mIsPipelineAprilTag = false;
+            mIsPipelineProp = false;
+            webcam.closeCameraDeviceAsync(new OpenCvCamera.AsyncCameraCloseListener() {
+                @Override
+                public void onClose() {
+                    //webcam.stopRecordingPipeline();
+                    webcam.closeCameraDevice();
+                }
+            });
+        }
+    }
+    public void deactivateAprilTag() {
+        if (mIsPipelineAprilTag) {
+        mIsPipelineAprilTag = false;
+        mIsPipelineProp = false;
+        mVisionPortal.stopStreaming();
+        mVisionPortal.stopLiveView();
+        mVisionPortal.close();}
     }
 }
