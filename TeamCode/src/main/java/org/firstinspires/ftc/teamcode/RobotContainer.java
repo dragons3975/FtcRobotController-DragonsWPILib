@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import org.firstinspires.ftc.teamcode.commandGroups.ActivateAprilSequentialCommandGroup;
 import org.firstinspires.ftc.teamcode.commandGroups.Bleu.Droite.BleuDroiteTeamPropDroite;
 import org.firstinspires.ftc.teamcode.commandGroups.Bleu.Droite.BleuDroiteTeamPropGauche;
 import org.firstinspires.ftc.teamcode.commandGroups.Bleu.Droite.BleuDroiteTeamPropMilieu;
@@ -18,6 +19,7 @@ import org.firstinspires.ftc.teamcode.commands.BrasCommandPos1;
 import org.firstinspires.ftc.teamcode.commands.DeactivateAprilTagPipelineCommand;
 import org.firstinspires.ftc.teamcode.commands.DeactivatePropPipelineCommand;
 import org.firstinspires.ftc.teamcode.commands.LanceurCommand;
+import org.firstinspires.ftc.teamcode.commands.PIDAprilTagCommand;
 import org.firstinspires.ftc.teamcode.commands.PinceInclinaisonBasCommand;
 import org.firstinspires.ftc.teamcode.commands.PinceInclinaisonHautCommand;
 import org.firstinspires.ftc.teamcode.commands.PinceToggleInclinaisonCommand;
@@ -95,6 +97,10 @@ public class RobotContainer {
 
     private final PinceToggleInclinaisonCommand mPinceToggleInclinaisonCommand = new PinceToggleInclinaisonCommand(mPinceSubsystem);
 
+    private final ActivateAprilSequentialCommandGroup mActivateAprilSequentialCommandGroup = new ActivateAprilSequentialCommandGroup(mVisionSubsystem);
+
+    private final PIDAprilTagCommand mPidAprilTagCommand = new PIDAprilTagCommand(mDriveSubsystem, mVisionSubsystem);
+
     public RobotContainer() {
         configureButtonBindings();
         configureDefaultCommands();
@@ -130,7 +136,8 @@ public class RobotContainer {
         JoystickButton buttonA = new JoystickButton(mXboxController, XboxController.Button.kA.value);
         buttonA.onTrue(mPinceToggleInclinaisonCommand);
 
-
+        JoystickButton buttonX = new JoystickButton(mXboxController, XboxController.Button.kX.value);
+        buttonX.onTrue(mPidAprilTagCommand);
 
 
 
@@ -146,6 +153,7 @@ public class RobotContainer {
         buttonY2.whileTrue(mIntakeCommand);
 
         JoystickButton buttonA2 = new JoystickButton(mXboxController2, XboxController.Button.kA.value);
+        buttonA2.onTrue(mActivateAprilSequentialCommandGroup);
     }
     private void configureDefaultCommands() {
         mDriveSubsystem.setDefaultCommand(mDriveCommand);
@@ -206,5 +214,8 @@ public class RobotContainer {
             }
         }
         return null;
+    }
+    public void stop() {
+        mVisionSubsystem.deactivateAprilTag();
     }
 }

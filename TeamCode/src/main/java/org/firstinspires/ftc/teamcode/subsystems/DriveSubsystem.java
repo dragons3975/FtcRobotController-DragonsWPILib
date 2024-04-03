@@ -30,7 +30,7 @@ public class DriveSubsystem extends Subsystem {
 
     private double angleConsigne;
 
-    private PIDController mPIDz = new PIDController(Constants.ConstantsDrivePID.kP, Constants.ConstantsDrivePID.kI, Constants.ConstantsDrivePID.kD);
+    private final PIDController mPIDz = new PIDController(Constants.ConstantsDrivePID.kP, Constants.ConstantsDrivePID.kI, Constants.ConstantsDrivePID.kD);
     public DriveSubsystem() {
         mPIDz.setTolerance(0);
         m_frontLeftMotor.setInverted(false);

@@ -76,6 +76,9 @@ public final class Constants {
         public static final int kTeamPropMilieu = 1;
         public static final int kTeamPropDroite = 2;
 
+
+        public static final double kPX = 0.0001;
+
     }
 
 

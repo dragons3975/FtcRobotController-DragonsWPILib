@@ -29,6 +29,7 @@ public class VisionSubsystem extends Subsystem {
     private AprilTagProcessor mAprilTag = AprilTagProcessor.easyCreateWithDefaults();
     private VisionPortal mVisionPortal;
 
+
     // store as variable here so we can access the location
     TeamPropPipeline mTeamPropPipeline = new TeamPropPipeline();
     OpenCvCamera webcam;
@@ -44,9 +45,9 @@ public class VisionSubsystem extends Subsystem {
         DriverStationJNI.getTelemetry().addData("isPipelineProp", mIsPipelineProp);
 
 
-        if (mIsPipelineAprilTag) {
+        /*if (mIsPipelineAprilTag) {
             telemetryAprilTag();
-        }
+        }*/
     }
 
     public int getTeamPropLocation() {
@@ -76,7 +77,7 @@ public class VisionSubsystem extends Subsystem {
                 DriverStationJNI.getTelemetry().addLine(String.format("\n==== (ID %d) %s", detection.id, detection.metadata.name));
                 DriverStationJNI.getTelemetry().addLine(String.format("XYZ %6.1f %6.1f %6.1f  (inch)", detection.ftcPose.x, detection.ftcPose.y, detection.ftcPose.z));
                 DriverStationJNI.getTelemetry().addLine(String.format("PRY %6.1f %6.1f %6.1f  (deg)", detection.ftcPose.pitch, detection.ftcPose.roll, detection.ftcPose.yaw));
-                DriverStationJNI.getTelemetry().addLine(String.format("RBE %6.1f %6.1f %6.1f  (inch, deg, deg)", detection.ftcPose.range, detection.ftcPose.bearing, detection.ftcPose.elevation));
+                //DriverStationJNI.getTelemetry().addLine(String.format("RBE %6.1f %6.1f %6.1f  (inch, deg, deg)", detection.ftcPose.range, detection.ftcPose.bearing, detection.ftcPose.elevation));
             } else {
                 DriverStationJNI.getTelemetry().addLine(String.format("\n==== (ID %d) Unknown", detection.id));
                 DriverStationJNI.getTelemetry().addLine(String.format("Center %6.0f %6.0f   (pixels)", detection.center.x, detection.center.y));
@@ -88,6 +89,19 @@ public class VisionSubsystem extends Subsystem {
         DriverStationJNI.getTelemetry().addLine("PRY = Pitch, Roll & Yaw (XYZ Rotation)");
         DriverStationJNI.getTelemetry().addLine("RBE = Range, Bearing & Elevation");
 
+    }
+    public double getAprilTagPosX() {
+        List<AprilTagDetection> currentDetections = mAprilTag.getDetections();
+        DriverStationJNI.getTelemetry().addData("# AprilTags Detected", currentDetections.size());
+
+        // Step through the list of detections and display info for each one.
+        for (AprilTagDetection detection : currentDetections) {
+            if (detection.metadata != null) {
+                DriverStationJNI.getTelemetry().addData("april tag x", detection.ftcPose.x);
+                return detection.ftcPose.x;
+               }
+        }
+        return 0;
     }
 
     public void togglePipeline() {
@@ -110,9 +124,7 @@ public class VisionSubsystem extends Subsystem {
             @Override
             public void onError(int errorCode)
             {
-                /*
-                 * This will be called if the camera could not be opened
-                 */
+
             }
         });
     }
@@ -138,8 +150,9 @@ public class VisionSubsystem extends Subsystem {
         if (mIsPipelineAprilTag) {
         mIsPipelineAprilTag = false;
         mIsPipelineProp = false;
-        mVisionPortal.stopStreaming();
-        mVisionPortal.stopLiveView();
-        mVisionPortal.close();}
+        //mVisionPortal.stopStreaming();
+        //mVisionPortal.stopLiveView();
+        mVisionPortal.close();
+        }
     }
 }

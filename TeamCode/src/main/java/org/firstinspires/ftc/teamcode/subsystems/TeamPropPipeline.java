@@ -80,7 +80,7 @@ public class TeamPropPipeline extends OpenCvPipeline {
         } else if (rightPercent > leftPercent && rightPercent > middlePercent && rightPercent > rightTreshold) {
             return 2;
         }
-        return 1;
+        return 3;
     }
 
 

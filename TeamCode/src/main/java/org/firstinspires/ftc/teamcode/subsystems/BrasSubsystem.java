@@ -4,6 +4,7 @@ package org.firstinspires.ftc.teamcode.subsystems;
 import org.firstinspires.ftc.teamcode.Constants;
 
 import dragons.rev.FtcMotor;
+import dragons.rev.FtcTouchSensor;
 import edu.wpi.first.hal.DriverStationJNI;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Subsystem;
@@ -15,6 +16,8 @@ public class BrasSubsystem extends Subsystem {
     private final FtcMotor m_MoteurExtention = new FtcMotor("extention");
 
     private final PIDController mPIDBras = new PIDController(0.01, 0, 0);
+
+    private final FtcTouchSensor mTouchSensor = new FtcTouchSensor("extention touch");
 
     private double m_posTarget;
 
@@ -43,7 +46,6 @@ public class BrasSubsystem extends Subsystem {
             mMotorBras2.set(consigne);
 
             DriverStationJNI.getTelemetry().addData("ExtCurrentPosition", getExtentionPosition());
-
     }
 
 
@@ -83,7 +85,15 @@ public class BrasSubsystem extends Subsystem {
             m_MoteurExtention.set(0);
             return;
         }
-        m_MoteurExtention.set(ex);
+
+
+        if (ex < 0) {
+            if (getExtentionPosition() > minExtention){
+                m_MoteurExtention.set(ex);
+            }
+        } else {
+            m_MoteurExtention.set(ex);
+        }
     }
 
     public double getExtentionPosition() {

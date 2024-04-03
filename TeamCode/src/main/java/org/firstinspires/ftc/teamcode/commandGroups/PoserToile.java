@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.commandGroups.Rouge.Gauche;
+package org.firstinspires.ftc.teamcode.commandGroups;
 
 import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.commands.AvanceAutoCommand;

@@ -59,6 +59,7 @@ public class Robot extends OpMode {
      */
     @Override
     public void stop() {
+        mRobotContainer.stop();
         CommandScheduler.getInstance().reset();
     }
 }

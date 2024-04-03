@@ -62,7 +62,7 @@ import java.util.List;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list.
  */
 @TeleOp(name = "Concept: AprilTag Easy", group = "Concept")
-@Disabled
+
 public class ConceptAprilTagEasy extends LinearOpMode {
 
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
@@ -71,6 +71,7 @@ public class ConceptAprilTagEasy extends LinearOpMode {
      * The variable to store our instance of the AprilTag processor.
      */
     private AprilTagProcessor aprilTag;
+    private boolean isEnoch = true;
 
     /**
      * The variable to store our instance of the vision portal.
@@ -103,13 +104,21 @@ public class ConceptAprilTagEasy extends LinearOpMode {
                     visionPortal.resumeStreaming();
                 }
 
+
                 // Share the CPU.
                 sleep(20);
             }
         }
 
+        while(isEnoch) {
+            if(gamepad1.a) {
+                visionPortal.close();
+                isEnoch = false;
+            }
+        }
+
         // Save more CPU resources when camera is no longer needed.
-        visionPortal.close();
+
 
     }   // end method runOpMode()
 
