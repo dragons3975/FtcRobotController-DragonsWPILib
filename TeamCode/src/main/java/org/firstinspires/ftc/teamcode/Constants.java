@@ -47,11 +47,11 @@ public final class Constants {
 
     public static final class ConstantsPince {
 
-        public static final double Inclinaison = 0.3;
+        public static final double InclinaisonHaut = 0.6;
+        public static final double InclinaisonBas = 0.2;
+        public static final double ouvreMax = 0.4;
 
-        public static final double ouvreMax = 0.1;
-
-        public static final double ouvreMin = 0;
+        public static final double ouvreMin = 0.2;
     }
 
     public static final class ConstantsDrive {

@@ -28,9 +28,9 @@ public class BrasCommand extends Command{
     @Override
     public void execute() {
         DriverStationJNI.getTelemetry().addData("joystick", mxBoxController.getRightY());
-        mBrasSubsystem.incrementTarget(mxBoxController.getRightY() * 10);
+        mBrasSubsystem.incrementTarget(mxBoxController.getRightY() * 5);
 
-        mBrasSubsystem.extention(-mxBoxController.getLeftY());
+        mBrasSubsystem.extention(mxBoxController.getLeftY());
     }
 
 
@@ -43,8 +43,7 @@ public class BrasCommand extends Command{
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        // Commande infinie car la commande sera appellée avec un withTimeout()
-        // donc elle sera interrompue à la fin du timeout
+        // Commande infinie
         return false;
     }
 }

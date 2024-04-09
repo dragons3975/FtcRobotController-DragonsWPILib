@@ -15,19 +15,21 @@ import org.firstinspires.ftc.teamcode.commandGroups.Rouge.Droite.RougeDroiteTeam
 import org.firstinspires.ftc.teamcode.commands.ActivateAprilTagPipelineCommand;
 import org.firstinspires.ftc.teamcode.commands.ActivatePropPipelineCommand;
 import org.firstinspires.ftc.teamcode.commands.BrasCommandPos1;
+import org.firstinspires.ftc.teamcode.commands.CalibreExtentionCommand;
 import org.firstinspires.ftc.teamcode.commands.DeactivateAprilTagPipelineCommand;
 import org.firstinspires.ftc.teamcode.commands.DeactivatePropPipelineCommand;
 import org.firstinspires.ftc.teamcode.commands.LanceurCommand;
+import org.firstinspires.ftc.teamcode.commands.PinceCommandToggleDroit;
+import org.firstinspires.ftc.teamcode.commands.PinceCommandToggleGauche;
+import org.firstinspires.ftc.teamcode.commands.PinceToggleInclinaisonCommand;
 import org.firstinspires.ftc.teamcode.commands.ToggleAllianceColorCommand;
 import org.firstinspires.ftc.teamcode.commands.ToggleAlliancePositionCommand;
 import org.firstinspires.ftc.teamcode.commands.DriveCommand;
-import org.firstinspires.ftc.teamcode.commands.IntakeCommand;
 import org.firstinspires.ftc.teamcode.commands.PinceCommandToggle;
 import org.firstinspires.ftc.teamcode.commands.ToggleTemporaryTeamPropPositionCommand;
 import org.firstinspires.ftc.teamcode.commands.ToggleVisionPipelineCommand;
 import org.firstinspires.ftc.teamcode.subsystems.ConfigSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
-import org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem;
 import org.firstinspires.ftc.teamcode.commands.BrasCommand;
 import org.firstinspires.ftc.teamcode.subsystems.BrasSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.LanceurSubsystem;
@@ -46,7 +48,6 @@ public class RobotContainer {
     private final XboxController mXboxController2 = new XboxController(Constants.OIConstants.kDriverControllerPort2);
 
     private final DriveSubsystem mDriveSubsystem = new DriveSubsystem();
-    private final IntakeSubsystem mIntakeSubsystem = new IntakeSubsystem();
     private final ConfigSubsystem mConfigSubsystem = new ConfigSubsystem();
     private final VisionSubsystem mVisionSubsystem = new VisionSubsystem();
     public final TeamPropPipeline mTeamPropPipeline = new TeamPropPipeline();
@@ -62,8 +63,6 @@ public class RobotContainer {
     private final BrasCommandPos1 mBrasCommandPos2 = new BrasCommandPos1(mBrasSubsystem, 330);
 
    private final BrasCommand mBrasCommand = new BrasCommand(mBrasSubsystem, mXboxController2);
-
-    private final IntakeCommand mIntakeCommand = new IntakeCommand(mIntakeSubsystem);
 
     private final ToggleVisionPipelineCommand mToggleVisionPipelineCommand = new ToggleVisionPipelineCommand(mVisionSubsystem);
 
@@ -86,13 +85,21 @@ public class RobotContainer {
     private final ToggleAlliancePositionCommand mToggleAlliancePositionCommand = new ToggleAlliancePositionCommand(mConfigSubsystem);
     private final ToggleTemporaryTeamPropPositionCommand mToggleTemporaryTeamPropPositionCommand = new ToggleTemporaryTeamPropPositionCommand(mConfigSubsystem);
 
+    private final PinceCommandToggleDroit mPinceCommandToggleDroit = new PinceCommandToggleDroit(mPinceSubsystem);
+    private final PinceCommandToggleGauche mPinceCommandToggleGauche = new PinceCommandToggleGauche(mPinceSubsystem);
+
+    private final PinceToggleInclinaisonCommand mPinceToggleInclinaisonCommand = new PinceToggleInclinaisonCommand(mPinceSubsystem);
+
+    private final CalibreExtentionCommand mCalibreExtentionCommand = new CalibreExtentionCommand(mBrasSubsystem);
+
+
     public RobotContainer() {
         configureButtonBindings();
         configureDefaultCommands();
     }
 
     public void init() {
-        mCalibreBrasCommand.schedule();
+        //mCalibreBrasCommand.schedule();
     }
 
     private void configureButtonBindings() {
@@ -118,6 +125,9 @@ public class RobotContainer {
         JoystickButton buttonY = new JoystickButton(mXboxController, XboxController.Button.kY.value);
         buttonY.onTrue(mToggleVisionPipelineCommand);
 
+        JoystickButton buttonB = new JoystickButton(mXboxController, XboxController.Button.kB.value);
+        buttonB.onTrue(mCalibreBrasCommand);
+
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -129,9 +139,16 @@ public class RobotContainer {
 
         JoystickButton buttonY2 = new JoystickButton(mXboxController2, XboxController.Button.kY.value);
         //buttonY2.whileTrue(mBrasCommandPos2);
-        buttonY2.whileTrue(mIntakeCommand);
+        buttonY2.onTrue(mCalibreExtentionCommand);
 
         JoystickButton buttonA2 = new JoystickButton(mXboxController2, XboxController.Button.kA.value);
+        buttonA2.onTrue(mPinceToggleInclinaisonCommand);
+
+        JoystickButton buttonkLeft = new JoystickButton(mXboxController2, XboxController.Button.kLeft.value);
+        buttonkLeft.onTrue(mPinceCommandToggleDroit);
+
+        JoystickButton buttonkRight = new JoystickButton(mXboxController2, XboxController.Button.kRight.value);
+        buttonkRight.onTrue(mPinceCommandToggleGauche);
     }
     private void configureDefaultCommands() {
         mDriveSubsystem.setDefaultCommand(mDriveCommand);
@@ -146,48 +163,48 @@ public class RobotContainer {
         if (mConfigSubsystem.allianceColor() == Constants.ConfigConstants.kBleu) {
             if (mConfigSubsystem.alliancePosition() == Constants.ConfigConstants.kGauche) {
                 if (mVisionSubsystem.getTeamPropLocation() == Constants.VisionConstants.kTeamPropGauche) {
-                    return new BleuGaucheTeamPropGauche(mDriveSubsystem, mIntakeSubsystem, mPinceSubsystem, mBrasSubsystem);
+                    return new BleuGaucheTeamPropGauche(mDriveSubsystem, mPinceSubsystem, mBrasSubsystem);
                 }
                 if (mVisionSubsystem.getTeamPropLocation() == Constants.VisionConstants.kTeamPropMilieu) {
-                    return new BleuGaucheTeamPropMilieu(mDriveSubsystem, mIntakeSubsystem, mPinceSubsystem, mBrasSubsystem);
+                    return new BleuGaucheTeamPropMilieu(mDriveSubsystem, mPinceSubsystem, mBrasSubsystem);
                 }
                 if (mVisionSubsystem.getTeamPropLocation() == Constants.VisionConstants.kTeamPropDroite) {
-                    return new BleuGaucheTeamPropDroite(mDriveSubsystem, mIntakeSubsystem, mPinceSubsystem, mBrasSubsystem);
+                    return new BleuGaucheTeamPropDroite(mDriveSubsystem, mPinceSubsystem, mBrasSubsystem);
                 }
             }
             if (mConfigSubsystem.alliancePosition() == Constants.ConfigConstants.kDroite) {
                 if (mVisionSubsystem.getTeamPropLocation() == Constants.VisionConstants.kTeamPropGauche) {
-                    return new BleuDroiteTeamPropGauche(mDriveSubsystem, mIntakeSubsystem, mPinceSubsystem, mBrasSubsystem);
+                    return new BleuDroiteTeamPropGauche(mDriveSubsystem, mPinceSubsystem, mBrasSubsystem);
                 }
                 if (mVisionSubsystem.getTeamPropLocation() == Constants.VisionConstants.kTeamPropMilieu) {
-                    return new BleuDroiteTeamPropMilieu(mDriveSubsystem, mIntakeSubsystem, mPinceSubsystem, mBrasSubsystem);
+                    return new BleuDroiteTeamPropMilieu(mDriveSubsystem, mPinceSubsystem, mBrasSubsystem);
                 }
                 if (mVisionSubsystem.getTeamPropLocation() == Constants.VisionConstants.kTeamPropDroite) {
-                    return new BleuDroiteTeamPropDroite(mDriveSubsystem, mIntakeSubsystem, mPinceSubsystem, mBrasSubsystem);
+                    return new BleuDroiteTeamPropDroite(mDriveSubsystem, mPinceSubsystem, mBrasSubsystem);
                 }
             }
         }
         if (mConfigSubsystem.allianceColor() == Constants.ConfigConstants.kRouge) {
             if (mConfigSubsystem.alliancePosition() == Constants.ConfigConstants.kGauche) {
                 if (mVisionSubsystem.getTeamPropLocation() == Constants.VisionConstants.kTeamPropGauche) {
-                    return new RougeGaucheTeamPropGauche(mDriveSubsystem, mIntakeSubsystem, mPinceSubsystem, mBrasSubsystem);
+                    return new RougeGaucheTeamPropGauche(mDriveSubsystem, mPinceSubsystem, mBrasSubsystem);
                 }
                 if (mVisionSubsystem.getTeamPropLocation() == Constants.VisionConstants.kTeamPropMilieu) {
-                    return new RougeGaucheTeamPropMilieu(mDriveSubsystem, mIntakeSubsystem, mPinceSubsystem, mBrasSubsystem);
+                    return new RougeGaucheTeamPropMilieu(mDriveSubsystem, mPinceSubsystem, mBrasSubsystem);
                 }
                 if (mVisionSubsystem.getTeamPropLocation() == Constants.VisionConstants.kTeamPropDroite) {
-                    return new RougeGaucheTeamPropDroite(mDriveSubsystem, mIntakeSubsystem, mPinceSubsystem, mBrasSubsystem);
+                    return new RougeGaucheTeamPropDroite(mDriveSubsystem, mPinceSubsystem, mBrasSubsystem);
                 }
             }
             if (mConfigSubsystem.alliancePosition() == Constants.ConfigConstants.kDroite) {
                 if (mVisionSubsystem.getTeamPropLocation() == Constants.VisionConstants.kTeamPropGauche) {
-                    return new RougeDroiteTeamPropGauche(mDriveSubsystem, mIntakeSubsystem, mPinceSubsystem, mBrasSubsystem);
+                    return new RougeDroiteTeamPropGauche(mDriveSubsystem, mPinceSubsystem, mBrasSubsystem);
                 }
                 if (mVisionSubsystem.getTeamPropLocation() == Constants.VisionConstants.kTeamPropMilieu) {
-                    return new RougeDroiteTeamPropMilieu(mDriveSubsystem, mIntakeSubsystem, mPinceSubsystem, mBrasSubsystem);
+                    return new RougeDroiteTeamPropMilieu(mDriveSubsystem, mPinceSubsystem, mBrasSubsystem);
                 }
                 if (mVisionSubsystem.getTeamPropLocation() == Constants.VisionConstants.kTeamPropDroite) {
-                    return new RougeDroiteTeamPropDroite(mDriveSubsystem, mIntakeSubsystem, mPinceSubsystem, mBrasSubsystem);
+                    return new RougeDroiteTeamPropDroite(mDriveSubsystem, mPinceSubsystem, mBrasSubsystem);
                 }
             }
         }

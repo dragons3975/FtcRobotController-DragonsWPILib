@@ -1,42 +1,40 @@
 package org.firstinspires.ftc.teamcode.commands;
 
-import org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.BrasSubsystem;
 
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class RamasseCommand extends Command {
+public class CalibreExtentionCommand extends Command {
 
-    private final IntakeSubsystem mIntakeSubsystem;
+    private final BrasSubsystem mBrasSubsystem;
 
+    public CalibreExtentionCommand(BrasSubsystem brasSubsystem) {
 
+        mBrasSubsystem = brasSubsystem;
 
-    public RamasseCommand(IntakeSubsystem intakeSubsystem) {
-
-        mIntakeSubsystem = intakeSubsystem;
-
-        addRequirements(intakeSubsystem);
+        addRequirements(mBrasSubsystem);
     }
 
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
+        mBrasSubsystem.extention(-0.2);
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        mIntakeSubsystem.IntakeDemarrer();
     }
 
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-        mIntakeSubsystem.intakeArreter();
+        mBrasSubsystem.calibreExtention();
     }
 
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return false;
+        return mBrasSubsystem.isTouchExtention();
     }
 }
