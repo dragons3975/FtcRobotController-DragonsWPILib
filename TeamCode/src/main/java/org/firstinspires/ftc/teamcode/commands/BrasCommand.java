@@ -28,7 +28,7 @@ public class BrasCommand extends Command{
     @Override
     public void execute() {
         DriverStationJNI.getTelemetry().addData("joystick", mxBoxController.getRightY());
-        mBrasSubsystem.incrementTarget(mxBoxController.getRightY() * 5);
+        mBrasSubsystem.incrementTarget(-mxBoxController.getRightY() * 80);
 
         mBrasSubsystem.extention(mxBoxController.getLeftY());
     }

@@ -31,7 +31,7 @@ public final class Constants {
     }
 
     public static final class ConstantsDrivePID {
-        public static final double kP = 0.03;
+        public static final double kP = 0.08;
         public static final double kI = 0;
         public static final double kD = 0;
     }
@@ -47,8 +47,8 @@ public final class Constants {
 
     public static final class ConstantsPince {
 
-        public static final double InclinaisonHaut = 0.6;
-        public static final double InclinaisonBas = 0.2;
+        public static final double InclinaisonHaut = 0.75;
+        public static final double InclinaisonBas = 0.4;
         public static final double ouvreMax = 0.4;
 
         public static final double ouvreMin = 0.2;

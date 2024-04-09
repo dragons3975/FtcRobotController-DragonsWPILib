@@ -25,10 +25,7 @@ public class DriveSubsystem extends Subsystem {
     private double m_zRotation = 0; // The robot's rotation rate around the Z axis [-1.0..1.0]. Clockwise is positive.
     private double m_ySpeed = 0;
 
-    private final boolean orienteTerrain = false;
-
-
-    private double angleConsigne;
+    private double mAngleConsigne;
 
     private PIDController mPIDz = new PIDController(Constants.ConstantsDrivePID.kP, Constants.ConstantsDrivePID.kI, Constants.ConstantsDrivePID.kD);
     public DriveSubsystem() {
@@ -38,7 +35,7 @@ public class DriveSubsystem extends Subsystem {
         m_rearLeftMotor.setInverted(true);
         m_rearRightMotor.setInverted(true);
 
-        angleConsigne = getAngle();
+        mAngleConsigne = getAngle();
 
         mPIDz.enableContinuousInput(-180, 180);
     }
@@ -48,10 +45,10 @@ public class DriveSubsystem extends Subsystem {
 
         mAngle = getAngle();
         DriverStationJNI.getTelemetry().addData("mGyro angle", mAngle);
-        DriverStationJNI.getTelemetry().addData("angleConsigne", angleConsigne);
-        m_zRotation = mPIDz.calculate(mAngle, angleConsigne);
-        if (m_zRotation > 0.2) m_zRotation = 0.2;
-        if (m_zRotation < -0.2) m_zRotation = -0.2;
+        DriverStationJNI.getTelemetry().addData("angleConsigne", mAngleConsigne);
+        m_zRotation = mPIDz.calculate(mAngle, mAngleConsigne);
+        DriverStationJNI.getTelemetry().addData("m_xSpeed", m_xSpeed);
+        DriverStationJNI.getTelemetry().addData("m_ySpeed", m_ySpeed);
         DriverStationJNI.getTelemetry().addData("m_zRotation", m_zRotation);
 
         // On inverse volontairement x et y pour avoir le x vers l'avant
@@ -76,16 +73,12 @@ public class DriveSubsystem extends Subsystem {
     }
 
     public void mecanumDrive(double xSpeed, double ySpeed, double zRotation){
-        if (orienteTerrain) {
-            angleConsigne += zRotation;
-            m_xSpeed = xSpeed * Math.sin(angleConsigne) - xSpeed * Math.cos(angleConsigne);
-            m_ySpeed = -xSpeed * Math.cos(angleConsigne) - ySpeed * Math.sin(angleConsigne);
-        } else {
-            m_xSpeed = xSpeed;
-            m_ySpeed = -ySpeed;
-            angleConsigne = getAngle() + zRotation;
+        if (Math.abs(zRotation) > 0.1) {
+            mAngleConsigne = getAngle() + zRotation * 5;
         }
-
+        double angleActuelRadians = Math.toRadians(getAngle());
+        m_xSpeed = xSpeed * Math.cos(angleActuelRadians) + ySpeed * Math.sin(angleActuelRadians);
+        m_ySpeed = ySpeed * Math.cos(angleActuelRadians) - xSpeed * Math.sin(angleActuelRadians);
     }
 
     public boolean isAtSetPoint() {
@@ -108,11 +101,11 @@ public class DriveSubsystem extends Subsystem {
     public void stop () {
         m_xSpeed = 0;
         m_ySpeed = 0;
-        m_zRotation = 0;
+        mAngleConsigne = getAngle();
     }
 
     private double getAngle() {
-        return -mGyro.getAngle();
+        return MathUtil.inputModulus(-mGyro.getAngle(), -180, 180);
     }
 }
 
