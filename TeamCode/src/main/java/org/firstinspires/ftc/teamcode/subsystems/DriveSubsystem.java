@@ -25,11 +25,18 @@ public class DriveSubsystem extends Subsystem {
     private double m_zRotation = 0; // The robot's rotation rate around the Z axis [-1.0..1.0]. Clockwise is positive.
     private double m_ySpeed = 0;
 
-    private double mAngleConsigne;
+    private double mAngleConsigne, mxConsigne, myConsigne;
+
+    private boolean mpidxyEnabled = false;
 
     private PIDController mPIDz = new PIDController(Constants.ConstantsDrivePID.kP, Constants.ConstantsDrivePID.kI, Constants.ConstantsDrivePID.kD);
+
+    private PIDController mPIDx = new PIDController(Constants.ConstantsDrivePID.kPx, Constants.ConstantsDrivePID.kIx, Constants.ConstantsDrivePID.kDx);
+
+    private PIDController mPIDy = new PIDController(Constants.ConstantsDrivePID.kPy, Constants.ConstantsDrivePID.kIy, Constants.ConstantsDrivePID.kDy);
+
     public DriveSubsystem() {
-        mPIDz.setTolerance(0);
+        mPIDz.setTolerance(3);
         m_frontLeftMotor.setInverted(false);
         m_frontRightMotor.setInverted(false);
         m_rearLeftMotor.setInverted(true);
@@ -47,9 +54,23 @@ public class DriveSubsystem extends Subsystem {
         DriverStationJNI.getTelemetry().addData("mGyro angle", mAngle);
         DriverStationJNI.getTelemetry().addData("angleConsigne", mAngleConsigne);
         m_zRotation = mPIDz.calculate(mAngle, mAngleConsigne);
+        if (Math.abs(m_zRotation) > Constants.MaxSpeeds.kmaxZspeed) {
+            m_zRotation = Math.signum(m_zRotation) * Constants.MaxSpeeds.kmaxZspeed;
+        }
         DriverStationJNI.getTelemetry().addData("m_xSpeed", m_xSpeed);
         DriverStationJNI.getTelemetry().addData("m_ySpeed", m_ySpeed);
         DriverStationJNI.getTelemetry().addData("m_zRotation", m_zRotation);
+
+        if (mpidxyEnabled) {
+            m_xSpeed = mPIDx.calculate(getX(), mxConsigne);
+            m_ySpeed = mPIDy.calculate(getY(), myConsigne);
+            if (Math.abs(m_xSpeed) > Constants.MaxSpeeds.kmaxXspeed) {
+                m_xSpeed = Math.signum(m_xSpeed) * Constants.MaxSpeeds.kmaxXspeed;
+            }
+            if (Math.abs(m_ySpeed) > Constants.MaxSpeeds.kmaxYspeed) {
+                m_ySpeed = Math.signum(m_ySpeed) * Constants.MaxSpeeds.kmaxXspeed;
+            }
+        }
 
         // On inverse volontairement x et y pour avoir le x vers l'avant
         m_robotDrive.driveCartesian(m_ySpeed, m_xSpeed, m_zRotation);
@@ -58,31 +79,50 @@ public class DriveSubsystem extends Subsystem {
         DriverStationJNI.getTelemetry().addData("x", getX());
         DriverStationJNI.getTelemetry().addData("isAtSetPoint", isAtSetPoint());
 
+        DriverStationJNI.getTelemetry().addData("front left", getFrontLeftPosition());
+        DriverStationJNI.getTelemetry().addData("front right", getFrontRightPosition());
+        DriverStationJNI.getTelemetry().addData("rear left", getRearLeftPosition());
+        DriverStationJNI.getTelemetry().addData("rear right", getRearRightPosition());
+
+
     }
 
     public double getY() {
-        return (getFrontRightPosition() + getRearLeftPosition()
-                - getFrontLeftPosition() - getRearRightPosition())
-                / 4.0 / Constants.ConstantsDrive.distanceCalcul;
+        return (getFrontLeftPosition() + getRearRightPosition()
+                - getFrontRightPosition() - getRearLeftPosition())
+                / 4.0 * Constants.ConstantsDrive.distanceCalculy;
     }
 
     public double getX() {
         return (getFrontRightPosition() + getRearLeftPosition()
                 + getFrontLeftPosition() + getRearRightPosition())
-                / 4.0 / Constants.ConstantsDrive.distanceCalcul;
+                / 4.0 * Constants.ConstantsDrive.distanceCalculx;
     }
 
     public void mecanumDrive(double xSpeed, double ySpeed, double zRotation){
         if (Math.abs(zRotation) > 0.1) {
-            mAngleConsigne = getAngle() + zRotation * 5;
+            mAngleConsigne = getAngle() + zRotation;
         }
         double angleActuelRadians = Math.toRadians(getAngle());
         m_xSpeed = xSpeed * Math.cos(angleActuelRadians) + ySpeed * Math.sin(angleActuelRadians);
         m_ySpeed = ySpeed * Math.cos(angleActuelRadians) - xSpeed * Math.sin(angleActuelRadians);
+        mpidxyEnabled = false;
+    }
+
+    public void drivePIDxy(double xtarget, double ytarget) {
+        mxConsigne = getX() + xtarget;
+        myConsigne = getY() + ytarget;
+        mpidxyEnabled = true;
     }
 
     public boolean isAtSetPoint() {
         return mPIDz.atSetpoint();
+    }
+    public boolean isAtSetPointx() {
+        return mPIDx.atSetpoint();
+    }
+    public boolean isAtSetPointy() {
+        return mPIDy.atSetpoint();
     }
 
     private double getFrontLeftPosition() {

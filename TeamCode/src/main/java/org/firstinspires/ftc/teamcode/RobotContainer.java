@@ -58,7 +58,7 @@ public class RobotContainer {
 
     private final BrasSubsystem mBrasSubsystem = new BrasSubsystem();
 
-    private final BrasCommandPos1 mBrasCommandPos1 = new BrasCommandPos1(mBrasSubsystem, 0);
+    private final BrasCommandPos1 mBrasCommandPos1 = new BrasCommandPos1(mBrasSubsystem, 5000);
 
     private final BrasCommandPos1 mBrasCommandPos2 = new BrasCommandPos1(mBrasSubsystem, 330);
 
@@ -160,6 +160,9 @@ public class RobotContainer {
         DriverStationJNI.getTelemetry().addData("couleur", Constants.ConfigConstants.kRouge);
         DriverStationJNI.getTelemetry().addData("position", Constants.ConfigConstants.kGauche);
         DriverStationJNI.getTelemetry().addData("TeamPropLocation", Constants.VisionConstants.kTeamPropMilieu);
+
+        return new RougeGaucheTeamPropGauche(mDriveSubsystem, mPinceSubsystem, mBrasSubsystem);
+        /*
         if (mConfigSubsystem.allianceColor() == Constants.ConfigConstants.kBleu) {
             if (mConfigSubsystem.alliancePosition() == Constants.ConfigConstants.kGauche) {
                 if (mVisionSubsystem.getTeamPropLocation() == Constants.VisionConstants.kTeamPropGauche) {
@@ -208,6 +211,6 @@ public class RobotContainer {
                 }
             }
         }
-        return null;
+        return null;*/
     }
 }

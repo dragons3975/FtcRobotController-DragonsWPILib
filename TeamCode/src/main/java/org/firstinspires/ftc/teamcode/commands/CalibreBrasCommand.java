@@ -24,7 +24,7 @@ public class CalibreBrasCommand extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        mBrasSubsystem.incrementTarget(5);
+        mBrasSubsystem.incrementTarget(-40);
     }
 
     // Called once the command ends or is interrupted.

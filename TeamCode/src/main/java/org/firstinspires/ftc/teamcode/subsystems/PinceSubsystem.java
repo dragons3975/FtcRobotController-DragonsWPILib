@@ -23,7 +23,7 @@ public class PinceSubsystem extends Subsystem {
     private boolean gaucheOuvert = false;
     private boolean droiteOuvert = false;
 
-    private boolean bas = true;
+    private boolean bas = false;
 
     private double max = 0;
 

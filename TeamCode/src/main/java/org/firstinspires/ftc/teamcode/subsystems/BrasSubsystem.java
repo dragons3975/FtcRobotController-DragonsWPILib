@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 public class BrasSubsystem extends Subsystem {
 
     private final FtcMotor m_motorRotation = new FtcMotor("bras");
-    private final FtcMotor m_motorRotation2 = new FtcMotor("bras2");
     private final FtcMotor m_MoteurExtention = new FtcMotor("extention");
 
     private final FtcTouchSensor mSensorPince = new FtcTouchSensor("pince touch");
@@ -24,7 +23,7 @@ public class BrasSubsystem extends Subsystem {
 
     private double m_posTarget;
 
-    private double init = 0;
+    private double mRotationBrasInit = 0;
 
     private boolean isRotationCalibrated = false;
 
@@ -37,8 +36,7 @@ public class BrasSubsystem extends Subsystem {
     public BrasSubsystem() {
 
         mPIDBras.setTolerance(10);
-        m_motorRotation.setInverted(false);
-        m_motorRotation2.setInverted(true);
+        m_motorRotation.setInverted(true);
         m_MoteurExtention.setInverted(true);
         m_posTarget = getPositionRotation();
     }
@@ -50,11 +48,14 @@ public class BrasSubsystem extends Subsystem {
         DriverStationJNI.getTelemetry().addData("etat touch sensor pince", mSensorPince.getState());
 
         DriverStationJNI.getTelemetry().addData("getPositionRotation", getPositionRotation());
+        DriverStationJNI.getTelemetry().addData("getPositionRotation-Init", getPositionRotation()-mRotationBrasInit);
         DriverStationJNI.getTelemetry().addData("m_posTarget", m_posTarget);
         double consigne = -mPIDBras.calculate(getPositionRotation(), m_posTarget);
+        if (Math.abs(consigne) > Constants.MaxSpeeds.kmaxRotationSpeed) {
+            consigne = Math.signum(consigne) * Constants.MaxSpeeds.kmaxRotationSpeed;
+        }
         DriverStationJNI.getTelemetry().addData("CONSIGNE DU BRAS", consigne);
         m_motorRotation.set(consigne);
-        m_motorRotation2.set(consigne);
 
         DriverStationJNI.getTelemetry().addData("ex output", mEx);
         DriverStationJNI.getTelemetry().addData("ExtCurrentPosition", getExtentionPosition());
@@ -86,22 +87,22 @@ public class BrasSubsystem extends Subsystem {
     public void incrementTarget(double target) {
         m_posTarget += target;
         if (isRotationCalibrated) {
-            if (m_posTarget > init + Constants.ConstantsBras.kmax) {
-                m_posTarget = init + Constants.ConstantsBras.kmax;
+            if (m_posTarget > mRotationBrasInit + Constants.ConstantsBras.kmax) {
+                m_posTarget = mRotationBrasInit + Constants.ConstantsBras.kmax;
             }
-            if (m_posTarget < init) {
-                m_posTarget = init;
+            if (m_posTarget < mRotationBrasInit) {
+                m_posTarget = mRotationBrasInit;
             }
         }
     }
 
     public double getPositionRotation() {
-        return  -m_motorRotation.getCurrentPosition();
+        return -m_motorRotation.getCurrentPosition();
     }
 
     public void setTarget(double target) {
         if (isRotationCalibrated) {
-            m_posTarget = init + target;
+            m_posTarget = mRotationBrasInit + target;
         }
     }
 
@@ -114,7 +115,7 @@ public class BrasSubsystem extends Subsystem {
     }
 
     public void stopRotation() {
-        setTarget(getPositionRotation());
+        m_posTarget = getPositionRotation();
     }
 
     public double getExtentionPosition() {
@@ -122,15 +123,15 @@ public class BrasSubsystem extends Subsystem {
     }
 
     public void calibreExtention() {
+        stopExtention();
         minExtention = getExtentionPosition();
         isExtentionCalibrated = true;
-        stopExtention();
     }
 
     public void calibreBras() {
-        init = getPositionRotation();
-        isRotationCalibrated = true;
         stopRotation();
+        mRotationBrasInit = getPositionRotation();
+        isRotationCalibrated = true;
     }
 }
 

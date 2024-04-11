@@ -38,6 +38,6 @@ public class TourneAutoCommand extends Command {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return mDriveSubsystem.isAtSetPoint();
+        return mDriveSubsystem.isAtSetPointx();
     }
 }
