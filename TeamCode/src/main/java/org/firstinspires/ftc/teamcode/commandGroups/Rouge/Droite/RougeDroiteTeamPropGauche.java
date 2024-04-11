@@ -1,7 +1,9 @@
 package org.firstinspires.ftc.teamcode.commandGroups.Rouge.Droite;
 
+import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.commands.AvanceAutoCommand;
-import org.firstinspires.ftc.teamcode.commands.BrasCommandPos1;
+import org.firstinspires.ftc.teamcode.commands.BrasCommandPos;
+import org.firstinspires.ftc.teamcode.commands.CalibreBrasCommand;
 import org.firstinspires.ftc.teamcode.commands.PinceAutoCommandOuvre;
 import org.firstinspires.ftc.teamcode.commands.TourneAutoCommand;
 import org.firstinspires.ftc.teamcode.subsystems.BrasSubsystem;
@@ -15,32 +17,22 @@ public class RougeDroiteTeamPropGauche extends SequentialCommandGroup {
     public RougeDroiteTeamPropGauche(DriveSubsystem driveSubsystem, PinceSubsystem pinceSubsystem, BrasSubsystem brasSubsystem) {
 
         //ParallelRaceGroup calibration = new CalibreBrasCommand(brasSubsystem).withTimeout(0);
-        AvanceAutoCommand reculer = new AvanceAutoCommand(driveSubsystem, -0.5, 15);
-        AvanceAutoCommand reculer2 = new AvanceAutoCommand(driveSubsystem, -0.5, 3);
-        AvanceAutoCommand avancer = new AvanceAutoCommand(driveSubsystem, 0.5, 15);
-        AvanceAutoCommand avancer2 = new AvanceAutoCommand(driveSubsystem, 0.5, 6);
-        AvanceAutoCommand avancer3 = new AvanceAutoCommand(driveSubsystem, 0.5, 2);
-        TourneAutoCommand tourne2 = new TourneAutoCommand(driveSubsystem, 90);
-        //DetectPixelCommand detect = new DetectPixelCommand(pixelDetectionSubsystem);
-        TourneAutoCommand tourne = new TourneAutoCommand(driveSubsystem, -90);
-        TourneAutoCommand tourne3 = new TourneAutoCommand(driveSubsystem, -90);
-        BrasCommandPos1 bras = new BrasCommandPos1(brasSubsystem, 100);
-        PinceAutoCommandOuvre ouvre = new PinceAutoCommandOuvre(pinceSubsystem);
+        AvanceAutoCommand avancer = new AvanceAutoCommand(driveSubsystem, Constants.AutonomousConstants.kAvancementInitial, 0);
+        AvanceAutoCommand avancer2 = new AvanceAutoCommand(driveSubsystem, Constants.AutonomousConstants.kAvancementVersToileEloigne, 0);
+        TourneAutoCommand tourne = new TourneAutoCommand(driveSubsystem, 90);
+        CalibreBrasCommand calibre = new CalibreBrasCommand(brasSubsystem);
+        BrasCommandPos pos1 = new BrasCommandPos(brasSubsystem, 400);
+        PinceAutoCommandOuvre ouvrePince = new PinceAutoCommandOuvre(pinceSubsystem);
+
+
 
         addCommands(
-                //reculer,
-                //poser
-                //tourne,
-                //reculer2,
-                //ramasser
-                //avancer,
-                //tourne2,
-                //avancer2,
-                //tourne3,
-                //avancer3
-                //poser
-                //bras,
-                //ouvre
+                //calibre,
+                avancer,
+                tourne,
+                avancer2,
+                pos1,
+                ouvrePince
         );
     }
 

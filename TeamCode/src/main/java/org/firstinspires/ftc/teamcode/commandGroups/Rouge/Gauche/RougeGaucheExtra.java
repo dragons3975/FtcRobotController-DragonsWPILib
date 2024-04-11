@@ -12,13 +12,16 @@ import org.firstinspires.ftc.teamcode.subsystems.PinceSubsystem;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
-public class RougeGaucheTeamPropDroite extends SequentialCommandGroup {
+public class RougeGaucheExtra extends SequentialCommandGroup {
 
-    public RougeGaucheTeamPropDroite(DriveSubsystem driveSubsystem, PinceSubsystem pinceSubsystem, BrasSubsystem brasSubsystem) {
+    public RougeGaucheExtra(DriveSubsystem driveSubsystem, PinceSubsystem pinceSubsystem, BrasSubsystem brasSubsystem) {
 
         AvanceAutoCommand avancer = new AvanceAutoCommand(driveSubsystem, Constants.AutonomousConstants.kAvancementInitial, 0);
-        AvanceAutoCommand avancer2 = new AvanceAutoCommand(driveSubsystem, Constants.AutonomousConstants.kAvancementVersToileProche, 0);
+        AvanceAutoCommand avancer2 = new AvanceAutoCommand(driveSubsystem, Constants.AutonomousConstants.kAvancementVersToileEloigne, 0);
+        AvanceAutoCommand avancer3 = new AvanceAutoCommand(driveSubsystem, Constants.AutonomousConstants.kAvancementExtra2, 0);
+        AvanceAutoCommand tasser = new AvanceAutoCommand(driveSubsystem, 0, -Constants.AutonomousConstants.kDeplacementExtraLateral);
         TourneAutoCommand tourne = new TourneAutoCommand(driveSubsystem, 90);
+        TourneAutoCommand tourne2 = new TourneAutoCommand(driveSubsystem, -90);
         CalibreBrasCommand calibre = new CalibreBrasCommand(brasSubsystem);
         BrasCommandPos pos1 = new BrasCommandPos(brasSubsystem, 400);
         PinceAutoCommandOuvre ouvrePince = new PinceAutoCommandOuvre(pinceSubsystem);
@@ -30,6 +33,9 @@ public class RougeGaucheTeamPropDroite extends SequentialCommandGroup {
                 avancer,
                 tourne,
                 avancer2,
+                tourne2,
+                tasser,
+                avancer3,
                 pos1,
                 ouvrePince
         );

@@ -14,14 +14,17 @@ public final class Constants {
     public static final class AutonomousConstants {
 
         //POSITION 1, AVANCEMENT INITIAL
-        public static final int kPos1AvanceGauche = 10;//
-        public static final int kPos1AvanceMilieu = 20;
-        public static final int kPos1AvanceDroite = 30;
-        //POSITION 1, APPROCHE AU TABLEAU
+        public static final double kAvancementInitial = 65;
 
+        public static final double kAvancementVersToileEloigne = 230;
 
-        public static final int kApproche = 20;
-        //POSITION 2, AVANCEMENT INITIAL
+        public static final double kAvancementVersToileProche = 110;
+
+        public static final double kAvancementExtra1 = 120;
+
+        public static final double kAvancementExtra2 = 110;
+
+        public static final double kDeplacementExtraLateral = 50;
 
     }
 

@@ -1,6 +1,10 @@
 package org.firstinspires.ftc.teamcode.commandGroups.Rouge.Gauche;
 
+import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.commands.AvanceAutoCommand;
+import org.firstinspires.ftc.teamcode.commands.BrasCommandPos;
+import org.firstinspires.ftc.teamcode.commands.CalibreBrasCommand;
+import org.firstinspires.ftc.teamcode.commands.PinceAutoCommandOuvre;
 import org.firstinspires.ftc.teamcode.commands.TourneAutoCommand;
 import org.firstinspires.ftc.teamcode.commands.TranslaterAutoCommand;
 import org.firstinspires.ftc.teamcode.subsystems.BrasSubsystem;
@@ -14,23 +18,22 @@ public class RougeGaucheTeamPropMilieu extends SequentialCommandGroup {
 
     public RougeGaucheTeamPropMilieu(DriveSubsystem driveSubsystem, PinceSubsystem pinceSubsystem, BrasSubsystem brasSubsystem) {
 
-        ParallelRaceGroup tourne1 = new TourneAutoCommand(driveSubsystem, 10).withTimeout(1);
-        AvanceAutoCommand reculer = new AvanceAutoCommand(driveSubsystem, -0.5, 20);
-        ParallelRaceGroup tourne = new TourneAutoCommand(driveSubsystem, -90).withTimeout(3);
-        AvanceAutoCommand avancer = new AvanceAutoCommand(driveSubsystem, 0.5, 30);
-        TranslaterAutoCommand translater = new TranslaterAutoCommand(driveSubsystem, -0.5, 8);
-        AvanceAutoCommand avancer2 = new AvanceAutoCommand(driveSubsystem, 0.5, 5);
-        //poserToile = groupe de commande
+        AvanceAutoCommand avancer = new AvanceAutoCommand(driveSubsystem, Constants.AutonomousConstants.kAvancementInitial, 0);
+        AvanceAutoCommand avancer2 = new AvanceAutoCommand(driveSubsystem, Constants.AutonomousConstants.kAvancementVersToileProche, 0);
+        TourneAutoCommand tourne = new TourneAutoCommand(driveSubsystem, 90);
+        CalibreBrasCommand calibre = new CalibreBrasCommand(brasSubsystem);
+        BrasCommandPos pos1 = new BrasCommandPos(brasSubsystem, 400);
+        PinceAutoCommandOuvre ouvrePince = new PinceAutoCommandOuvre(pinceSubsystem);
+
+
 
         addCommands(
-                //tourne1,
-                reculer,
-                //poserSol,
-                tourne,
+                //calibre,
                 avancer,
-                translater,
-                avancer2
-                //poserToile
+                tourne,
+                avancer2,
+                pos1,
+                ouvrePince
         );
     }
 

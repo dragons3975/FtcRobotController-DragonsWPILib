@@ -4,13 +4,13 @@ import org.firstinspires.ftc.teamcode.subsystems.BrasSubsystem;
 
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class BrasCommandPos1 extends Command{
+public class BrasCommandPos extends Command{
 
     private final BrasSubsystem mBrasSubsystem;
 
     private final double mPos;
 
-    public BrasCommandPos1(BrasSubsystem brasSubsystem, double pos) {
+    public BrasCommandPos(BrasSubsystem brasSubsystem, double pos) {
         mPos = pos;
         mBrasSubsystem = brasSubsystem;
 

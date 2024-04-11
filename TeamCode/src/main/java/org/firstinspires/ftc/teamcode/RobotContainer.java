@@ -1,20 +1,9 @@
 package org.firstinspires.ftc.teamcode;
 
-import org.firstinspires.ftc.teamcode.commandGroups.Bleu.Droite.BleuDroiteTeamPropDroite;
-import org.firstinspires.ftc.teamcode.commandGroups.Bleu.Droite.BleuDroiteTeamPropGauche;
-import org.firstinspires.ftc.teamcode.commandGroups.Bleu.Droite.BleuDroiteTeamPropMilieu;
-import org.firstinspires.ftc.teamcode.commandGroups.Bleu.Gauche.BleuGaucheTeamPropDroite;
-import org.firstinspires.ftc.teamcode.commandGroups.Bleu.Gauche.BleuGaucheTeamPropGauche;
-import org.firstinspires.ftc.teamcode.commandGroups.Bleu.Gauche.BleuGaucheTeamPropMilieu;
-import org.firstinspires.ftc.teamcode.commandGroups.Rouge.Droite.RougeDroiteTeamPropMilieu;
-import org.firstinspires.ftc.teamcode.commandGroups.Rouge.Gauche.RougeGaucheTeamPropDroite;
 import org.firstinspires.ftc.teamcode.commandGroups.Rouge.Gauche.RougeGaucheTeamPropGauche;
-import org.firstinspires.ftc.teamcode.commandGroups.Rouge.Gauche.RougeGaucheTeamPropMilieu;
-import org.firstinspires.ftc.teamcode.commandGroups.Rouge.Droite.RougeDroiteTeamPropDroite;
-import org.firstinspires.ftc.teamcode.commandGroups.Rouge.Droite.RougeDroiteTeamPropGauche;
 import org.firstinspires.ftc.teamcode.commands.ActivateAprilTagPipelineCommand;
 import org.firstinspires.ftc.teamcode.commands.ActivatePropPipelineCommand;
-import org.firstinspires.ftc.teamcode.commands.BrasCommandPos1;
+import org.firstinspires.ftc.teamcode.commands.BrasCommandPos;
 import org.firstinspires.ftc.teamcode.commands.CalibreExtentionCommand;
 import org.firstinspires.ftc.teamcode.commands.DeactivateAprilTagPipelineCommand;
 import org.firstinspires.ftc.teamcode.commands.DeactivatePropPipelineCommand;
@@ -58,9 +47,9 @@ public class RobotContainer {
 
     private final BrasSubsystem mBrasSubsystem = new BrasSubsystem();
 
-    private final BrasCommandPos1 mBrasCommandPos1 = new BrasCommandPos1(mBrasSubsystem, 5000);
+    private final BrasCommandPos mBrasCommandPos = new BrasCommandPos(mBrasSubsystem, 5000);
 
-    private final BrasCommandPos1 mBrasCommandPos2 = new BrasCommandPos1(mBrasSubsystem, 330);
+    private final BrasCommandPos mBrasCommandPos2 = new BrasCommandPos(mBrasSubsystem, 330);
 
    private final BrasCommand mBrasCommand = new BrasCommand(mBrasSubsystem, mXboxController2);
 
@@ -132,7 +121,7 @@ public class RobotContainer {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
         JoystickButton buttonX2 = new JoystickButton(mXboxController2, XboxController.Button.kX.value);
-        buttonX2.whileTrue(mBrasCommandPos1);
+        buttonX2.whileTrue(mBrasCommandPos);
 
         JoystickButton buttonB2 = new JoystickButton(mXboxController2, XboxController.Button.kB.value);
         buttonB2.onTrue(mPinceCommandToggle);
