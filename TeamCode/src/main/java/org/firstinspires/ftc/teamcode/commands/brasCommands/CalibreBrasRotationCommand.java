@@ -5,11 +5,11 @@ import org.firstinspires.ftc.teamcode.subsystems.BrasSubsystem;
 
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class CalibreBrasCommand extends Command {
+public class CalibreBrasRotationCommand extends Command {
 
     private final BrasSubsystem mBrasSubsystem;
 
-    public CalibreBrasCommand(BrasSubsystem brasSubsystem) {
+    public CalibreBrasRotationCommand(BrasSubsystem brasSubsystem) {
 
         mBrasSubsystem = brasSubsystem;
 
@@ -24,7 +24,7 @@ public class CalibreBrasCommand extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        mBrasSubsystem.incrementTarget(-Constants.BrasConstants.kIncremetentCalibration);
+        mBrasSubsystem.incrementTargetRotation(-Constants.BrasConstants.kIncremetentRotationMax);
     }
 
     // Called once the command ends or is interrupted.

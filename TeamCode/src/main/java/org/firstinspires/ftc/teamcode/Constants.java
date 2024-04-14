@@ -45,7 +45,7 @@ public final class Constants {
 
         public static final double kRotationMilieu = 4000;
 
-        public static final double kmaxExt = 28000;
+        public static final double kmaxExt = 24000;
 
         public static final double kHauteurSecurite = 3500;
 
@@ -55,11 +55,17 @@ public final class Constants {
 
         public static final double kToleranceRotation = 15;
 
-        public static final double kIncremetentCalibration = 100;
+        public static final double kIncremetentRotationMax = 120;
 
         public static final double kRotationPositionToile = 4375;
 
         public static final double kExtentionToile = 2700;
+
+        public static final double kPExtention = 0.001;
+
+        public static final double kToleranceExtention = 30;
+
+        public static final double kVitesseMaxExtention = 700;
     }
 
     public static final class ConstantsPince {
@@ -71,7 +77,7 @@ public final class Constants {
         public static final double kPinceDroitOuvreMax = 0.35;
         public static final double kPinceDroitOuvreMin = 0.15;
 
-        public static final double kInclinaisonMinSol = kInclinaisonBas + 0.03;
+        public static final double kInclinaisonMinSol = kInclinaisonBas + 0.025;
     }
 
     public static final class ConstantsDrive {

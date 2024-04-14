@@ -1,8 +1,8 @@
 package org.firstinspires.ftc.teamcode.commands.brasCommands;
 
+import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.subsystems.BrasSubsystem;
 
-import edu.wpi.first.hal.DriverStationJNI;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj.XboxController;
 
@@ -27,8 +27,8 @@ public class BrasDefaultCommand extends Command{
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        mBrasSubsystem.incrementTarget(mxBoxController.getRightY() * 120);
-        mBrasSubsystem.extention(mxBoxController.getLeftY());
+        mBrasSubsystem.incrementTargetRotation(mxBoxController.getRightY() * Constants.BrasConstants.kIncremetentRotationMax);
+        mBrasSubsystem.extention(-mxBoxController.getLeftY() * Constants.BrasConstants.kVitesseMaxExtention);
     }
 
 

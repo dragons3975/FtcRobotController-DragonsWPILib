@@ -4,15 +4,13 @@ import org.firstinspires.ftc.teamcode.subsystems.BrasSubsystem;
 
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class ExtentionAutoCommand extends Command{
+public class BrasExtentionPosCommand extends Command{
 
     private final BrasSubsystem mBrasSubsystem;
 
     private double mExtention;
 
-    private double init;
-
-    public ExtentionAutoCommand(BrasSubsystem brasSubsystem, double extention) {
+    public BrasExtentionPosCommand(BrasSubsystem brasSubsystem, double extention) {
         mBrasSubsystem = brasSubsystem;
         mExtention = extention;
 
@@ -22,8 +20,7 @@ public class ExtentionAutoCommand extends Command{
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        mBrasSubsystem.extention(0.5);
-        init = mBrasSubsystem.getExtentionPosition();
+        mBrasSubsystem.setTargetExtention(mExtention);
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -36,13 +33,13 @@ public class ExtentionAutoCommand extends Command{
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-        mBrasSubsystem.extention(0);
+        mBrasSubsystem.stopExtention();
     }
 
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return mBrasSubsystem.getExtentionPosition() >= init + mExtention;
+        return mBrasSubsystem.isExtentionAtSetPoint();
     }
 }
 

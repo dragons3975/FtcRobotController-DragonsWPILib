@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import org.firstinspires.ftc.teamcode.commandGroups.BrasPosition0;
 import org.firstinspires.ftc.teamcode.commandGroups.Rouge.Gauche.RougeGaucheTeamPropMilieu;
-import org.firstinspires.ftc.teamcode.commands.brasCommands.BrasPosCommand;
+import org.firstinspires.ftc.teamcode.commands.brasCommands.BrasRotationPosCommand;
 import org.firstinspires.ftc.teamcode.commands.brasCommands.CalibreExtentionCommand;
 import org.firstinspires.ftc.teamcode.commands.LanceurCommand;
 import org.firstinspires.ftc.teamcode.commands.pinceCommands.PinceToggleDroitCommand;
@@ -38,7 +38,7 @@ public class RobotContainer {
 
     private final DriveDefaultCommand mDriveDefaultCommand = new DriveDefaultCommand(mDriveSubsystem, mXboxController);
     private final BrasDefaultCommand mBrasDefaultCommand = new BrasDefaultCommand(mBrasSubsystem, mXboxController2);
-    private final BrasPosCommand mBrasCommandPositionMilieu = new BrasPosCommand(mBrasSubsystem, Constants.BrasConstants.kRotationMilieu);
+    private final BrasRotationPosCommand mBrasCommandPositionMilieu = new BrasRotationPosCommand(mBrasSubsystem, Constants.BrasConstants.kRotationMilieu);
 
     /*private final ToggleVisionPipelineCommand mToggleVisionPipelineCommand = new ToggleVisionPipelineCommand(mVisionSubsystem);
 

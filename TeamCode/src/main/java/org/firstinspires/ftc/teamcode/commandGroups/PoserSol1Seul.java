@@ -1,8 +1,8 @@
 package org.firstinspires.ftc.teamcode.commandGroups;
 
 import org.firstinspires.ftc.teamcode.Constants;
-import org.firstinspires.ftc.teamcode.commands.brasCommands.BrasPosCommand;
-import org.firstinspires.ftc.teamcode.commands.brasCommands.ExtentionAutoCommand;
+import org.firstinspires.ftc.teamcode.commands.brasCommands.BrasRotationPosCommand;
+import org.firstinspires.ftc.teamcode.commands.brasCommands.BrasExtentionPosCommand;
 import org.firstinspires.ftc.teamcode.commands.pinceCommands.PinceOuvreGaucheCommand;
 import org.firstinspires.ftc.teamcode.subsystems.BrasSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.PinceSubsystem;
@@ -13,8 +13,8 @@ public class PoserSol1Seul extends SequentialCommandGroup {
 
     public PoserSol1Seul(BrasSubsystem brasSubsystem, PinceSubsystem pinceSubsystem) {
 
-        BrasPosCommand bras = new BrasPosCommand(brasSubsystem, 230);
-        ExtentionAutoCommand extention = new ExtentionAutoCommand(brasSubsystem, Constants.AutonomousConstants.kExtentionPosSol);
+        BrasRotationPosCommand bras = new BrasRotationPosCommand(brasSubsystem, 230);
+        BrasExtentionPosCommand extention = new BrasExtentionPosCommand(brasSubsystem, Constants.AutonomousConstants.kExtentionPosSol);
         PinceOuvreGaucheCommand ouvreGauche = new PinceOuvreGaucheCommand(pinceSubsystem);
 
         addCommands(

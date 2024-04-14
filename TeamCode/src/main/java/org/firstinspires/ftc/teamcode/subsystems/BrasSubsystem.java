@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
 
-import org.checkerframework.checker.units.qual.C;
 import org.firstinspires.ftc.teamcode.Constants;
 
 import dragons.rev.FtcMotor;
@@ -22,7 +21,7 @@ public class BrasSubsystem extends Subsystem {
 
     private final PIDController mPIDBrasRotation = new PIDController(Constants.BrasConstants.kPRotation, 0, 0);
 
-
+    private final PIDController mPIDExtention = new PIDController(Constants.BrasConstants.kPExtention, 0, 0);
 
     private double mPosRotationTarget;
 
@@ -30,7 +29,7 @@ public class BrasSubsystem extends Subsystem {
 
     private boolean isRotationCalibrated = false;
 
-    private double mEx;
+    private double mExTarget;
 
     private double minExtention;
 
@@ -41,6 +40,7 @@ public class BrasSubsystem extends Subsystem {
         m_MoteurExtention.setInverted(true);
 
         mPIDBrasRotation.setTolerance(Constants.BrasConstants.kToleranceRotation);
+        mPIDExtention.setTolerance(Constants.BrasConstants.kToleranceExtention);
         stopRotation();
     }
 
@@ -62,22 +62,17 @@ public class BrasSubsystem extends Subsystem {
         DriverStationJNI.getTelemetry().addData("CONSIGNE DU BRAS", consigne);
         m_motorRotation.set(consigne);
 
-        DriverStationJNI.getTelemetry().addData("ex output", mEx);
+        DriverStationJNI.getTelemetry().addData("mExTarget", mExTarget);
         DriverStationJNI.getTelemetry().addData("ExtCurrentPosition", getExtentionPosition());
         DriverStationJNI.getTelemetry().addData("minExtention", minExtention);
         DriverStationJNI.getTelemetry().addData("minExtention+kmaxExt", minExtention + Constants.BrasConstants.kmaxExt);
-        if (isExtentionCalibrated) {
-            if (mEx < 0 && getExtentionPosition() <= minExtention) {
-                mEx = 0;
-            }
-            if (mEx > 0 && getExtentionPosition() >= minExtention + Constants.BrasConstants.kmaxExt) {
-                mEx = 0;
-            }
+
+        double ConsigneExtention = mPIDExtention.calculate(getExtentionPosition(), mExTarget);
+        if (Math.abs(ConsigneExtention) > Constants.MaxSpeeds.kmaxExtentionSpeed) {
+            ConsigneExtention = Math.signum(ConsigneExtention) * Constants.MaxSpeeds.kmaxExtentionSpeed;
         }
-        if (mEx < 0 && isTouchExtention()) {
-            mEx = 0;
-        }
-        m_MoteurExtention.set(mEx);
+        DriverStationJNI.getTelemetry().addData("CONSIGNE EXTENTION", ConsigneExtention);
+        m_MoteurExtention.set(ConsigneExtention);
 
     }
 
@@ -93,7 +88,11 @@ public class BrasSubsystem extends Subsystem {
         return mPIDBrasRotation.atSetpoint();
     }
 
-    public void incrementTarget(double deltaTarget) {
+    public boolean isExtentionAtSetPoint() {
+        return mPIDExtention.atSetpoint();
+    }
+
+    public void incrementTargetRotation(double deltaTarget) {
         mPosRotationTarget += deltaTarget;
         if (isRotationCalibrated) {
             if (mPosRotationTarget > mRotationBrasInit + Constants.BrasConstants.kmax) {
@@ -118,7 +117,7 @@ public class BrasSubsystem extends Subsystem {
         isRotationCalibrated = true;
     }
 
-    public void setTarget(double target) {
+    public void setTargetRotation(double target) {
         if (isRotationCalibrated) {
             mPosRotationTarget = mRotationBrasInit + target;
         }
@@ -128,17 +127,33 @@ public class BrasSubsystem extends Subsystem {
         mPosRotationTarget = getPositionRotation();
     }
 
-    public void extention(double ex) {
-        mEx = ex;
+    public void extention(double deltaEx) {
+        mExTarget += deltaEx;
+        if (isExtentionCalibrated) {
+            if (deltaEx < 0 && getExtentionPosition() <= minExtention) {
+                stopExtention();
+            }
+            if (deltaEx > 0 && getExtentionPosition() >= minExtention + Constants.BrasConstants.kmaxExt) {
+                stopExtention();
+            }
+        }
+        if (deltaEx < 0 && isTouchExtention()) {
+            stopExtention();
+        }
     }
 
-    public void stopExtention() {
-        extention(0);
+    public void setTargetExtention(double target) {
+        if (isExtentionCalibrated) {
+            mExTarget = minExtention + target;
+        }
     }
-
 
     public double getExtentionPosition() {
         return m_MoteurExtention.getCurrentPosition();
+    }
+
+    public void stopExtention() {
+        mExTarget = getExtentionPosition();
     }
 
     public void calibreExtention() {
