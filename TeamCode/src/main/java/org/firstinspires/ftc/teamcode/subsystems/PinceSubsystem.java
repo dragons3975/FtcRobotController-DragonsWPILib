@@ -99,6 +99,10 @@ public class PinceSubsystem extends Subsystem {
         bas = false;
     }
 
+    public void InclinePile() {
+        mMotorPinceInclinaison.setPosition(Constants.ConstantsPince.kInclinaisonPile);
+    }
+
     public void InclineToggle() {
         if (bas) {
             InclineHaut();

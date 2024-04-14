@@ -14,7 +14,7 @@ public final class Constants {
     public static final class AutonomousConstants {
 
         //POSITION 1, AVANCEMENT INITIAL
-        public static final double kAvancementInitial = 65;
+        public static final double kAvancementInitial = 77;
 
         public static final double kAvancementVersToileEloigne = 230;
 
@@ -45,37 +45,43 @@ public final class Constants {
 
         public static final double kRotationMilieu = 4000;
 
-        public static final double kmaxExt = 24000;
-
         public static final double kHauteurSecurite = 3500;
 
-        public static final double kHauteurSolMin = 10;
+        public static final double kHauteurSolMin = 5;
 
         public static final double kPRotation = 0.008;
 
         public static final double kToleranceRotation = 15;
 
-        public static final double kIncremetentRotationMax = 120;
+        public static final double kIncremetentRotationMax = 340;
 
-        public static final double kRotationPositionToile = 4375;
-
-        public static final double kExtentionToile = 2700;
+        public static final double kRotationPositionToile = 4300;
+        public static final double kmaxExt = 24000;
+        public static final double kExtentionToile = 24000;
 
         public static final double kPExtention = 0.001;
 
-        public static final double kToleranceExtention = 30;
+        public static final double kToleranceExtention = 100;
 
-        public static final double kVitesseMaxExtention = 700;
+        public static final double kVitesseMaxExtention = 1300;
+
+        public static final double kExtentionMinimalToile = 4000;
+
+        public static final double kPositionPile = 1700;
+
+        public static final double kPositionLeverUnPeu = 1000;
     }
 
     public static final class ConstantsPince {
 
         public static final double kInclinaisonHaut = 0.2;
-        public static final double kInclinaisonBas = 0.39;
+        public static final double kInclinaisonBas = 0.36;
         public static final double kPinceGaucheOuvreMax = 0.2;
         public static final double kPinceGaucheOuvreMin = 0.4;
         public static final double kPinceDroitOuvreMax = 0.35;
         public static final double kPinceDroitOuvreMin = 0.15;
+
+        public static final double kInclinaisonPile = kInclinaisonBas + 0.1;
 
         public static final double kInclinaisonMinSol = kInclinaisonBas + 0.025;
     }
@@ -95,15 +101,19 @@ public final class Constants {
         public static final double kI = 0;
         public static final double kD = 0;
 
+        public static final double kToleranceZ = 1.5;
 
-        public static final double kPx = 0.03;
+
+        public static final double kPx = 0.1;
         public static final double kIx = 0;
         public static final double kDx = 0;
+        public static final double kToleranceX = 2;
 
 
-        public static final double kPy = 0.04;
+        public static final double kPy = 0.2;
         public static final double kIy = 0;
         public static final double kDy = 0;
+        public static final double kToleranceY = 2;
 
     }
 
@@ -124,7 +134,7 @@ public final class Constants {
     public static final class MaxSpeeds {
         public static final double kmaxZspeed = 0.5;
 
-        public static final double kmaxXspeed = 0.5;
+        public static final double kmaxXspeed = 0.3;
 
         public static final double kmaxYspeed = 0.5;
 

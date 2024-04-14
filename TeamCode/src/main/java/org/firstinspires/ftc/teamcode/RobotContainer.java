@@ -1,6 +1,9 @@
 package org.firstinspires.ftc.teamcode;
 
 import org.firstinspires.ftc.teamcode.commandGroups.BrasPosition0;
+import org.firstinspires.ftc.teamcode.commandGroups.LeveBrasHauteurToileCommand;
+import org.firstinspires.ftc.teamcode.commandGroups.Rouge.Gauche.RougeGaucheTeamPropDroite;
+import org.firstinspires.ftc.teamcode.commandGroups.Rouge.Gauche.RougeGaucheTeamPropGauche;
 import org.firstinspires.ftc.teamcode.commandGroups.Rouge.Gauche.RougeGaucheTeamPropMilieu;
 import org.firstinspires.ftc.teamcode.commands.brasCommands.BrasRotationPosCommand;
 import org.firstinspires.ftc.teamcode.commands.brasCommands.CalibreExtentionCommand;
@@ -39,6 +42,8 @@ public class RobotContainer {
     private final DriveDefaultCommand mDriveDefaultCommand = new DriveDefaultCommand(mDriveSubsystem, mXboxController);
     private final BrasDefaultCommand mBrasDefaultCommand = new BrasDefaultCommand(mBrasSubsystem, mXboxController2);
     private final BrasRotationPosCommand mBrasCommandPositionMilieu = new BrasRotationPosCommand(mBrasSubsystem, Constants.BrasConstants.kRotationMilieu);
+
+    private final LeveBrasHauteurToileCommand mLeveBrasHauteurToileCommand = new LeveBrasHauteurToileCommand(mBrasSubsystem, mPinceSubsystem);
 
     /*private final ToggleVisionPipelineCommand mToggleVisionPipelineCommand = new ToggleVisionPipelineCommand(mVisionSubsystem);
 
@@ -108,13 +113,13 @@ public class RobotContainer {
         buttonX2.onTrue(mBrasPosition0AutoCommand);
 
         JoystickButton buttonRB2 = new JoystickButton(mXboxController2, XboxController.Button.kRightBumper.value);
-        buttonRB2.onTrue(mBrasCommandPositionMilieu);
+        //buttonRB2.onTrue(mLeveBrasHauteurToileCommand);
 
         JoystickButton buttonB2 = new JoystickButton(mXboxController2, XboxController.Button.kB.value);
         buttonB2.onTrue(mPinceCommandToggle);
 
         JoystickButton buttonY2 = new JoystickButton(mXboxController2, XboxController.Button.kY.value);
-        buttonY2.onTrue(mCalibreExtentionCommand);
+        buttonY2.onTrue(mLeveBrasHauteurToileCommand);
 
         JoystickButton buttonA2 = new JoystickButton(mXboxController2, XboxController.Button.kA.value);
         buttonA2.onTrue(mPinceToggleInclinaisonCommand);
@@ -137,7 +142,7 @@ public class RobotContainer {
         DriverStationJNI.getTelemetry().addData("position", mConfigSubsystem.alliancePosition());
         DriverStationJNI.getTelemetry().addData("TeamPropLocation", mVisionSubsystem.getTeamPropLocation());
 
-        return new RougeGaucheTeamPropMilieu(mDriveSubsystem, mPinceSubsystem, mBrasSubsystem);
+        return new RougeGaucheTeamPropDroite(mDriveSubsystem, mPinceSubsystem, mBrasSubsystem);
         /*
         if (mConfigSubsystem.allianceColor() == Constants.ConfigConstants.kBleu) {
             if (mConfigSubsystem.alliancePosition() == Constants.ConfigConstants.kGauche) {

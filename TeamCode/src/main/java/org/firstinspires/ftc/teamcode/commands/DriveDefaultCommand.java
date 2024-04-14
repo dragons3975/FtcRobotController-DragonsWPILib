@@ -30,7 +30,7 @@ public class DriveDefaultCommand extends Command {
     public void execute() {
         mX = -mXboxController.getLeftY() * 0.8;
         mY = mXboxController.getLeftX() * 0.8;
-        mZ = 7 * mXboxController.getRightX();
+        mZ = 10 * mXboxController.getRightX();
 
         mDriveSubsystem.mecanumDrive(mX, mY, mZ);
     }

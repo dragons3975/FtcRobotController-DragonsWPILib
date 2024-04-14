@@ -16,18 +16,20 @@ public class LeveBrasHauteurToileCommand extends SequentialCommandGroup {
 
     public LeveBrasHauteurToileCommand(BrasSubsystem brasSubsystem, PinceSubsystem pinceSubsystem) {
 
-        PinceFermeCommand ferme = new PinceFermeCommand(pinceSubsystem);
-        BrasRotationPosCommand bras = new BrasRotationPosCommand(brasSubsystem, Constants.BrasConstants.kRotationPositionToile);
-        BrasExtentionPosCommand extention = new BrasExtentionPosCommand(brasSubsystem, 1000);
-        PinceInclinaisonBasCommand pinceBas = new PinceInclinaisonBasCommand(pinceSubsystem);
+        PinceFermeCommand fermePince = new PinceFermeCommand(pinceSubsystem);
+        BrasRotationPosCommand brasRotationPositionToile = new BrasRotationPosCommand(brasSubsystem, Constants.BrasConstants.kRotationPositionToile);
         PinceInclinaisonHautCommand pinceHaut = new PinceInclinaisonHautCommand(pinceSubsystem);
-        CalibreBrasRotationCommand CalibreBras = new CalibreBrasRotationCommand(brasSubsystem);
+        BrasExtentionPosCommand extention = new BrasExtentionPosCommand(brasSubsystem, Constants.BrasConstants.kExtentionMinimalToile);
+        PinceInclinaisonBasCommand pinceBas = new PinceInclinaisonBasCommand(pinceSubsystem);
+        BrasExtentionPosCommand extentionFinal = new BrasExtentionPosCommand(brasSubsystem, Constants.BrasConstants.kExtentionToile);
 
         addCommands(
-                ferme,
-                bras,
+                fermePince,
+                brasRotationPositionToile,
                 pinceHaut,
-                extention
+                extention,
+                pinceBas,
+                extentionFinal
                 //poserToileb
         );
     }

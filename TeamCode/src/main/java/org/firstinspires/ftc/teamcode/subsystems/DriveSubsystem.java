@@ -36,7 +36,9 @@ public class DriveSubsystem extends Subsystem {
     private PIDController mPIDy = new PIDController(Constants.ConstantsDrivePID.kPy, Constants.ConstantsDrivePID.kIy, Constants.ConstantsDrivePID.kDy);
 
     public DriveSubsystem() {
-        mPIDz.setTolerance(3);
+        mPIDz.setTolerance(Constants.ConstantsDrivePID.kToleranceZ);
+        mPIDx.setTolerance(Constants.ConstantsDrivePID.kToleranceX);
+        mPIDy.setTolerance(Constants.ConstantsDrivePID.kToleranceY);
         m_frontLeftMotor.setInverted(false);
         m_frontRightMotor.setInverted(false);
         m_rearLeftMotor.setInverted(true);
@@ -57,9 +59,6 @@ public class DriveSubsystem extends Subsystem {
         if (Math.abs(m_zRotation) > Constants.MaxSpeeds.kmaxZspeed) {
             m_zRotation = Math.signum(m_zRotation) * Constants.MaxSpeeds.kmaxZspeed;
         }
-        DriverStationJNI.getTelemetry().addData("m_xSpeed", m_xSpeed);
-        DriverStationJNI.getTelemetry().addData("m_ySpeed", m_ySpeed);
-        DriverStationJNI.getTelemetry().addData("m_zRotation", m_zRotation);
 
         if (mpidxyEnabled) {
             m_xSpeed = mPIDx.calculate(getX(), mxConsigne);
@@ -68,23 +67,26 @@ public class DriveSubsystem extends Subsystem {
                 m_xSpeed = Math.signum(m_xSpeed) * Constants.MaxSpeeds.kmaxXspeed;
             }
             if (Math.abs(m_ySpeed) > Constants.MaxSpeeds.kmaxYspeed) {
-                m_ySpeed = Math.signum(m_ySpeed) * Constants.MaxSpeeds.kmaxXspeed;
+                m_ySpeed = Math.signum(m_ySpeed) * Constants.MaxSpeeds.kmaxYspeed;
             }
         }
+        DriverStationJNI.getTelemetry().addData("m_xSpeed", m_xSpeed);
+        DriverStationJNI.getTelemetry().addData("m_ySpeed", m_ySpeed);
+        DriverStationJNI.getTelemetry().addData("m_zRotation", m_zRotation);
 
         // On inverse volontairement x et y pour avoir le x vers l'avant
         m_robotDrive.driveCartesian(m_ySpeed, m_xSpeed, m_zRotation);
 
         DriverStationJNI.getTelemetry().addData("y", getY());
         DriverStationJNI.getTelemetry().addData("x", getX());
-        DriverStationJNI.getTelemetry().addData("isAtSetPoint", isAtSetPoint());
+        DriverStationJNI.getTelemetry().addData("isAtSetPointz", isAtSetPointz());
+        DriverStationJNI.getTelemetry().addData("isAtSetPointx", isAtSetPointx());
+        DriverStationJNI.getTelemetry().addData("isAtSetPointy", isAtSetPointy());
 
         DriverStationJNI.getTelemetry().addData("front left", getFrontLeftPosition());
         DriverStationJNI.getTelemetry().addData("front right", getFrontRightPosition());
         DriverStationJNI.getTelemetry().addData("rear left", getRearLeftPosition());
         DriverStationJNI.getTelemetry().addData("rear right", getRearRightPosition());
-
-
     }
 
     public double getY() {
@@ -115,7 +117,7 @@ public class DriveSubsystem extends Subsystem {
         mpidxyEnabled = true;
     }
 
-    public boolean isAtSetPoint() {
+    public boolean isAtSetPointz() {
         return mPIDz.atSetpoint();
     }
     public boolean isAtSetPointx() {

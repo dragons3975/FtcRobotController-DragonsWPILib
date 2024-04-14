@@ -13,13 +13,13 @@ public class PoserSol1Seul extends SequentialCommandGroup {
 
     public PoserSol1Seul(BrasSubsystem brasSubsystem, PinceSubsystem pinceSubsystem) {
 
-        BrasRotationPosCommand bras = new BrasRotationPosCommand(brasSubsystem, 230);
-        BrasExtentionPosCommand extention = new BrasExtentionPosCommand(brasSubsystem, Constants.AutonomousConstants.kExtentionPosSol);
+        //BrasRotationPosCommand bras = new BrasRotationPosCommand(brasSubsystem, 230);
+        //BrasExtentionPosCommand extention = new BrasExtentionPosCommand(brasSubsystem, Constants.AutonomousConstants.kExtentionPosSol);
         PinceOuvreGaucheCommand ouvreGauche = new PinceOuvreGaucheCommand(pinceSubsystem);
 
         addCommands(
-                bras,
-                extention,
+                //bras,
+                //extention,
                 ouvreGauche
                 //poserToile
         );
