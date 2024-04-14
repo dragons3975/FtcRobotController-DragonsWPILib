@@ -1,32 +1,34 @@
-package org.firstinspires.ftc.teamcode.commands;
+package org.firstinspires.ftc.teamcode.commands.brasCommands;
 
 import org.firstinspires.ftc.teamcode.subsystems.BrasSubsystem;
 
+import edu.wpi.first.hal.DriverStationJNI;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj.XboxController;
 
-public class BrasCommandPos extends Command{
+public class BrasDefaultCommand extends Command{
 
     private final BrasSubsystem mBrasSubsystem;
 
-    private final double mPos;
+    private final XboxController mxBoxController;
 
-    public BrasCommandPos(BrasSubsystem brasSubsystem, double pos) {
-        mPos = pos;
+    public BrasDefaultCommand(BrasSubsystem brasSubsystem, XboxController xboxController) {
         mBrasSubsystem = brasSubsystem;
+        mxBoxController = xboxController;
 
-        addRequirements();
+        addRequirements(brasSubsystem);
     }
 
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        mBrasSubsystem.setTarget(mPos);
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-
+        mBrasSubsystem.incrementTarget(mxBoxController.getRightY() * 120);
+        mBrasSubsystem.extention(mxBoxController.getLeftY());
     }
 
 
@@ -39,9 +41,8 @@ public class BrasCommandPos extends Command{
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        // Commande infinie car la commande sera appellée avec un withTimeout()
-        // donc elle sera interrompue à la fin du timeout
-        return true;
+        // Commande infinie
+        return false;
     }
 }
 

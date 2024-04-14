@@ -1,15 +1,15 @@
-package org.firstinspires.ftc.teamcode.commands;
-
+package org.firstinspires.ftc.teamcode.commands.pinceCommands;
 
 import org.firstinspires.ftc.teamcode.subsystems.PinceSubsystem;
 
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class PinceToggleInclinaisonCommand extends Command{
+public class PinceOuvreCommand extends Command{
 
     private final PinceSubsystem mPinceSubsystem;
 
-    public PinceToggleInclinaisonCommand(PinceSubsystem pinceSubsystem) {
+
+    public PinceOuvreCommand(PinceSubsystem pinceSubsystem) {
         mPinceSubsystem = pinceSubsystem;
 
         addRequirements(pinceSubsystem);
@@ -18,12 +18,13 @@ public class PinceToggleInclinaisonCommand extends Command{
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        mPinceSubsystem.InclineToggle();
+        mPinceSubsystem.Ouvre();
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
+
     }
 
 

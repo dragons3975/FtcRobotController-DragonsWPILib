@@ -5,7 +5,7 @@ import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class DriveCommand extends Command {
+public class DriveDefaultCommand extends Command {
 
     private final DriveSubsystem mDriveSubsystem;
     private final XboxController mXboxController;
@@ -13,7 +13,7 @@ public class DriveCommand extends Command {
     private double mY;
     private double mZ;
 
-    public DriveCommand(DriveSubsystem driveSubsystem, XboxController xboxController) {
+    public DriveDefaultCommand(DriveSubsystem driveSubsystem, XboxController xboxController) {
         mDriveSubsystem = driveSubsystem;
         mXboxController = xboxController;
 
@@ -28,8 +28,8 @@ public class DriveCommand extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        mX = -mXboxController.getLeftY();
-        mY = mXboxController.getLeftX();
+        mX = -mXboxController.getLeftY() * 0.8;
+        mY = mXboxController.getLeftX() * 0.8;
         mZ = 7 * mXboxController.getRightX();
 
         mDriveSubsystem.mecanumDrive(mX, mY, mZ);

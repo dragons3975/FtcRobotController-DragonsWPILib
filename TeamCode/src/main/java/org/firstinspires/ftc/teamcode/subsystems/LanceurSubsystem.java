@@ -19,7 +19,7 @@ public class LanceurSubsystem extends Subsystem {
 
 
     public LanceurSubsystem() {
-        m_Servo.setPosition(1);
+        m_Servo.setPosition(0.2);
     }
 
     public void lance() {
@@ -27,7 +27,7 @@ public class LanceurSubsystem extends Subsystem {
             m_Servo.setPosition(1);
             lance = false;
         } else {
-            m_Servo.setPosition(0.5);
+            m_Servo.setPosition(0.2);
             lance = true;
         }
     }

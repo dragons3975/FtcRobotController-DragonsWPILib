@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.commands;
+package org.firstinspires.ftc.teamcode.commands.brasCommands;
 
 import org.firstinspires.ftc.teamcode.subsystems.BrasSubsystem;
 

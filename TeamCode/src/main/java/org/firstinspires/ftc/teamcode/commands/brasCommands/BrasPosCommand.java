@@ -1,29 +1,32 @@
-package org.firstinspires.ftc.teamcode.commands;
+package org.firstinspires.ftc.teamcode.commands.brasCommands;
 
-
-import org.firstinspires.ftc.teamcode.subsystems.PinceSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.BrasSubsystem;
 
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class PinceCommandToggle extends Command{
+public class BrasPosCommand extends Command{
 
-    private final PinceSubsystem mPinceSubsystem;
+    private final BrasSubsystem mBrasSubsystem;
 
-    public PinceCommandToggle(PinceSubsystem pinceSubsystem) {
-        mPinceSubsystem = pinceSubsystem;
+    private final double mPos;
 
-        addRequirements(pinceSubsystem);
+    public BrasPosCommand(BrasSubsystem brasSubsystem, double pos) {
+        mPos = pos;
+        mBrasSubsystem = brasSubsystem;
+
+        addRequirements();
     }
 
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        mPinceSubsystem.Toggle();
+        mBrasSubsystem.setTarget(mPos);
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
+
     }
 
 
@@ -36,7 +39,7 @@ public class PinceCommandToggle extends Command{
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return true;
+        return mBrasSubsystem.isRotationAtSetPoint();
     }
 }
 

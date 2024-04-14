@@ -1,14 +1,9 @@
 
 package org.firstinspires.ftc.teamcode.subsystems;
 
-import com.qualcomm.robotcore.hardware.Servo;
-
 import org.firstinspires.ftc.teamcode.Constants;
 
-import dragons.rev.FtcCRServo;
-import dragons.rev.FtcMotor;
 import dragons.rev.FtcServo;
-import dragons.rev.FtcTouchSensor;
 import edu.wpi.first.hal.DriverStationJNI;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 
@@ -18,24 +13,14 @@ public class PinceSubsystem extends Subsystem {
     private final FtcServo mMotorPinceDroit = new FtcServo("pince droit");
     private final FtcServo mMotorPinceGauche = new FtcServo("pince gauche");
 
-    //private final FtcTouchSensor mTouch = new FtcTouchSensor("touch sensor");
-
     private boolean gaucheOuvert = false;
     private boolean droiteOuvert = false;
-
+    private boolean mOuverte = false;
     private boolean bas = false;
 
-    private double max = 0;
-
-    //private final FtcServo mMotorPince = new FtcServo("pinceRotation");
-
-    //private final FtcServo mMotorPinceG = new FtcServo("pinceGauche");
-
-    //private final FtcServo mMotorPinceD = new FtcServo("pinceDroite");
-    private boolean mOuverte = false;
-
-    private double pos = 0;
     public PinceSubsystem() {
+        InclineBas();
+        Ferme();
     }
 
     @Override
@@ -46,73 +31,54 @@ public class PinceSubsystem extends Subsystem {
         DriverStationJNI.getTelemetry().addData("etat servo droit", mMotorPinceDroit.getPosition());
     }
 
-    //public void ModifInclinaison(double pos) {
-    //    mMotorPince.setPosition(pos);
-    //}
+    public void OuvreGauche() {
+        mMotorPinceGauche.setPosition(Constants.ConstantsPince.kPinceGaucheOuvreMax);
+        gaucheOuvert = true;
+    }
+
+    public void FermeGauche() {
+        mMotorPinceGauche.setPosition(Constants.ConstantsPince.kPinceGaucheOuvreMin);
+        gaucheOuvert = false;
+    }
 
     public void ToggleGauche() {
         if (gaucheOuvert) {
-            mMotorPinceGauche.setPosition(Constants.ConstantsPince.ouvreMin);
-            gaucheOuvert = false;
+            FermeGauche();
         } else {
-            mMotorPinceGauche.setPosition(Constants.ConstantsPince.ouvreMax);
-            gaucheOuvert = true;
+            OuvreGauche();
         }
     }
 
-    public void calibrate() {
-        mMotorPinceInclinaison.setPosition(max);
+    public void OuvreDroit() {
+        mMotorPinceDroit.setPosition(Constants.ConstantsPince.kPinceDroitOuvreMax);
+        droiteOuvert = true;
     }
 
-    //public boolean isCalibrate() {
-        //return mTouch.getState();
-    //}
+    public void FermeDroit() {
+        mMotorPinceDroit.setPosition(Constants.ConstantsPince.kPinceDroitOuvreMin);
+        droiteOuvert = false;
+    }
 
     public void ToggleDroite() {
         if (droiteOuvert) {
-            mMotorPinceDroit.setPosition(Constants.ConstantsPince.ouvreMin - 0.05);
-            droiteOuvert = false;
+            FermeDroit();
         } else {
-            mMotorPinceDroit.setPosition(Constants.ConstantsPince.ouvreMax);
-            droiteOuvert = true;
+            OuvreDroit();
         }
-    }
-
-
-    public void Ferme() {
-        droiteOuvert = false;
-        gaucheOuvert = false;
-
-        mMotorPinceDroit.setPosition(Constants.ConstantsPince.ouvreMin - 0.05);
-        mMotorPinceGauche.setPosition(Constants.ConstantsPince.ouvreMax);
-        mOuverte = false;
     }
 
     public void Ouvre() {
-        droiteOuvert = true;
-        gaucheOuvert = true;
-        mMotorPinceDroit.setPosition(Constants.ConstantsPince.ouvreMax);
-        mMotorPinceGauche.setPosition(Constants.ConstantsPince.ouvreMin);
+        OuvreGauche();
+        OuvreDroit();
         mOuverte = true;
     }
 
-    public void InclineToggle() {
-        if (bas) {
-            mMotorPinceInclinaison.setPosition(Constants.ConstantsPince.InclinaisonBas);
-            bas = false;
-        } else {
-            mMotorPinceInclinaison.setPosition(Constants.ConstantsPince.InclinaisonHaut);
-            bas = true;
-        }
+    public void Ferme() {
+        FermeGauche();
+        FermeDroit();
+        mOuverte = false;
     }
 
-    public void InclineBas() {
-        mMotorPinceInclinaison.setPosition(Constants.ConstantsPince.InclinaisonBas);
-    }
-
-    public void InclineHaut() {
-        mMotorPinceInclinaison.setPosition(Constants.ConstantsPince.InclinaisonHaut);
-    }
     public void Toggle(){
         if (mOuverte){
             Ferme();
@@ -122,7 +88,28 @@ public class PinceSubsystem extends Subsystem {
         }
     }
 
+
+    public void InclineBas() {
+        mMotorPinceInclinaison.setPosition(Constants.ConstantsPince.kInclinaisonBas);
+        bas = true;
+    }
+
+    public void InclineHaut() {
+        mMotorPinceInclinaison.setPosition(Constants.ConstantsPince.kInclinaisonHaut);
+        bas = false;
+    }
+
+    public void InclineToggle() {
+        if (bas) {
+            InclineHaut();
+        } else {
+            InclineBas();
+        }
+    }
+
+    public void InclinaisonSolSecurite() {
+        mMotorPinceInclinaison.setPosition(Constants.ConstantsPince.kInclinaisonMinSol);
+        bas = true;
+    }
+
 }
-
-
-

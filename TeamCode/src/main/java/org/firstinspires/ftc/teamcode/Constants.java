@@ -26,6 +26,10 @@ public final class Constants {
 
         public static final double kDeplacementExtraLateral = 50;
 
+        public static final double kExtentionPosToile = 20000;
+
+        public static final double kExtentionPosSol = 10000;
+
     }
 
     public static final class OIConstants {
@@ -34,22 +38,40 @@ public final class Constants {
     }
 
 
-    public static final class ConstantsBras {
+    public static final class BrasConstants {
         public static final double coeficiant = 0.01;
 
         public static final double kmax = 8500;
 
-        public static final double kmaxExt = 47200;
+        public static final double kRotationMilieu = 4000;
 
+        public static final double kmaxExt = 28000;
+
+        public static final double kHauteurSecurite = 3500;
+
+        public static final double kHauteurSolMin = 10;
+
+        public static final double kPRotation = 0.008;
+
+        public static final double kToleranceRotation = 15;
+
+        public static final double kIncremetentCalibration = 100;
+
+        public static final double kRotationPositionToile = 4375;
+
+        public static final double kExtentionToile = 2700;
     }
 
     public static final class ConstantsPince {
 
-        public static final double InclinaisonHaut = 0.75;
-        public static final double InclinaisonBas = 0.4;
-        public static final double ouvreMax = 0.4;
+        public static final double kInclinaisonHaut = 0.2;
+        public static final double kInclinaisonBas = 0.39;
+        public static final double kPinceGaucheOuvreMax = 0.2;
+        public static final double kPinceGaucheOuvreMin = 0.4;
+        public static final double kPinceDroitOuvreMax = 0.35;
+        public static final double kPinceDroitOuvreMin = 0.15;
 
-        public static final double ouvreMin = 0.2;
+        public static final double kInclinaisonMinSol = kInclinaisonBas + 0.03;
     }
 
     public static final class ConstantsDrive {

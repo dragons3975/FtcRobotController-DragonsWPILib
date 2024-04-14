@@ -1,8 +1,8 @@
-package org.firstinspires.ftc.teamcode.commands;
+package org.firstinspires.ftc.teamcode.commands.brasCommands;
 
+import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.subsystems.BrasSubsystem;
 
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class CalibreBrasCommand extends Command {
@@ -24,13 +24,13 @@ public class CalibreBrasCommand extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        mBrasSubsystem.incrementTarget(-40);
+        mBrasSubsystem.incrementTarget(-Constants.BrasConstants.kIncremetentCalibration);
     }
 
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-        mBrasSubsystem.calibreBras();
+        mBrasSubsystem.calibreRotationBras();
     }
 
     // Returns true when the command should end.

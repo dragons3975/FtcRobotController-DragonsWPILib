@@ -1,8 +1,9 @@
-package org.firstinspires.ftc.teamcode.commandGroups.Rouge.Gauche;
+package org.firstinspires.ftc.teamcode.commandGroups;
 
-import org.firstinspires.ftc.teamcode.commands.BrasCommandPos;
-import org.firstinspires.ftc.teamcode.commands.ExtentionAutoCommand;
-import org.firstinspires.ftc.teamcode.commands.PinceAutoCommandOuvre;
+import org.firstinspires.ftc.teamcode.Constants;
+import org.firstinspires.ftc.teamcode.commands.brasCommands.BrasPosCommand;
+import org.firstinspires.ftc.teamcode.commands.brasCommands.ExtentionAutoCommand;
+import org.firstinspires.ftc.teamcode.commands.pinceCommands.PinceOuvreCommand;
 import org.firstinspires.ftc.teamcode.subsystems.BrasSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.PinceSubsystem;
 
@@ -12,16 +13,14 @@ public class PoserToile extends SequentialCommandGroup {
 
     public PoserToile(BrasSubsystem brasSubsystem, PinceSubsystem pinceSubsystem) {
 
-        BrasCommandPos bras = new BrasCommandPos(brasSubsystem, 550);
-        ExtentionAutoCommand ext = new ExtentionAutoCommand(brasSubsystem, 37000);
-        PinceAutoCommandOuvre ouvre = new PinceAutoCommandOuvre(pinceSubsystem);
+        BrasPosCommand pos1 = new BrasPosCommand(brasSubsystem, 400);
+        PinceOuvreCommand ouvrePince = new PinceOuvreCommand(pinceSubsystem);
+        ExtentionAutoCommand extention = new ExtentionAutoCommand(brasSubsystem, Constants.AutonomousConstants.kExtentionPosToile);
 
         addCommands(
-                bras,
-                ext,
-                ouvre
-
-                //poserToile
+                pos1,
+                extention,
+                ouvrePince
         );
     }
 }
