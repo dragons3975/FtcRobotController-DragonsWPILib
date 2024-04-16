@@ -1,18 +1,10 @@
 package org.firstinspires.ftc.teamcode.commandGroups.Rouge.Gauche;
 
-import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.commandGroups.PoserTeamPropDroit;
-import org.firstinspires.ftc.teamcode.commandGroups.PoserTeamPropGauche;
-import org.firstinspires.ftc.teamcode.commandGroups.PoserToile;
 import org.firstinspires.ftc.teamcode.commandGroups.PoserToileLoingAuto;
 import org.firstinspires.ftc.teamcode.commandGroups.PrendrePile;
 import org.firstinspires.ftc.teamcode.commands.AvanceAutoCommand;
-import org.firstinspires.ftc.teamcode.commands.brasCommands.BrasRotationPosCommand;
-import org.firstinspires.ftc.teamcode.commands.brasCommands.BrasExtentionPosCommand;
-import org.firstinspires.ftc.teamcode.commands.pinceCommands.PinceOuvreCommand;
-import org.firstinspires.ftc.teamcode.commands.TourneAutoCommand;
 import org.firstinspires.ftc.teamcode.commands.pinceCommands.PinceOuvreDroitCommand;
-import org.firstinspires.ftc.teamcode.commands.pinceCommands.PinceOuvreGaucheCommand;
 import org.firstinspires.ftc.teamcode.subsystems.BrasSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.PinceSubsystem;
@@ -35,11 +27,7 @@ public class RougeGaucheTeamPropDroite extends SequentialCommandGroup {
                 new WaitCommand(0.5),
                 posertOILE,
                 tasse2,
-                ouvreDroit/*
-                avancer2,
-                tourne,
-                avancer,
-                poserToile*/
+                ouvreDroit
         );
     }
 }

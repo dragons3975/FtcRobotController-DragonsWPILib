@@ -1,9 +1,6 @@
 package org.firstinspires.ftc.teamcode.commandGroups.Rouge.Gauche;
 
-import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.commandGroups.PoserTeamPropGauche;
-import org.firstinspires.ftc.teamcode.commandGroups.PoserTeamPropMilieu;
-import org.firstinspires.ftc.teamcode.commandGroups.PoserToile;
 import org.firstinspires.ftc.teamcode.commandGroups.PoserToileLoingAuto;
 import org.firstinspires.ftc.teamcode.commandGroups.PrendrePile;
 import org.firstinspires.ftc.teamcode.commands.AvanceAutoCommand;
@@ -37,11 +34,7 @@ public class RougeGaucheTeamPropGauche extends SequentialCommandGroup {
                 tourne,
                 poserToile,
                 tasse2,
-                ouvreGauche/*
-                avancer2,
-                tourne,
-                avancer,
-                poserToile*/
+                ouvreGauche
         );
     }
 

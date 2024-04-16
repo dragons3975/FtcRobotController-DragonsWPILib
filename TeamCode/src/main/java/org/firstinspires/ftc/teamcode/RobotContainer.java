@@ -5,6 +5,7 @@ import org.firstinspires.ftc.teamcode.commandGroups.LeveBrasHauteurToileCommand;
 import org.firstinspires.ftc.teamcode.commandGroups.Rouge.Gauche.RougeGaucheTeamPropDroite;
 import org.firstinspires.ftc.teamcode.commandGroups.Rouge.Gauche.RougeGaucheTeamPropGauche;
 import org.firstinspires.ftc.teamcode.commandGroups.Rouge.Gauche.RougeGaucheTeamPropMilieu;
+import org.firstinspires.ftc.teamcode.commands.TourneAutoCommand;
 import org.firstinspires.ftc.teamcode.commands.brasCommands.BrasRotationPosCommand;
 import org.firstinspires.ftc.teamcode.commands.brasCommands.CalibreExtentionCommand;
 import org.firstinspires.ftc.teamcode.commands.LanceurCommand;
@@ -42,6 +43,11 @@ public class RobotContainer {
     private final DriveDefaultCommand mDriveDefaultCommand = new DriveDefaultCommand(mDriveSubsystem, mXboxController);
     private final BrasDefaultCommand mBrasDefaultCommand = new BrasDefaultCommand(mBrasSubsystem, mXboxController2);
     private final BrasRotationPosCommand mBrasCommandPositionMilieu = new BrasRotationPosCommand(mBrasSubsystem, Constants.BrasConstants.kRotationMilieu);
+
+    private final TourneAutoCommand mTourne0 = new TourneAutoCommand(mDriveSubsystem, 0);
+    private final TourneAutoCommand mTourne90 = new TourneAutoCommand(mDriveSubsystem, 90);
+    private final TourneAutoCommand mTourne180 = new TourneAutoCommand(mDriveSubsystem, 180);
+    private final TourneAutoCommand mTourne270 = new TourneAutoCommand(mDriveSubsystem, -90);
 
     private final LeveBrasHauteurToileCommand mLeveBrasHauteurToileCommand = new LeveBrasHauteurToileCommand(mBrasSubsystem, mPinceSubsystem);
 
@@ -99,13 +105,19 @@ public class RobotContainer {
         JoystickButton kBack = new JoystickButton(mXboxController, XboxController.Button.kBack.value);
         //kBack.onTrue(mToggleAlliancePositionCommand);
 
-        JoystickButton buttonY = new JoystickButton(mXboxController, XboxController.Button.kY.value);
-        //buttonY.onTrue(mToggleVisionPipelineCommand);
-        buttonY.onTrue(mlanceurCommand);
 
+        JoystickButton buttonA = new JoystickButton(mXboxController, XboxController.Button.kA.value);
+        buttonA.onTrue(mTourne270);
         JoystickButton buttonB = new JoystickButton(mXboxController, XboxController.Button.kB.value);
-        //buttonB.onTrue(mBrasPosition0AutoCommand);
+        buttonB.onTrue(mTourne180);
+        JoystickButton buttonX = new JoystickButton(mXboxController, XboxController.Button.kX.value);
+        buttonX.onTrue(mTourne0);
+        JoystickButton buttonY = new JoystickButton(mXboxController, XboxController.Button.kY.value);
+        buttonY.onTrue(mTourne90);
 
+        JoystickButton buttonRB = new JoystickButton(mXboxController, XboxController.Button.kRightBumper.value);
+        //buttonY.onTrue(mToggleVisionPipelineCommand);
+        buttonRB.onTrue(mlanceurCommand);
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////

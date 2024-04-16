@@ -2,13 +2,9 @@ package org.firstinspires.ftc.teamcode.commandGroups;
 
 import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.commands.AvanceAutoCommand;
-import org.firstinspires.ftc.teamcode.commands.TourneAutoCommand;
 import org.firstinspires.ftc.teamcode.commands.pinceCommands.PinceFermeCommand;
 import org.firstinspires.ftc.teamcode.commands.pinceCommands.PinceFermeDroitCommand;
-import org.firstinspires.ftc.teamcode.commands.pinceCommands.PinceFermeGaucheCommand;
-import org.firstinspires.ftc.teamcode.commands.pinceCommands.PinceOuvreCommand;
 import org.firstinspires.ftc.teamcode.commands.pinceCommands.PinceOuvreDroitCommand;
-import org.firstinspires.ftc.teamcode.commands.pinceCommands.PinceOuvreGaucheCommand;
 import org.firstinspires.ftc.teamcode.subsystems.BrasSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.PinceSubsystem;
@@ -16,9 +12,9 @@ import org.firstinspires.ftc.teamcode.subsystems.PinceSubsystem;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
-public class PoserTeamPropMilieu extends SequentialCommandGroup {
+public class PoserTeamPropMilieuBleuEtRouge extends SequentialCommandGroup {
 
-    public PoserTeamPropMilieu(BrasSubsystem brasSubsystem, PinceSubsystem pinceSubsystem, DriveSubsystem driveSubsystem) {
+    public PoserTeamPropMilieuBleuEtRouge(BrasSubsystem brasSubsystem, PinceSubsystem pinceSubsystem, DriveSubsystem driveSubsystem) {
 
         PinceFermeCommand fermePince = new PinceFermeCommand(pinceSubsystem);
         AvanceAutoCommand avance = new AvanceAutoCommand(driveSubsystem, Constants.AutonomousConstants.kAvancementInitial, 0);
