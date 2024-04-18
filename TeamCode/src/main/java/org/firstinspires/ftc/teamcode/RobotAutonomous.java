@@ -13,6 +13,7 @@ public class RobotAutonomous extends OpMode{
 
     private Command mAutonomousCommand;
     private RobotContainer mRobotContainer;
+    private boolean started = false;
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -41,12 +42,8 @@ public class RobotAutonomous extends OpMode{
     public void start() {
 
         mRobotContainer.init();
-        mAutonomousCommand = mRobotContainer.getAutonomousCommand();
+        mRobotContainer.getWaitCommand().schedule();
 
-        // schedule the autonomous command (example)
-        if (mAutonomousCommand != null) {
-            mAutonomousCommand.schedule();
-        }
     }
 
     /*
@@ -54,6 +51,19 @@ public class RobotAutonomous extends OpMode{
      */
     @Override
     public void loop() {
+        if (!started) {
+            mAutonomousCommand = mRobotContainer.getAutonomousCommand();
+
+            // schedule the autonomous command (example)
+            if (mAutonomousCommand != null) {
+                mAutonomousCommand.schedule();
+                started = true;
+            }
+        }
+
+
+
+
         DriverStation.refreshData();
         CommandScheduler.getInstance().run();
         /*try {

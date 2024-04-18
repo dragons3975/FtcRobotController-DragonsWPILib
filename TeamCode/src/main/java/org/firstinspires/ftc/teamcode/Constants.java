@@ -52,6 +52,8 @@ public final class Constants {
 
         public static final double kHauteurSecurite = 3500;
 
+        public static final double kHauteurCamera = 4000;
+
         public static final double kHauteurSolMin = 5;
 
         public static final double kPRotation = 0.008;

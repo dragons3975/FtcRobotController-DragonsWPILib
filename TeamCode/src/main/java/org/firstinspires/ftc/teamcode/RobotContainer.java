@@ -14,6 +14,7 @@ import org.firstinspires.ftc.teamcode.commandGroups.Rouge.Droite.RougeDroiteTeam
 import org.firstinspires.ftc.teamcode.commandGroups.Rouge.Gauche.RougeGaucheTeamPropDroite;
 import org.firstinspires.ftc.teamcode.commandGroups.Rouge.Gauche.RougeGaucheTeamPropGauche;
 import org.firstinspires.ftc.teamcode.commandGroups.Rouge.Gauche.RougeGaucheTeamPropMilieu;
+import org.firstinspires.ftc.teamcode.commandGroups.WaitConfigCommand;
 import org.firstinspires.ftc.teamcode.commands.ActivateAprilTagPipelineCommand;
 import org.firstinspires.ftc.teamcode.commands.ActivatePropPipelineCommand;
 import org.firstinspires.ftc.teamcode.commands.DeactivateAprilTagPipelineCommand;
@@ -177,7 +178,13 @@ public class RobotContainer {
         mBrasSubsystem.setDefaultCommand(mBrasDefaultCommand);
     }
 
+    public Command getWaitCommand() {
+        return new WaitConfigCommand(mBrasSubsystem);
+    }
+
     public Command getAutonomousCommand() {
+
+        if
 
         DriverStationJNI.getTelemetry().addData("couleur", mConfigSubsystem.allianceColor());
         DriverStationJNI.getTelemetry().addData("position", mConfigSubsystem.alliancePosition());

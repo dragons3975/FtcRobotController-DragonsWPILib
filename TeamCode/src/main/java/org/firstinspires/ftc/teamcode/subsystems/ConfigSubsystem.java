@@ -14,6 +14,8 @@ public class ConfigSubsystem extends Subsystem {
     // A supprimer quand on a la camera fonctionnelle
     private int mTemporaryTeamPropLocation = Constants.VisionConstants.kTeamPropMilieu;
 
+    private boolean
+
     public ConfigSubsystem() {
     }
 
@@ -30,6 +32,14 @@ public void toggleAllianceColor() {
 
 public void toggleAlliancePosition() {
     if (++mAlliancePosition > 1) mAlliancePosition = 0;
+}
+
+public void getReady(){
+
+}
+
+public void setReady(){
+
 }
 
 // A supprimer quand on a la camera fonctionnelle
