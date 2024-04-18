@@ -34,7 +34,7 @@ public class RougeGaucheTeamPropMilieu extends SequentialCommandGroup {
 
 
         addCommands(
-                PoserMilieu,
+                PoserMilieu/*,
                 new WaitCommand(0.5),
                 ferme,
                 tourne,
@@ -42,7 +42,7 @@ public class RougeGaucheTeamPropMilieu extends SequentialCommandGroup {
                 tasse,
                 new WaitCommand(0.5),
                 poserToile,
-                ouvreGauche
+                ouvreGauche*/
         );
     }
 

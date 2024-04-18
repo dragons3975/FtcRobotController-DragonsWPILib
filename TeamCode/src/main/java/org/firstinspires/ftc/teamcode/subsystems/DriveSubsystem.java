@@ -20,6 +20,7 @@ public class DriveSubsystem extends Subsystem {
     private final MecanumDrive m_robotDrive = new MecanumDrive(m_frontLeftMotor, m_frontRightMotor, m_rearLeftMotor, m_rearRightMotor);
     private final FtcGyro mGyro = new FtcGyro();
     private double mAngle = 0;
+    private double mAngleInit = 0;
 
     private double m_xSpeed = 0; // The robot's speed along the X axis [-1.0..1.0]. Forward is positive.
     private double m_zRotation = 0; // The robot's rotation rate around the Z axis [-1.0..1.0]. Clockwise is positive.
@@ -28,7 +29,7 @@ public class DriveSubsystem extends Subsystem {
     private double mAngleConsigne, mxConsigne, myConsigne;
 
     private boolean mpidxyEnabled = false;
-
+    private boolean vitesseHaute = true;
     private PIDController mPIDz = new PIDController(Constants.ConstantsDrivePID.kP, Constants.ConstantsDrivePID.kI, Constants.ConstantsDrivePID.kD);
 
     private PIDController mPIDx = new PIDController(Constants.ConstantsDrivePID.kPx, Constants.ConstantsDrivePID.kIx, Constants.ConstantsDrivePID.kDx);
@@ -36,6 +37,7 @@ public class DriveSubsystem extends Subsystem {
     private PIDController mPIDy = new PIDController(Constants.ConstantsDrivePID.kPy, Constants.ConstantsDrivePID.kIy, Constants.ConstantsDrivePID.kDy);
 
     public DriveSubsystem() {
+        m_robotDrive.setMaxOutput(Constants.ConstantsDrive.kVitesseHaute);
         mPIDz.setTolerance(Constants.ConstantsDrivePID.kToleranceZ);
         mPIDx.setTolerance(Constants.ConstantsDrivePID.kToleranceX);
         mPIDy.setTolerance(Constants.ConstantsDrivePID.kToleranceY);
@@ -89,6 +91,20 @@ public class DriveSubsystem extends Subsystem {
         DriverStationJNI.getTelemetry().addData("rear right", getRearRightPosition());
     }
 
+    public void toggleVitesse() {
+        if (vitesseHaute) {
+            m_robotDrive.setMaxOutput(Constants.ConstantsDrive.kVitesseBasse);
+            vitesseHaute = false;
+            return;
+        }
+        m_robotDrive.setMaxOutput(Constants.ConstantsDrive.kVitesseHaute);
+        vitesseHaute = true;
+    }
+
+    public void resetGyro() {
+        mAngleInit = getAngle();
+    }
+
     public double getY() {
         return (getFrontLeftPosition() + getRearRightPosition()
                 - getFrontRightPosition() - getRearLeftPosition())
@@ -105,7 +121,7 @@ public class DriveSubsystem extends Subsystem {
         if (Math.abs(zRotation) > 0.1) {
             mAngleConsigne = getAngle() + zRotation;
         }
-        double angleActuelRadians = Math.toRadians(getAngle());
+        double angleActuelRadians = Math.toRadians(getAngle() - mAngleInit);
         m_xSpeed = xSpeed * Math.cos(angleActuelRadians) + ySpeed * Math.sin(angleActuelRadians);
         m_ySpeed = ySpeed * Math.cos(angleActuelRadians) - xSpeed * Math.sin(angleActuelRadians);
         mpidxyEnabled = false;

@@ -75,7 +75,7 @@ public final class Constants {
     public static final class ConstantsPince {
 
         public static final double kInclinaisonHaut = 0.2;
-        public static final double kInclinaisonBas = 0.36;
+        public static final double kInclinaisonBas = 0.31;
         public static final double kPinceGaucheOuvreMax = 0.2;
         public static final double kPinceGaucheOuvreMin = 0.4;
         public static final double kPinceDroitOuvreMax = 0.35;
@@ -94,6 +94,9 @@ public final class Constants {
         public static final double distanceCalculx = 100.0 / 1510;//(ConstantsDrive.tacho1Tour/(Math.PI * Constants.ConstantsDrive.diametre));
 
         public static final double distanceCalculy = 50.0 / 825;
+
+        public static final double kVitesseBasse = 0.3;
+        public static final double kVitesseHaute = 0.8;
     }
 
     public static final class ConstantsDrivePID {
