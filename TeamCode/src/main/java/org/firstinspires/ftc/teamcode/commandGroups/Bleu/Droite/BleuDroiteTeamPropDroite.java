@@ -1,15 +1,11 @@
 package org.firstinspires.ftc.teamcode.commandGroups.Bleu.Droite;
 
 import org.firstinspires.ftc.teamcode.Constants;
-import org.firstinspires.ftc.teamcode.commandGroups.PoserTeamPropDroit;
-import org.firstinspires.ftc.teamcode.commandGroups.PoserToileLoingAuto;
-import org.firstinspires.ftc.teamcode.commandGroups.PoserToileProcheAuto;
-import org.firstinspires.ftc.teamcode.commandGroups.PrendrePile;
+import org.firstinspires.ftc.teamcode.commandGroups.PoserTeamPropDroitBleuEtRouge;
+import org.firstinspires.ftc.teamcode.commandGroups.AllerVersToileLoin;
 import org.firstinspires.ftc.teamcode.commands.AvanceAutoCommand;
-import org.firstinspires.ftc.teamcode.commands.brasCommands.BrasRotationPosCommand;
-import org.firstinspires.ftc.teamcode.commands.brasCommands.BrasExtentionPosCommand;
-import org.firstinspires.ftc.teamcode.commands.pinceCommands.PinceOuvreCommand;
 import org.firstinspires.ftc.teamcode.commands.TourneAutoCommand;
+import org.firstinspires.ftc.teamcode.commands.pinceCommands.PinceOuvreCommand;
 import org.firstinspires.ftc.teamcode.commands.pinceCommands.PinceOuvreDroitCommand;
 import org.firstinspires.ftc.teamcode.subsystems.BrasSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
@@ -22,21 +18,21 @@ public class BleuDroiteTeamPropDroite extends SequentialCommandGroup {
 
     public BleuDroiteTeamPropDroite(DriveSubsystem driveSubsystem, PinceSubsystem pinceSubsystem, BrasSubsystem brasSubsystem) {
 
-        PoserTeamPropDroit PoserDroit = new PoserTeamPropDroit(brasSubsystem, pinceSubsystem, driveSubsystem);
-        PrendrePile prendrePile = new PrendrePile(brasSubsystem, pinceSubsystem);
-        PoserToileLoingAuto posertOILE = new PoserToileLoingAuto(brasSubsystem, pinceSubsystem, driveSubsystem);
-        AvanceAutoCommand tasse2 = new AvanceAutoCommand(driveSubsystem, 0, 20);
-        PinceOuvreDroitCommand ouvreDroit = new PinceOuvreDroitCommand(pinceSubsystem);
-        TourneAutoCommand tourne = new TourneAutoCommand(driveSubsystem, -180);
+        PoserTeamPropDroitBleuEtRouge poserDroit = new PoserTeamPropDroitBleuEtRouge(brasSubsystem, pinceSubsystem, driveSubsystem);
+        TourneAutoCommand demiTour = new TourneAutoCommand(driveSubsystem, 180);
+        AllerVersToileLoin allerVersToileLoin = new AllerVersToileLoin(brasSubsystem, pinceSubsystem, driveSubsystem);
+        AvanceAutoCommand tasseDroite = new AvanceAutoCommand(driveSubsystem, 0, Constants.AutonomousConstants.kTasseToileGaucheDroiteAprilTag);
+        PinceOuvreCommand pinceOuvre = new PinceOuvreCommand(pinceSubsystem);
+        AvanceAutoCommand tasseFin = new AvanceAutoCommand(driveSubsystem, 0, Constants.AutonomousConstants.kTasseToileGarer - Constants.AutonomousConstants.kTasseToileGaucheDroiteAprilTag);
 
         addCommands(
-                PoserDroit,
+                poserDroit,
                 new WaitCommand(0.5),
-                tourne,
-                new WaitCommand(0.5),
-                posertOILE,
-                tasse2,
-                ouvreDroit
+                demiTour,
+                allerVersToileLoin,
+                tasseDroite,
+                pinceOuvre,
+                tasseFin
         );
     }
 

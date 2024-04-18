@@ -14,7 +14,8 @@ public final class Constants {
     public static final class AutonomousConstants {
 
         //POSITION 1, AVANCEMENT INITIAL
-        public static final double kAvancementInitial = 77;
+        public static final double kAvancementInitialMilieu = 77;
+        public static final double kAvancementInitialGaucheDroite = 70;
 
         public static final double kAvancementVersToileEloigne = 230;
 
@@ -29,6 +30,10 @@ public final class Constants {
         public static final double kExtentionPosToile = 20000;
 
         public static final double kExtentionPosSol = 10000;
+
+        public static final double kTasseToileGaucheDroiteAprilTag = 20;
+        public static final double kTasseToileGarer = 30;
+
 
     }
 

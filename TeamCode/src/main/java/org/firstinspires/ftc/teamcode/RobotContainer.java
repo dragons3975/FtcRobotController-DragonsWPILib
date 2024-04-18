@@ -187,50 +187,50 @@ public class RobotContainer {
 
         if (mConfigSubsystem.allianceColor() == Constants.ConfigConstants.kBleu) {
             if (mConfigSubsystem.alliancePosition() == Constants.ConfigConstants.kGauche) {
-                //if (mVisionSubsystem.getTeamPropLocation() == Constants.VisionConstants.kTeamPropGauche) {
-                //    return new BleuGaucheTeamPropGauche(mDriveSubsystem, mPinceSubsystem, mBrasSubsystem);
-                //}
-                //f (mVisionSubsystem.getTeamPropLocation() == Constants.VisionConstants.kTeamPropMilieu) {
+                if (mVisionSubsystem.getTeamPropLocation() == Constants.VisionConstants.kTeamPropGauche) {
+                    return new BleuGaucheTeamPropGauche(mDriveSubsystem, mPinceSubsystem, mBrasSubsystem);
+                }
+                if (mVisionSubsystem.getTeamPropLocation() == Constants.VisionConstants.kTeamPropMilieu) {
                     return new BleuGaucheTeamPropMilieu(mDriveSubsystem, mPinceSubsystem, mBrasSubsystem);
-                //}
-                //if (mVisionSubsystem.getTeamPropLocation() == Constants.VisionConstants.kTeamPropDroite) {
-                //    return new BleuGaucheTeamPropDroite(mDriveSubsystem, mPinceSubsystem, mBrasSubsystem);
-                //}
+                }
+                if (mVisionSubsystem.getTeamPropLocation() == Constants.VisionConstants.kTeamPropDroite) {
+                    return new BleuGaucheTeamPropDroite(mDriveSubsystem, mPinceSubsystem, mBrasSubsystem);
+                }
             }
             if (mConfigSubsystem.alliancePosition() == Constants.ConfigConstants.kDroite) {
-                ///if (mVisionSubsystem.getTeamPropLocation() == Constants.VisionConstants.kTeamPropGauche) {
-                //    return new BleuDroiteTeamPropGauche(mDriveSubsystem, mPinceSubsystem, mBrasSubsystem);
-                //}
-                //if (mVisionSubsystem.getTeamPropLocation() == Constants.VisionConstants.kTeamPropMilieu) {
+                if (mVisionSubsystem.getTeamPropLocation() == Constants.VisionConstants.kTeamPropGauche) {
+                    return new BleuDroiteTeamPropGauche(mDriveSubsystem, mPinceSubsystem, mBrasSubsystem);
+                }
+                if (mVisionSubsystem.getTeamPropLocation() == Constants.VisionConstants.kTeamPropMilieu) {
                     return new BleuDroiteTeamPropMilieu(mDriveSubsystem, mPinceSubsystem, mBrasSubsystem);
-                ///}
-                //if (mVisionSubsystem.getTeamPropLocation() == Constants.VisionConstants.kTeamPropDroite) {
-                //    return new BleuDroiteTeamPropDroite(mDriveSubsystem, mPinceSubsystem, mBrasSubsystem);
-                //}
+                }
+                if (mVisionSubsystem.getTeamPropLocation() == Constants.VisionConstants.kTeamPropDroite) {
+                    return new BleuDroiteTeamPropDroite(mDriveSubsystem, mPinceSubsystem, mBrasSubsystem);
+                }
             }
         }
         if (mConfigSubsystem.allianceColor() == Constants.ConfigConstants.kRouge) {
             if (mConfigSubsystem.alliancePosition() == Constants.ConfigConstants.kGauche) {
-                //if (mVisionSubsystem.getTeamPropLocation() == Constants.VisionConstants.kTeamPropGauche) {
-                //    return new RougeGaucheTeamPropGauche(mDriveSubsystem, mPinceSubsystem, mBrasSubsystem);
-                //}
-                //if (mVisionSubsystem.getTeamPropLocation() == Constants.VisionConstants.kTeamPropMilieu) {
+                if (mVisionSubsystem.getTeamPropLocation() == Constants.VisionConstants.kTeamPropGauche) {
+                    return new RougeGaucheTeamPropGauche(mDriveSubsystem, mPinceSubsystem, mBrasSubsystem);
+                }
+                if (mVisionSubsystem.getTeamPropLocation() == Constants.VisionConstants.kTeamPropMilieu) {
                     return new RougeGaucheTeamPropMilieu(mDriveSubsystem, mPinceSubsystem, mBrasSubsystem);
-                //}
-                //if (mVisionSubsystem.getTeamPropLocation() == Constants.VisionConstants.kTeamPropDroite) {
-                //    return new RougeGaucheTeamPropDroite(mDriveSubsystem, mPinceSubsystem, mBrasSubsystem);
-                //}
+                }
+                if (mVisionSubsystem.getTeamPropLocation() == Constants.VisionConstants.kTeamPropDroite) {
+                    return new RougeGaucheTeamPropDroite(mDriveSubsystem, mPinceSubsystem, mBrasSubsystem);
+                }
             }
             if (mConfigSubsystem.alliancePosition() == Constants.ConfigConstants.kDroite) {
-                //if (mVisionSubsystem.getTeamPropLocation() == Constants.VisionConstants.kTeamPropGauche) {
-                //    return new RougeDroiteTeamPropGauche(mDriveSubsystem, mPinceSubsystem, mBrasSubsystem);
-                //}
-                //if (mVisionSubsystem.getTeamPropLocation() == Constants.VisionConstants.kTeamPropMilieu) {
+                if (mVisionSubsystem.getTeamPropLocation() == Constants.VisionConstants.kTeamPropGauche) {
+                    return new RougeDroiteTeamPropGauche(mDriveSubsystem, mPinceSubsystem, mBrasSubsystem);
+                }
+                if (mVisionSubsystem.getTeamPropLocation() == Constants.VisionConstants.kTeamPropMilieu) {
                     return new RougeDroiteTeamPropMilieu(mDriveSubsystem, mPinceSubsystem, mBrasSubsystem);
-                //}
-                //if (mVisionSubsystem.getTeamPropLocation() == Constants.VisionConstants.kTeamPropDroite) {
-                //    return new RougeDroiteTeamPropDroite(mDriveSubsystem, mPinceSubsystem, mBrasSubsystem);
-                //}
+                }
+                if (mVisionSubsystem.getTeamPropLocation() == Constants.VisionConstants.kTeamPropDroite) {
+                    return new RougeDroiteTeamPropDroite(mDriveSubsystem, mPinceSubsystem, mBrasSubsystem);
+                }
             }
         }
         return null;

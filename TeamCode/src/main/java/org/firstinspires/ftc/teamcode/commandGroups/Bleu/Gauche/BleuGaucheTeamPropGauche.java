@@ -1,9 +1,7 @@
 package org.firstinspires.ftc.teamcode.commandGroups.Bleu.Gauche;
 
-import org.firstinspires.ftc.teamcode.commandGroups.PoserTeamPropGauche;
-import org.firstinspires.ftc.teamcode.commandGroups.PoserToileLoingAuto;
+import org.firstinspires.ftc.teamcode.commandGroups.PoserTeamPropGaucheBleuEtRouge;
 import org.firstinspires.ftc.teamcode.commandGroups.PoserToileProcheAuto;
-import org.firstinspires.ftc.teamcode.commandGroups.PrendrePile;
 import org.firstinspires.ftc.teamcode.commands.AvanceAutoCommand;
 import org.firstinspires.ftc.teamcode.commands.TourneAutoCommand;
 import org.firstinspires.ftc.teamcode.commands.pinceCommands.PinceOuvreGaucheCommand;
@@ -18,22 +16,10 @@ public class BleuGaucheTeamPropGauche extends SequentialCommandGroup {
 
     public BleuGaucheTeamPropGauche(DriveSubsystem driveSubsystem, PinceSubsystem pinceSubsystem, BrasSubsystem brasSubsystem) {
 
-        PoserTeamPropGauche poserGauche = new PoserTeamPropGauche(brasSubsystem, pinceSubsystem, driveSubsystem);
-        PrendrePile prendrePile = new PrendrePile(brasSubsystem, pinceSubsystem);
-        TourneAutoCommand tourne = new TourneAutoCommand(driveSubsystem, 180);
-        AvanceAutoCommand tasse = new AvanceAutoCommand(driveSubsystem, 0, -20);
-        AvanceAutoCommand tasse2 = new AvanceAutoCommand(driveSubsystem, 0, -10);
-        PoserToileProcheAuto poserToile = new PoserToileProcheAuto(brasSubsystem, pinceSubsystem, driveSubsystem);
-        PinceOuvreGaucheCommand ouvreGauche = new PinceOuvreGaucheCommand(pinceSubsystem);
+        PoserTeamPropGaucheBleuEtRouge poserGauche = new PoserTeamPropGaucheBleuEtRouge(brasSubsystem, pinceSubsystem, driveSubsystem);
 
         addCommands(
-                poserGauche,
-                new WaitCommand(0.5),
-                tasse,
-                new WaitCommand(0.5),
-                poserToile,
-                tasse2,
-                ouvreGauche
+                poserGauche
         );
     }
 

@@ -5,6 +5,8 @@ import org.firstinspires.ftc.teamcode.commands.AvanceAutoCommand;
 import org.firstinspires.ftc.teamcode.commands.TourneAutoCommand;
 import org.firstinspires.ftc.teamcode.commands.brasCommands.BrasRotationPosCommand;
 import org.firstinspires.ftc.teamcode.commands.pinceCommands.PinceFermeCommand;
+import org.firstinspires.ftc.teamcode.commands.pinceCommands.PinceOuvreDroitCommand;
+import org.firstinspires.ftc.teamcode.commands.pinceCommands.PinceOuvreGaucheCommand;
 import org.firstinspires.ftc.teamcode.subsystems.BrasSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.PinceSubsystem;
@@ -12,28 +14,21 @@ import org.firstinspires.ftc.teamcode.subsystems.PinceSubsystem;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
-public class PoserTeamPropDroit extends SequentialCommandGroup {
+public class PoserTeamPropDroitBleuEtRouge extends SequentialCommandGroup {
 
-    public PoserTeamPropDroit(BrasSubsystem brasSubsystem, PinceSubsystem pinceSubsystem, DriveSubsystem driveSubsystem) {
+    public PoserTeamPropDroitBleuEtRouge(BrasSubsystem brasSubsystem, PinceSubsystem pinceSubsystem, DriveSubsystem driveSubsystem) {
 
-        AvanceAutoCommand avance  = new AvanceAutoCommand(driveSubsystem, 70, 0);
-        TourneAutoCommand tourne = new TourneAutoCommand(driveSubsystem, 90);
+        AvanceAutoCommand avance  = new AvanceAutoCommand(driveSubsystem, Constants.AutonomousConstants.kAvancementInitialGaucheDroite, 0);
+        TourneAutoCommand tourneDroite = new TourneAutoCommand(driveSubsystem, 90);
         AvanceAutoCommand avance2  = new AvanceAutoCommand(driveSubsystem, 20, 0);
-        PoserSol1Seul poser = new PoserSol1Seul(brasSubsystem, pinceSubsystem);
-        AvanceAutoCommand reculer  = new AvanceAutoCommand(driveSubsystem, -20, 0);
-        PinceFermeCommand ferme = new PinceFermeCommand(pinceSubsystem);
-        BrasRotationPosCommand bras = new BrasRotationPosCommand(brasSubsystem, Constants.BrasConstants.kPositionLeverUnPeu);
+        PoseTeamPropReculeFerme poseTeamPropReculeFerme = new PoseTeamPropReculeFerme(brasSubsystem, pinceSubsystem, driveSubsystem);
 
         addCommands(
                 avance,
-                tourne,
-                avance2,
-                poser,
+                tourneDroite,
                 new WaitCommand(0.5),
-                reculer,
-                ferme,
-                bras
-
+                avance2,
+                poseTeamPropReculeFerme
         );
     }
 

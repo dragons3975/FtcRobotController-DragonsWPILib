@@ -34,7 +34,7 @@ public class VisionSubsystem extends Subsystem {
     OpenCvCamera webcam;
 
     public VisionSubsystem() {
-
+        activateProp();
     }
 
     @Override

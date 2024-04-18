@@ -15,19 +15,17 @@ public class TeamPropPipeline extends OpenCvPipeline {
     private final int width = Constants.VisionConstants.kWidth; // width of the image
     private final int height = Constants.VisionConstants.kHeight;
 
-    private double leftPercent, middlePercent, rightPercent;
+    private double leftPercent = 0, middlePercent = 0, rightPercent = 0;
     private final Rect LEFT_RECTANGLE = new Rect(
-            new Point(0.0, 0.25),
+            new Point(0, 0),
             new Point(0.33 * width, height)
     );
     private final Rect MIDDLE_RECTANGLE = new Rect(
-            new Point(0.33*width, 0),
+            new Point(0.33 * width, 0),
             new Point(0.66 * width, height));
     private final Rect RIGHT_RECTANGLE= new Rect(
             new Point(0.66 * width, 0),
             new Point(width, height));
-
-
 
     @Override
     public Mat processFrame(Mat input) {
@@ -82,6 +80,5 @@ public class TeamPropPipeline extends OpenCvPipeline {
         }
         return 1;
     }
-
 
 }
