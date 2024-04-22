@@ -27,43 +27,55 @@ public class TeamPropPipeline extends OpenCvPipeline {
             new Point(0.66 * width, 0),
             new Point(width, height));
 
+    private ConfigSubsystem mConfigSubsystem;
+
+    public TeamPropPipeline(ConfigSubsystem configSubsystem){
+        mConfigSubsystem = configSubsystem;
+    }
+
     @Override
     public Mat processFrame(Mat input) {
         Mat mat = new Mat();
         Imgproc.cvtColor(input, mat, Imgproc.COLOR_RGB2HSV);
 
-        Scalar lowRedLow = new Scalar(0, 125, 125);
+        Scalar lowRedLow = new Scalar(0, 100, 125);
         Scalar lowRedHigh = new Scalar(10, 255, 255);
-        Scalar highRedLow = new Scalar(165, 125, 125);
+        Scalar highRedLow = new Scalar(165, 100, 125);
         Scalar highRedHigh = new Scalar(180, 255, 255);
 
-        Scalar blueLow = new Scalar(105, 125, 125);
+        Scalar blueLow = new Scalar(105, 50, 50);
         Scalar blueHigh = new Scalar(136, 255, 255);
 
-        Mat lowRedMat = new Mat();
-        Core.inRange(mat, lowRedLow, lowRedHigh, lowRedMat);
-
-        Mat highRedMat = new Mat();
-        Core.inRange(mat, highRedLow, highRedHigh, highRedMat);
-
-        Mat redMat = new Mat();
+        /*Mat redMat = new Mat();
         Core.bitwise_or(lowRedMat, highRedMat, redMat);
 
         Mat blueMat = new Mat();
         Core.inRange(mat, blueLow, blueHigh, blueMat);
 
         Mat redAndBlueMat = new Mat();
-        Core.bitwise_or(redMat, blueMat, redAndBlueMat);
+        Core.bitwise_or(redMat, blueMat, redAndBlueMat);*/
+        Mat colorMat = new Mat();
+        if (mConfigSubsystem.allianceColor() == Constants.ConfigConstants.kGauche) {
+            Mat lowRedMat = new Mat();
+            Core.inRange(mat, lowRedLow, lowRedHigh, lowRedMat);
 
-        leftPercent = Core.sumElems(redAndBlueMat.submat(LEFT_RECTANGLE)).val[0] / 255 / LEFT_RECTANGLE.area();
-        middlePercent = Core.sumElems(redAndBlueMat.submat(MIDDLE_RECTANGLE)).val[0] / 255 / MIDDLE_RECTANGLE.area();
-        rightPercent = Core.sumElems(redAndBlueMat.submat(RIGHT_RECTANGLE)).val[0] /255 / RIGHT_RECTANGLE.area();
+            Mat highRedMat = new Mat();
+            Core.inRange(mat, highRedLow, highRedHigh, highRedMat);
+            Core.bitwise_or(lowRedMat, highRedMat, colorMat);
+        }
+        else {
+            Core.inRange(mat, blueLow, blueHigh, colorMat);
+        }
+
+        leftPercent = Core.sumElems(colorMat.submat(LEFT_RECTANGLE)).val[0] / 255 / LEFT_RECTANGLE.area();
+        middlePercent = Core.sumElems(colorMat.submat(MIDDLE_RECTANGLE)).val[0] / 255 / MIDDLE_RECTANGLE.area();
+        rightPercent = Core.sumElems(colorMat.submat(RIGHT_RECTANGLE)).val[0] /255 / RIGHT_RECTANGLE.area();
 
         DriverStationJNI.getTelemetry().addData("leftPercent", leftPercent);
         DriverStationJNI.getTelemetry().addData("middlePercent", middlePercent);
         DriverStationJNI.getTelemetry().addData("rightPercent", rightPercent);
 
-        return redAndBlueMat;
+        return colorMat;
 
     }
 
@@ -78,7 +90,7 @@ public class TeamPropPipeline extends OpenCvPipeline {
         } else if (rightPercent > leftPercent && rightPercent > middlePercent && rightPercent > rightTreshold) {
             return 2;
         }
-        return 1;
+        return 0;
     }
 
 }

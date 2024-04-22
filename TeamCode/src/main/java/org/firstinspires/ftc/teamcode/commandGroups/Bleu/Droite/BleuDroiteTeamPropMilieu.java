@@ -28,14 +28,14 @@ public class BleuDroiteTeamPropMilieu extends SequentialCommandGroup {
         AvanceAutoCommand tasseFin = new AvanceAutoCommand(driveSubsystem, 0, Constants.AutonomousConstants.kTasseToileGarer);
 
         addCommands(
-                poserMilieu,
+                poserMilieu/*,
                 tourneGauche,
                 new WaitCommand(0.5),
                 tasseDroite,
                 new WaitCommand(0.5),
                 allerVersToileLoin,
                 pinceOuvre,
-                tasseFin
+                tasseFin*/
         );
     }
 

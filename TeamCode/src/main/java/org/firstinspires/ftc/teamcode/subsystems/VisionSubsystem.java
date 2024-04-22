@@ -1,21 +1,14 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
-import com.qualcomm.robotcore.hardware.HardwareMap;
-
-import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.Constants;
-import org.firstinspires.ftc.teamcode.subsystems.TeamPropPipeline;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
-import org.firstinspires.ftc.vision.tfod.TfodProcessor;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
-import org.openftc.easyopencv.OpenCvInternalCamera;
 
-import java.sql.Driver;
 import java.util.List;
 
 import edu.wpi.first.hal.DriverStationJNI;
@@ -30,10 +23,11 @@ public class VisionSubsystem extends Subsystem {
     private VisionPortal mVisionPortal;
 
     // store as variable here so we can access the location
-    TeamPropPipeline mTeamPropPipeline = new TeamPropPipeline();
+    TeamPropPipeline mTeamPropPipeline;
     OpenCvCamera webcam;
 
-    public VisionSubsystem() {
+    public VisionSubsystem(ConfigSubsystem configSubsystem) {
+        mTeamPropPipeline = new TeamPropPipeline(configSubsystem);
         activateProp();
     }
 

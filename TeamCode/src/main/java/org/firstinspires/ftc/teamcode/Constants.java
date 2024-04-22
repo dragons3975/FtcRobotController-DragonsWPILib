@@ -63,8 +63,10 @@ public final class Constants {
         public static final double kIncremetentRotationMax = 340;
 
         public static final double kRotationPositionToile = 4300;
+        public static final double kRotationPositionToileBas = 3560;
         public static final double kmaxExt = 24000;
         public static final double kExtentionToile = 24000;
+        public static final double kExtentionToileBas = 15000;
 
         public static final double kPExtention = 0.001;
 
@@ -102,8 +104,8 @@ public final class Constants {
 
         public static final double distanceCalculy = 50.0 / 825;
 
-        public static final double kVitesseBasse = 0.3;
-        public static final double kVitesseHaute = 0.8;
+        public static final double kVitesseBasse = 0.4;
+        public static final double kVitesseHaute = 1;
     }
 
     public static final class ConstantsDrivePID {

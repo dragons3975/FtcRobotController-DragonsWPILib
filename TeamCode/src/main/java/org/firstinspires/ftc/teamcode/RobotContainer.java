@@ -7,6 +7,7 @@ import org.firstinspires.ftc.teamcode.commandGroups.Bleu.Gauche.BleuGaucheTeamPr
 import org.firstinspires.ftc.teamcode.commandGroups.Bleu.Gauche.BleuGaucheTeamPropGauche;
 import org.firstinspires.ftc.teamcode.commandGroups.Bleu.Gauche.BleuGaucheTeamPropMilieu;
 import org.firstinspires.ftc.teamcode.commandGroups.BrasPosition0;
+import org.firstinspires.ftc.teamcode.commandGroups.LeveBrasHauteurToileBasCommand;
 import org.firstinspires.ftc.teamcode.commandGroups.LeveBrasHauteurToileCommand;
 import org.firstinspires.ftc.teamcode.commandGroups.Rouge.Droite.RougeDroiteTeamPropDroite;
 import org.firstinspires.ftc.teamcode.commandGroups.Rouge.Droite.RougeDroiteTeamPropGauche;
@@ -14,7 +15,7 @@ import org.firstinspires.ftc.teamcode.commandGroups.Rouge.Droite.RougeDroiteTeam
 import org.firstinspires.ftc.teamcode.commandGroups.Rouge.Gauche.RougeGaucheTeamPropDroite;
 import org.firstinspires.ftc.teamcode.commandGroups.Rouge.Gauche.RougeGaucheTeamPropGauche;
 import org.firstinspires.ftc.teamcode.commandGroups.Rouge.Gauche.RougeGaucheTeamPropMilieu;
-import org.firstinspires.ftc.teamcode.commandGroups.WaitConfigCommand;
+import org.firstinspires.ftc.teamcode.configCommands.LeveAndWaitCommandGroup;
 import org.firstinspires.ftc.teamcode.commands.ActivateAprilTagPipelineCommand;
 import org.firstinspires.ftc.teamcode.commands.ActivatePropPipelineCommand;
 import org.firstinspires.ftc.teamcode.commands.DeactivateAprilTagPipelineCommand;
@@ -22,7 +23,6 @@ import org.firstinspires.ftc.teamcode.commands.DeactivatePropPipelineCommand;
 import org.firstinspires.ftc.teamcode.commands.ResetGyroCommand;
 import org.firstinspires.ftc.teamcode.commands.ToggleAllianceColorCommand;
 import org.firstinspires.ftc.teamcode.commands.ToggleAlliancePositionCommand;
-import org.firstinspires.ftc.teamcode.commands.ToggleTemporaryTeamPropPositionCommand;
 import org.firstinspires.ftc.teamcode.commands.ToggleVisionPipelineCommand;
 import org.firstinspires.ftc.teamcode.commands.ToggleVitesseCommand;
 import org.firstinspires.ftc.teamcode.commands.TourneAutoCommand;
@@ -54,8 +54,7 @@ public class RobotContainer {
 
     private final DriveSubsystem mDriveSubsystem = new DriveSubsystem();
     private final ConfigSubsystem mConfigSubsystem = new ConfigSubsystem();
-    private final VisionSubsystem mVisionSubsystem = new VisionSubsystem();
-    public final TeamPropPipeline mTeamPropPipeline = new TeamPropPipeline();
+    private final VisionSubsystem mVisionSubsystem = new VisionSubsystem(mConfigSubsystem);
 
     private final PinceSubsystem mPinceSubsystem = new PinceSubsystem();
     private final BrasSubsystem mBrasSubsystem = new BrasSubsystem();
@@ -71,6 +70,7 @@ public class RobotContainer {
     private final TourneAutoCommand mTourne270 = new TourneAutoCommand(mDriveSubsystem, -90);
 
     private final LeveBrasHauteurToileCommand mLeveBrasHauteurToileCommand = new LeveBrasHauteurToileCommand(mBrasSubsystem, mPinceSubsystem);
+    private final LeveBrasHauteurToileBasCommand mLeveBrasHauteurToileBasCommand = new LeveBrasHauteurToileBasCommand(mBrasSubsystem, mPinceSubsystem);
 
     private final ToggleVisionPipelineCommand mToggleVisionPipelineCommand = new ToggleVisionPipelineCommand(mVisionSubsystem);
 
@@ -89,7 +89,6 @@ public class RobotContainer {
 
     private final ToggleAllianceColorCommand mToggleAllianceColorCommand = new ToggleAllianceColorCommand(mConfigSubsystem);
     private final ToggleAlliancePositionCommand mToggleAlliancePositionCommand = new ToggleAlliancePositionCommand(mConfigSubsystem);
-    private final ToggleTemporaryTeamPropPositionCommand mToggleTemporaryTeamPropPositionCommand = new ToggleTemporaryTeamPropPositionCommand(mConfigSubsystem);
 
     private final PinceToggleDroitCommand mPinceCommandToggleDroit = new PinceToggleDroitCommand(mPinceSubsystem);
     private final PinceToggleGaucheCommand mPinceCommandToggleGauche = new PinceToggleGaucheCommand(mPinceSubsystem);
@@ -155,7 +154,7 @@ public class RobotContainer {
         buttonX2.onTrue(mBrasPosition0AutoCommand);
 
         JoystickButton buttonRB2 = new JoystickButton(mXboxController2, XboxController.Button.kRightBumper.value);
-        //buttonRB2.onTrue(mLeveBrasHauteurToileCommand);
+        buttonRB2.onTrue(mPinceToggleInclinaisonCommand);
 
         JoystickButton buttonB2 = new JoystickButton(mXboxController2, XboxController.Button.kB.value);
         buttonB2.onTrue(mPinceCommandToggle);
@@ -164,7 +163,7 @@ public class RobotContainer {
         buttonY2.onTrue(mLeveBrasHauteurToileCommand);
 
         JoystickButton buttonA2 = new JoystickButton(mXboxController2, XboxController.Button.kA.value);
-        buttonA2.onTrue(mPinceToggleInclinaisonCommand);
+        buttonA2.onTrue(mLeveBrasHauteurToileBasCommand);
 
         JoystickButton buttonkLeft2 = new JoystickButton(mXboxController2, XboxController.Button.kLeft.value);
         buttonkLeft2.onTrue(mPinceCommandToggleGauche);
@@ -179,12 +178,15 @@ public class RobotContainer {
     }
 
     public Command getWaitCommand() {
-        return new WaitConfigCommand(mBrasSubsystem);
+        return new LeveAndWaitCommandGroup(mBrasSubsystem, mConfigSubsystem);
     }
 
     public Command getAutonomousCommand() {
 
-        if
+        if (mConfigSubsystem.isReady() == false)
+        {
+            return null;
+        }
 
         DriverStationJNI.getTelemetry().addData("couleur", mConfigSubsystem.allianceColor());
         DriverStationJNI.getTelemetry().addData("position", mConfigSubsystem.alliancePosition());

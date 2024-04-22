@@ -25,14 +25,14 @@ public class RougeGaucheTeamPropGauche extends SequentialCommandGroup {
         AvanceAutoCommand tasseFin = new AvanceAutoCommand(driveSubsystem, 0, -(Constants.AutonomousConstants.kTasseToileGarer - Constants.AutonomousConstants.kTasseToileGaucheDroiteAprilTag));
 
         addCommands(
-                poserGauche,
+                poserGauche/*,
                 new WaitCommand(0.5),
                 demiTour,
                 new WaitCommand(0.5),
                 allerVersToileLoin,
                 tasseGauche,
                 pinceOuvre,
-                tasseFin
+                tasseFin*/
         );
     }
 }

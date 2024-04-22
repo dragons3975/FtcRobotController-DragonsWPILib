@@ -42,7 +42,7 @@ public class AvanceAutoCommand extends Command {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        if (mXSpeed > 0) {
+        if (mXSpeed != 0) {
             return mDriveSubsystem.isAtSetPointx();
         } else {
             return mDriveSubsystem.isAtSetPointy();

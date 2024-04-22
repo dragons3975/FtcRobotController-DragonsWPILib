@@ -20,10 +20,12 @@ public class PoserTeamPropGaucheBleuEtRouge extends SequentialCommandGroup {
 
         AvanceAutoCommand avance  = new AvanceAutoCommand(driveSubsystem, Constants.AutonomousConstants.kAvancementInitialGaucheDroite, 0);
         TourneAutoCommand tourneGacuhe = new TourneAutoCommand(driveSubsystem, -90);
-        AvanceAutoCommand avance2  = new AvanceAutoCommand(driveSubsystem, 20, 0);
+        AvanceAutoCommand avance2  = new AvanceAutoCommand(driveSubsystem, 10, 0);
         PoseTeamPropReculeFerme poseTeamPropReculeFerme = new PoseTeamPropReculeFerme(brasSubsystem, pinceSubsystem, driveSubsystem);
 
         addCommands(
+                new BrasPosition0(brasSubsystem, pinceSubsystem),
+                new PinceFermeCommand(pinceSubsystem),
                 avance,
                 tourneGacuhe,
                 new WaitCommand(0.5),

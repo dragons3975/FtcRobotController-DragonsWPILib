@@ -19,7 +19,10 @@ public class BleuGaucheTeamPropGauche extends SequentialCommandGroup {
         PoserTeamPropGaucheBleuEtRouge poserGauche = new PoserTeamPropGaucheBleuEtRouge(brasSubsystem, pinceSubsystem, driveSubsystem);
 
         addCommands(
-                poserGauche
+                poserGauche,
+                new TourneAutoCommand(driveSubsystem, 90),
+                new AvanceAutoCommand(driveSubsystem, -77, 0).withTimeout(3),
+                new AvanceAutoCommand(driveSubsystem, 0, -100).withTimeout(3)
         );
     }
 

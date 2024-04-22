@@ -22,7 +22,9 @@ public class BleuGaucheTeamPropMilieu extends SequentialCommandGroup {
         PoserTeamPropMilieuBleuEtRouge PoserMilieu = new PoserTeamPropMilieuBleuEtRouge(brasSubsystem, pinceSubsystem, driveSubsystem);
 
         addCommands(
-                PoserMilieu
+                PoserMilieu,
+                new AvanceAutoCommand(driveSubsystem, -77, 0).withTimeout(3),
+                new AvanceAutoCommand(driveSubsystem, 0, -100).withTimeout(3)
         );
     }
 

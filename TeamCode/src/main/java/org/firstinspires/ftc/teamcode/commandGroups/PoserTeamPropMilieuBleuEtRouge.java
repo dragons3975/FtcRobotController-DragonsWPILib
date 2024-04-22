@@ -18,6 +18,8 @@ public class PoserTeamPropMilieuBleuEtRouge extends SequentialCommandGroup {
         PoseTeamPropReculeFerme poseTeamPropReculeFerme = new PoseTeamPropReculeFerme(brasSubsystem, pinceSubsystem, driveSubsystem);
 
         addCommands(
+                new BrasPosition0(brasSubsystem, pinceSubsystem),
+                new PinceFermeCommand(pinceSubsystem),
                 avance.withTimeout(10),
                 poseTeamPropReculeFerme
         );

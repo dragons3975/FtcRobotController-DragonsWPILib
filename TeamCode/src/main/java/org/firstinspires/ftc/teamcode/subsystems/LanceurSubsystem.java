@@ -23,12 +23,12 @@ public class LanceurSubsystem extends Subsystem {
     }
 
     public void lance() {
-        if (lance) {
+        if (!lance) {
             m_Servo.setPosition(1);
-            lance = false;
+            lance = true;
         } else {
             m_Servo.setPosition(0.2);
-            lance = true;
+            lance = false;
         }
     }
 

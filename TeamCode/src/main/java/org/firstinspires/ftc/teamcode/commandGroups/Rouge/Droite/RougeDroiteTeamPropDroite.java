@@ -19,7 +19,10 @@ public class RougeDroiteTeamPropDroite extends SequentialCommandGroup {
         PoserTeamPropDroitBleuEtRouge poserDroit = new PoserTeamPropDroitBleuEtRouge(brasSubsystem, pinceSubsystem, driveSubsystem);
 
         addCommands(
-                poserDroit
+                poserDroit,
+                new TourneAutoCommand(driveSubsystem, -90),
+                new AvanceAutoCommand(driveSubsystem, -77, 0).withTimeout(3),
+                new AvanceAutoCommand(driveSubsystem, 0, 100).withTimeout(3)
         );
     }
 

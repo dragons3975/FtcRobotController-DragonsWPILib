@@ -26,13 +26,13 @@ public class BleuDroiteTeamPropDroite extends SequentialCommandGroup {
         AvanceAutoCommand tasseFin = new AvanceAutoCommand(driveSubsystem, 0, Constants.AutonomousConstants.kTasseToileGarer - Constants.AutonomousConstants.kTasseToileGaucheDroiteAprilTag);
 
         addCommands(
-                poserDroit,
+                poserDroit/*,
                 new WaitCommand(0.5),
                 demiTour,
                 allerVersToileLoin,
                 tasseDroite,
                 pinceOuvre,
-                tasseFin
+                tasseFin*/
         );
     }
 
