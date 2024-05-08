@@ -128,7 +128,7 @@ public class RobotContainer {
         JoystickButton kStart = new JoystickButton(mXboxController, XboxController.Button.kStart.value);
         kStart.onTrue(mToggleAllianceColorCommand);
 
-        JoystickButton kMode = new JoystickButton(mXboxController, XboxController.Button.kLogitech.value);
+        JoystickButton kMode = new JoystickButton(mXboxController, XboxController.Button.kUp.value);
         kMode.onTrue(mToggleAlliancePositionCommand);
 
 
