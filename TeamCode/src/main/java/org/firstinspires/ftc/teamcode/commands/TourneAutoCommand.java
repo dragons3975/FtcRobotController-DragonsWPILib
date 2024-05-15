@@ -4,7 +4,7 @@ import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
 
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class TourneAutoCommand extends Command {
+public class  TourneAutoCommand extends Command {
 
     private final DriveSubsystem mDriveSubsystem;
 

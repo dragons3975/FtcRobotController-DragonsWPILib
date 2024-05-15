@@ -34,8 +34,8 @@ public class VisionSubsystem extends Subsystem {
     @Override
     public void periodic() {
         //DriverStationJNI.getTelemetry().addData("teamPropLocation", getTeamPropLocation());
-        DriverStationJNI.getTelemetry().addData("isPipelineAprilTag", mIsPipelineAprilTag);
-        DriverStationJNI.getTelemetry().addData("isPipelineProp", mIsPipelineProp);
+        //DriverStationJNI.getTelemetry().addData("isPipelineAprilTag", mIsPipelineAprilTag);
+        //DriverStationJNI.getTelemetry().addData("isPipelineProp", mIsPipelineProp);
 
 
         /*if (mIsPipelineAprilTag) {
@@ -62,35 +62,35 @@ public class VisionSubsystem extends Subsystem {
     private void telemetryAprilTag() {
 
         List<AprilTagDetection> currentDetections = mAprilTag.getDetections();
-        DriverStationJNI.getTelemetry().addData("# AprilTags Detected", currentDetections.size());
+        //DriverStationJNI.getTelemetry().addData("# AprilTags Detected", currentDetections.size());
 
         // Step through the list of detections and display info for each one.
         for (AprilTagDetection detection : currentDetections) {
             if (detection.metadata != null) {
-                DriverStationJNI.getTelemetry().addLine(String.format("\n==== (ID %d) %s", detection.id, detection.metadata.name));
-                DriverStationJNI.getTelemetry().addLine(String.format("XYZ %6.1f %6.1f %6.1f  (inch)", detection.ftcPose.x, detection.ftcPose.y, detection.ftcPose.z));
-                DriverStationJNI.getTelemetry().addLine(String.format("PRY %6.1f %6.1f %6.1f  (deg)", detection.ftcPose.pitch, detection.ftcPose.roll, detection.ftcPose.yaw));
+                //DriverStationJNI.getTelemetry().addLine(String.format("\n==== (ID %d) %s", detection.id, detection.metadata.name));
+                //DriverStationJNI.getTelemetry().addLine(String.format("XYZ %6.1f %6.1f %6.1f  (inch)", detection.ftcPose.x, detection.ftcPose.y, detection.ftcPose.z));
+                //DriverStationJNI.getTelemetry().addLine(String.format("PRY %6.1f %6.1f %6.1f  (deg)", detection.ftcPose.pitch, detection.ftcPose.roll, detection.ftcPose.yaw));
                 //DriverStationJNI.getTelemetry().addLine(String.format("RBE %6.1f %6.1f %6.1f  (inch, deg, deg)", detection.ftcPose.range, detection.ftcPose.bearing, detection.ftcPose.elevation));
             } else {
-                DriverStationJNI.getTelemetry().addLine(String.format("\n==== (ID %d) Unknown", detection.id));
-                DriverStationJNI.getTelemetry().addLine(String.format("Center %6.0f %6.0f   (pixels)", detection.center.x, detection.center.y));
+                //DriverStationJNI.getTelemetry().addLine(String.format("\n==== (ID %d) Unknown", detection.id));
+                //DriverStationJNI.getTelemetry().addLine(String.format("Center %6.0f %6.0f   (pixels)", detection.center.x, detection.center.y));
             }
         }   // end for() loop
 
         // Add "key" information to telemetry
-        DriverStationJNI.getTelemetry().addLine("\nkey:\nXYZ = X (Right), Y (Forward), Z (Up) dist.");
-        DriverStationJNI.getTelemetry().addLine("PRY = Pitch, Roll & Yaw (XYZ Rotation)");
-        DriverStationJNI.getTelemetry().addLine("RBE = Range, Bearing & Elevation");
+        //DriverStationJNI.getTelemetry().addLine("\nkey:\nXYZ = X (Right), Y (Forward), Z (Up) dist.");
+        //DriverStationJNI.getTelemetry().addLine("PRY = Pitch, Roll & Yaw (XYZ Rotation)");
+        //DriverStationJNI.getTelemetry().addLine("RBE = Range, Bearing & Elevation");
 
     }
     public double getAprilTagPosX() {
         List<AprilTagDetection> currentDetections = mAprilTag.getDetections();
-        DriverStationJNI.getTelemetry().addData("# AprilTags Detected", currentDetections.size());
+        //DriverStationJNI.getTelemetry().addData("# AprilTags Detected", currentDetections.size());
 
         // Step through the list of detections and display info for each one.
         for (AprilTagDetection detection : currentDetections) {
             if (detection.metadata != null) {
-                DriverStationJNI.getTelemetry().addData("april tag x", detection.ftcPose.x);
+                //DriverStationJNI.getTelemetry().addData("april tag x", detection.ftcPose.x);
                 return detection.ftcPose.x;
                }
         }

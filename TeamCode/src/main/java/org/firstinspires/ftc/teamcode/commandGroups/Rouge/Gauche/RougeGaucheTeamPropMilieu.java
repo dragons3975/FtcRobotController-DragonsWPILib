@@ -19,17 +19,19 @@ public class RougeGaucheTeamPropMilieu extends SequentialCommandGroup {
     public RougeGaucheTeamPropMilieu(DriveSubsystem driveSubsystem, PinceSubsystem pinceSubsystem, BrasSubsystem brasSubsystem) {
 
         PoserTeamPropMilieuBleuEtRouge poserMilieu = new PoserTeamPropMilieuBleuEtRouge(brasSubsystem, pinceSubsystem, driveSubsystem);
-        TourneAutoCommand tourneDroite = new TourneAutoCommand(driveSubsystem, 90);
-        AvanceAutoCommand tasseGauche = new AvanceAutoCommand(driveSubsystem, 0, -15);
+        TourneAutoCommand tourneGauche = new TourneAutoCommand(driveSubsystem, -90);
+        AvanceAutoCommand tasseDroit = new AvanceAutoCommand(driveSubsystem, 0, 5);
+        AvanceAutoCommand avance = new AvanceAutoCommand(driveSubsystem, 15, 0);
         AllerVersToileLoin allerVersToileLoin = new AllerVersToileLoin(brasSubsystem, pinceSubsystem, driveSubsystem);
         PinceOuvreCommand pinceOuvre = new PinceOuvreCommand(pinceSubsystem);
         AvanceAutoCommand tasseFin = new AvanceAutoCommand(driveSubsystem, 0, -Constants.AutonomousConstants.kTasseToileGarer);
 
         addCommands(
-                poserMilieu/*,
-                tourneDroite,
+                poserMilieu,
+                tourneGauche,
                 new WaitCommand(0.5),
-                tasseGauche,
+                tasseDroit,
+                avance/*,
                 new WaitCommand(0.5),
                 allerVersToileLoin,
                 pinceOuvre,

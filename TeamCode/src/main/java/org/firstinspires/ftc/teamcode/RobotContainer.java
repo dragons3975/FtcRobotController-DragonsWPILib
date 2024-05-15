@@ -183,7 +183,7 @@ public class RobotContainer {
 
     public Command getAutonomousCommand() {
 
-        if (mConfigSubsystem.isReady() == false)
+        if (!mConfigSubsystem.isReady())
         {
             return null;
         }
@@ -192,7 +192,7 @@ public class RobotContainer {
         DriverStationJNI.getTelemetry().addData("position", mConfigSubsystem.alliancePosition());
         DriverStationJNI.getTelemetry().addData("TeamPropLocation", mVisionSubsystem.getTeamPropLocation());
 
-        //return new RougeGaucheTeamPropDroite(mDriveSubsystem, mPinceSubsystem, mBrasSubsystem);
+        return new RougeGaucheTeamPropMilieu(mDriveSubsystem, mPinceSubsystem, mBrasSubsystem);/*
 
         if (mConfigSubsystem.allianceColor() == Constants.ConfigConstants.kBleu) {
             if (mConfigSubsystem.alliancePosition() == Constants.ConfigConstants.kGauche) {
@@ -242,6 +242,6 @@ public class RobotContainer {
                 }
             }
         }
-        return null;
+        return null;*/
     }
 }
