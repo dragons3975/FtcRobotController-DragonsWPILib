@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.commandGroups;
 
 import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.commands.AvanceAutoCommand;
+import org.firstinspires.ftc.teamcode.commands.pinceCommands.PinceOuvreCommand;
 import org.firstinspires.ftc.teamcode.subsystems.BrasSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.PinceSubsystem;
@@ -16,12 +17,14 @@ public class AllerVersToileLoin extends SequentialCommandGroup {
         AvanceAutoCommand avancer = new AvanceAutoCommand(driveSubsystem, Constants.AutonomousConstants.kAvancementVersToileEloigne - 20, 0);
         LeveBrasHauteurToileCommand leve = new LeveBrasHauteurToileCommand(brasSubsystem, pinceSubsystem);
         AvanceAutoCommand avancer2 = new AvanceAutoCommand(driveSubsystem, 20, 0);
+        PinceOuvreCommand ouvre = new PinceOuvreCommand(pinceSubsystem);
 
         addCommands(
                 avancer,
                 leve,
                 avancer2,
-                new WaitCommand(0.5)
+                new WaitCommand(0.5),
+                ouvre
         );
     }
 }
