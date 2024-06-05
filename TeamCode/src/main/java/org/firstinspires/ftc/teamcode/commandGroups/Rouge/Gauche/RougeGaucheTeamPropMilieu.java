@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.commandGroups.Rouge.Gauche;
 
 import org.firstinspires.ftc.teamcode.Constants;
+import org.firstinspires.ftc.teamcode.commandGroups.BrasPosition0;
 import org.firstinspires.ftc.teamcode.commandGroups.PoserTeamPropMilieuBleuEtRouge;
 import org.firstinspires.ftc.teamcode.commandGroups.AllerVersToileLoin;
 import org.firstinspires.ftc.teamcode.commands.AvanceAutoCommand;
@@ -8,7 +9,9 @@ import org.firstinspires.ftc.teamcode.commands.TourneAutoCommand;
 import org.firstinspires.ftc.teamcode.commands.brasCommands.BrasExtentionPosCommand;
 import org.firstinspires.ftc.teamcode.commands.brasCommands.BrasRotationPosCommand;
 import org.firstinspires.ftc.teamcode.commands.pinceCommands.PinceFermeCommand;
+import org.firstinspires.ftc.teamcode.commands.pinceCommands.PinceInclinaisonPile;
 import org.firstinspires.ftc.teamcode.commands.pinceCommands.PinceOuvreCommand;
+import org.firstinspires.ftc.teamcode.commands.pinceCommands.PinceOuvreDroitCommand;
 import org.firstinspires.ftc.teamcode.subsystems.BrasSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.PinceSubsystem;
@@ -27,29 +30,37 @@ public class RougeGaucheTeamPropMilieu extends SequentialCommandGroup {
         AvanceAutoCommand tasseGauche = new AvanceAutoCommand(driveSubsystem, 0, -5);
         AvanceAutoCommand avance = new AvanceAutoCommand(driveSubsystem, 18, 0);
         AllerVersToileLoin allerVersToileLoin = new AllerVersToileLoin(brasSubsystem, pinceSubsystem, driveSubsystem);
-        PinceOuvreCommand pinceOuvre = new PinceOuvreCommand(pinceSubsystem);
+        PinceOuvreDroitCommand pinceOuvre = new PinceOuvreDroitCommand(pinceSubsystem);
         PinceFermeCommand pinceFerme = new PinceFermeCommand(pinceSubsystem);
-        AvanceAutoCommand tasseFin = new AvanceAutoCommand(driveSubsystem, 0, -Constants.AutonomousConstants.kTasseToileGarer);
         BrasRotationPosCommand brasPosPile = new BrasRotationPosCommand(brasSubsystem, 1500);
         BrasExtentionPosCommand extPile = new BrasExtentionPosCommand(brasSubsystem, 27200);
         BrasExtentionPosCommand ext0 = new BrasExtentionPosCommand(brasSubsystem, 0);
+        BrasPosition0 brasPos0 = new BrasPosition0(brasSubsystem, pinceSubsystem);
+        AvanceAutoCommand reculeFin = new AvanceAutoCommand(driveSubsystem, -40, 0);
+        AvanceAutoCommand tasseFin = new AvanceAutoCommand(driveSubsystem, 0, -50);
+        PinceInclinaisonPile inclinePile = new PinceInclinaisonPile(pinceSubsystem);
 
         addCommands(
                 poserMilieu,
                 tourneGauche,
-                new WaitCommand(0.5),
+                new WaitCommand(1),
                 tasseDroit,
                 avance,
                 brasPosPile,
                 pinceOuvre,
                 extPile,
                 new WaitCommand(0.5),
+                inclinePile,
+                new WaitCommand(0.5),
                 pinceFerme,
                 ext0,
                 tourne180,
+                new WaitCommand(1),
                 tasseGauche,
-                allerVersToileLoin
-
+                allerVersToileLoin,
+                reculeFin,
+                brasPos0,
+                tasseFin
         );
     }
 }

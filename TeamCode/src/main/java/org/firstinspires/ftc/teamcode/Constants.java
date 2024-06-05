@@ -105,7 +105,7 @@ public final class Constants {
         public static final double distanceCalculy = 50.0 / 825;
 
         public static final double kVitesseBasse = 0.4;
-        public static final double kVitesseHaute = 1;
+        public static final double kVitesseHaute = 0.9;
     }
 
     public static final class ConstantsDrivePID {

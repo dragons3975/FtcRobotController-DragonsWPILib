@@ -188,9 +188,9 @@ public class RobotContainer {
             return null;
         }
 
-        DriverStationJNI.getTelemetry().addData("couleur", mConfigSubsystem.allianceColor());
-        DriverStationJNI.getTelemetry().addData("position", mConfigSubsystem.alliancePosition());
-        DriverStationJNI.getTelemetry().addData("TeamPropLocation", mVisionSubsystem.getTeamPropLocation());
+        //DriverStationJNI.getTelemetry().addData("couleur", mConfigSubsystem.allianceColor());
+        //DriverStationJNI.getTelemetry().addData("position", mConfigSubsystem.alliancePosition());
+        //DriverStationJNI.getTelemetry().addData("TeamPropLocation", mVisionSubsystem.getTeamPropLocation());
 
         return new RougeGaucheTeamPropMilieu(mDriveSubsystem, mPinceSubsystem, mBrasSubsystem);/*
 
