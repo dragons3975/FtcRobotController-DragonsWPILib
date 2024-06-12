@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.commandGroups.Rouge.Gauche;
 
-import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.commandGroups.BrasPosition0;
 import org.firstinspires.ftc.teamcode.commandGroups.PoserTeamPropMilieuBleuEtRouge;
 import org.firstinspires.ftc.teamcode.commandGroups.AllerVersToileLoin;
@@ -10,7 +9,6 @@ import org.firstinspires.ftc.teamcode.commands.brasCommands.BrasExtentionPosComm
 import org.firstinspires.ftc.teamcode.commands.brasCommands.BrasRotationPosCommand;
 import org.firstinspires.ftc.teamcode.commands.pinceCommands.PinceFermeCommand;
 import org.firstinspires.ftc.teamcode.commands.pinceCommands.PinceInclinaisonPile;
-import org.firstinspires.ftc.teamcode.commands.pinceCommands.PinceOuvreCommand;
 import org.firstinspires.ftc.teamcode.commands.pinceCommands.PinceOuvreDroitCommand;
 import org.firstinspires.ftc.teamcode.subsystems.BrasSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
@@ -36,7 +34,7 @@ public class RougeGaucheTeamPropMilieu extends SequentialCommandGroup {
         BrasExtentionPosCommand extPile = new BrasExtentionPosCommand(brasSubsystem, 27200);
         BrasExtentionPosCommand ext0 = new BrasExtentionPosCommand(brasSubsystem, 0);
         BrasPosition0 brasPos0 = new BrasPosition0(brasSubsystem, pinceSubsystem);
-        AvanceAutoCommand reculeFin = new AvanceAutoCommand(driveSubsystem, -40, 0);
+        AvanceAutoCommand reculeFin = new AvanceAutoCommand(driveSubsystem, -60, 0);
         AvanceAutoCommand tasseFin = new AvanceAutoCommand(driveSubsystem, 0, -50);
         PinceInclinaisonPile inclinePile = new PinceInclinaisonPile(pinceSubsystem);
 
@@ -49,10 +47,11 @@ public class RougeGaucheTeamPropMilieu extends SequentialCommandGroup {
                 brasPosPile,
                 pinceOuvre,
                 extPile,
-                new WaitCommand(0.5),
+                new WaitCommand(0.3),
                 inclinePile,
-                new WaitCommand(0.5),
+                new WaitCommand(0.3),
                 pinceFerme,
+                new WaitCommand(0.3),
                 ext0,
                 tourne180,
                 new WaitCommand(1),

@@ -16,7 +16,7 @@ public class AllerVersToileLoin extends SequentialCommandGroup {
 
         AvanceAutoCommand avancer = new AvanceAutoCommand(driveSubsystem, Constants.AutonomousConstants.kAvancementVersToileEloigne - 20, 0);
         LeveBrasHauteurToileCommand leve = new LeveBrasHauteurToileCommand(brasSubsystem, pinceSubsystem);
-        AvanceAutoCommand avancer2 = new AvanceAutoCommand(driveSubsystem, 20, 0);
+        AvanceAutoCommand avancer2 = new AvanceAutoCommand(driveSubsystem, 30, 0);
         PinceOuvreCommand ouvre = new PinceOuvreCommand(pinceSubsystem);
 
         addCommands(
