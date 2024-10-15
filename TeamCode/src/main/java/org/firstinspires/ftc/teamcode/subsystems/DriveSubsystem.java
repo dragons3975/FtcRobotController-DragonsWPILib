@@ -18,60 +18,52 @@ public class DriveSubsystem extends Subsystem {
     private final FtcMotor m_rearLeftMotor = new FtcMotor("rleft");
     private final FtcMotor m_rearRightMotor = new FtcMotor("rright");
     private final MecanumDrive m_robotDrive = new MecanumDrive(m_frontLeftMotor, m_frontRightMotor, m_rearLeftMotor, m_rearRightMotor);
-    private final FtcGyro mGyro = new FtcGyro();
-    private double mAngle = 0;
-    private double mAngleInit = 0;
 
     private double m_xSpeed = 0; // The robot's speed along the X axis [-1.0..1.0]. Forward is positive.
     private double m_zRotation = 0; // The robot's rotation rate around the Z axis [-1.0..1.0]. Clockwise is positive.
     private double m_ySpeed = 0;
 
-    private double mAngleConsigne, mxConsigne, myConsigne;
+    private double m_trackwidth = 0;
+    private double m_forward_offset = 0;
 
-    private boolean mpidxyEnabled = false;
-    private boolean vitesseHaute = true;
-    private PIDController mPIDz = new PIDController(Constants.ConstantsDrivePID.kP, Constants.ConstantsDrivePID.kI, Constants.ConstantsDrivePID.kD);
-
-    private PIDController mPIDx = new PIDController(Constants.ConstantsDrivePID.kPx, Constants.ConstantsDrivePID.kIx, Constants.ConstantsDrivePID.kDx);
-
-    private PIDController mPIDy = new PIDController(Constants.ConstantsDrivePID.kPy, Constants.ConstantsDrivePID.kIy, Constants.ConstantsDrivePID.kDy);
-
+    private double heading = 0;
+    private double m_x, m_y, m_z, m_prev_left_encoder_pos, m_prev_right_encoder_pos, m_prev_center_encoder_pos = 0;
     public DriveSubsystem() {
         m_robotDrive.setMaxOutput(Constants.ConstantsDrive.kVitesseHaute);
-        mPIDz.setTolerance(Constants.ConstantsDrivePID.kToleranceZ);
-        mPIDx.setTolerance(Constants.ConstantsDrivePID.kToleranceX);
-        mPIDy.setTolerance(Constants.ConstantsDrivePID.kToleranceY);
         m_frontLeftMotor.setInverted(false);
         m_frontRightMotor.setInverted(false);
         m_rearLeftMotor.setInverted(true);
         m_rearRightMotor.setInverted(true);
 
-        mAngleConsigne = getAngle();
-
-        mPIDz.enableContinuousInput(-180, 180);
     }
 
     @Override
     public void periodic() {
+        double delta_left_encodeur_pos = get_left_encoder_pos() - m_prev_left_encoder_pos;
+        double delta_right_encodeur_pos = get_right_encoder_pos() - m_prev_right_encoder_pos;
+        double delta_center_encodeur_pos = get_center_encoder_pos() - m_prev_center_encoder_pos;
 
-        mAngle = getAngle();
-        DriverStationJNI.getTelemetry().addData("mGyro angle", mAngle);
-        DriverStationJNI.getTelemetry().addData("angleConsigne", mAngleConsigne);
-        m_zRotation = mPIDz.calculate(mAngle, mAngleConsigne);
-        if (Math.abs(m_zRotation) > Constants.MaxSpeeds.kmaxZspeed) {
-            m_zRotation = Math.signum(m_zRotation) * Constants.MaxSpeeds.kmaxZspeed;
-        }
+        double phi = (delta_left_encodeur_pos - delta_right_encodeur_pos) / m_trackwidth;
+        double delta_middle_pos = (delta_left_encodeur_pos + delta_right_encodeur_pos) / 2;
+        double delta_perp_pos = delta_center_encodeur_pos - m_forward_offset * phi;
 
-        if (mpidxyEnabled) {
-            m_xSpeed = mPIDx.calculate(getX(), mxConsigne);
-            m_ySpeed = mPIDy.calculate(getY(), myConsigne);
-            if (Math.abs(m_xSpeed) > Constants.MaxSpeeds.kmaxXspeed) {
-                m_xSpeed = Math.signum(m_xSpeed) * Constants.MaxSpeeds.kmaxXspeed;
-            }
-            if (Math.abs(m_ySpeed) > Constants.MaxSpeeds.kmaxYspeed) {
-                m_ySpeed = Math.signum(m_ySpeed) * Constants.MaxSpeeds.kmaxYspeed;
-            }
-        }
+        double heading_rad = Math.toRadians(heading);
+        double delta_x = delta_middle_pos * Math.cos(heading_rad) - delta_perp_pos * Math.sin(heading_rad);
+        double delta_y = delta_middle_pos * Math.sin(heading_rad) + delta_perp_pos * Math.cos(heading_rad);
+        heading = Math.toDegrees(heading_rad);
+
+        m_x += delta_x;
+        m_y += delta_y;
+        heading += phi;
+
+        m_prev_left_encoder_pos = get_left_encoder_pos();
+        m_prev_right_encoder_pos = get_right_encoder_pos();
+        m_prev_center_encoder_pos = get_center_encoder_pos();
+
+
+
+
+
         DriverStationJNI.getTelemetry().addData("m_xSpeed", m_xSpeed);
         DriverStationJNI.getTelemetry().addData("m_ySpeed", m_ySpeed);
         DriverStationJNI.getTelemetry().addData("m_zRotation", m_zRotation);
@@ -81,89 +73,38 @@ public class DriveSubsystem extends Subsystem {
 
         DriverStationJNI.getTelemetry().addData("y", getY());
         DriverStationJNI.getTelemetry().addData("x", getX());
-        DriverStationJNI.getTelemetry().addData("isAtSetPointz", isAtSetPointz());
-        DriverStationJNI.getTelemetry().addData("isAtSetPointx", isAtSetPointx());
-        DriverStationJNI.getTelemetry().addData("isAtSetPointy", isAtSetPointy());
-
-        DriverStationJNI.getTelemetry().addData("front left", getFrontLeftPosition());
-        DriverStationJNI.getTelemetry().addData("front right", getFrontRightPosition());
-        DriverStationJNI.getTelemetry().addData("rear left", getRearLeftPosition());
-        DriverStationJNI.getTelemetry().addData("rear right", getRearRightPosition());
     }
 
-    public void toggleVitesse() {
-        if (vitesseHaute) {
-            m_robotDrive.setMaxOutput(Constants.ConstantsDrive.kVitesseBasse);
-            vitesseHaute = false;
-            return;
-        }
-        m_robotDrive.setMaxOutput(Constants.ConstantsDrive.kVitesseHaute);
-        vitesseHaute = true;
+    public double get_left_encoder_pos() {
+        return m_rearLeftMotor.getCurrentPosition();
     }
 
-    public void resetGyro() {
-        mAngleInit = getAngle();
+    public double get_right_encoder_pos() {
+        return m_rearRightMotor.getCurrentPosition();
+    }
+
+    public double get_center_encoder_pos() {
+        return m_frontRightMotor.getCurrentPosition();
     }
 
     public double getY() {
-        return (getFrontLeftPosition() + getRearRightPosition()
-                - getFrontRightPosition() - getRearLeftPosition())
-                / 4.0 * Constants.ConstantsDrive.distanceCalculy;
     }
 
     public double getX() {
-        return (getFrontRightPosition() + getRearLeftPosition()
-                + getFrontLeftPosition() + getRearRightPosition())
-                / 4.0 * Constants.ConstantsDrive.distanceCalculx;
     }
+
+
 
     public void mecanumDrive(double xSpeed, double ySpeed, double zRotation){
-        if (Math.abs(zRotation) > 0.1) {
-            mAngleConsigne = getAngle() + zRotation;
-        }
-        double angleActuelRadians = Math.toRadians(getAngle() - mAngleInit);
-        m_xSpeed = xSpeed * Math.cos(angleActuelRadians) + ySpeed * Math.sin(angleActuelRadians);
-        m_ySpeed = ySpeed * Math.cos(angleActuelRadians) - xSpeed * Math.sin(angleActuelRadians);
-        mpidxyEnabled = false;
-    }
-
-    public void drivePIDxy(double xtarget, double ytarget) {
-        mxConsigne = getX() + xtarget;
-        myConsigne = getY() + ytarget;
-        mpidxyEnabled = true;
-    }
-
-    public boolean isAtSetPointz() {
-        return mPIDz.atSetpoint();
-    }
-    public boolean isAtSetPointx() {
-        return mPIDx.atSetpoint();
-    }
-    public boolean isAtSetPointy() {
-        return mPIDy.atSetpoint();
-    }
-
-    private double getFrontLeftPosition() {
-        return m_frontLeftMotor.getCurrentPosition();
-    }
-    private double getFrontRightPosition() {
-        return -m_frontRightMotor.getCurrentPosition();
-    }
-    private double getRearLeftPosition() {
-        return -m_rearLeftMotor.getCurrentPosition();
-    }
-    private double getRearRightPosition() {
-        return m_rearRightMotor.getCurrentPosition();
+        m_zRotation = zRotation;
+        m_xSpeed = xSpeed;
+        m_ySpeed = ySpeed;
     }
 
     public void stop () {
         m_xSpeed = 0;
         m_ySpeed = 0;
-        mAngleConsigne = getAngle();
-    }
-
-    private double getAngle() {
-        return MathUtil.inputModulus(-mGyro.getAngle(), -180, 180);
+        m_zRotation = 0;
     }
 }
 
