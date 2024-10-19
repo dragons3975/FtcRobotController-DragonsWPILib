@@ -23,10 +23,11 @@ public class DriveSubsystem extends Subsystem {
     private double m_zRotation = 0; // The robot's rotation rate around the Z axis [-1.0..1.0]. Clockwise is positive.
     private double m_ySpeed = 0;
 
-    private double m_trackwidth = 0;
-    private double m_forward_offset = 0;
+    private double m_trackwidth = 12.6;
+    private double m_forward_offset = 0.5;
 
-    private double heading = 0;
+    private double heading = 0.0;
+    private double angle_droit, angle_gauche;
     private double m_x, m_y, m_z, m_prev_left_encoder_pos, m_prev_right_encoder_pos, m_prev_center_encoder_pos = 0;
     public DriveSubsystem() {
         m_robotDrive.setMaxOutput(Constants.ConstantsDrive.kVitesseHaute);
@@ -39,11 +40,19 @@ public class DriveSubsystem extends Subsystem {
 
     @Override
     public void periodic() {
+
+        m_x = (get_left_encoder_pos() + get_right_encoder_pos()) / 2;
+        m_y = get_center_encoder_pos();
+
+        angle_droit = Math.atan(get_left_encoder_pos() / 16);
+        angle_gauche = Math.atan(get_right_encoder_pos() / 16);
+
+        //forward offset = 0
         double delta_left_encodeur_pos = get_left_encoder_pos() - m_prev_left_encoder_pos;
         double delta_right_encodeur_pos = get_right_encoder_pos() - m_prev_right_encoder_pos;
         double delta_center_encodeur_pos = get_center_encoder_pos() - m_prev_center_encoder_pos;
 
-        double phi = (delta_left_encodeur_pos - delta_right_encodeur_pos) / m_trackwidth;
+        /*double phi = (delta_left_encodeur_pos - delta_right_encodeur_pos) / m_trackwidth;
         double delta_middle_pos = (delta_left_encodeur_pos + delta_right_encodeur_pos) / 2;
         double delta_perp_pos = delta_center_encodeur_pos - m_forward_offset * phi;
 
@@ -58,39 +67,35 @@ public class DriveSubsystem extends Subsystem {
 
         m_prev_left_encoder_pos = get_left_encoder_pos();
         m_prev_right_encoder_pos = get_right_encoder_pos();
-        m_prev_center_encoder_pos = get_center_encoder_pos();
+        m_prev_center_encoder_pos = get_center_encoder_pos();*/
+//////////////////////////////////////////////////////////////////////////////
 
-
-
-
-
-        DriverStationJNI.getTelemetry().addData("m_xSpeed", m_xSpeed);
-        DriverStationJNI.getTelemetry().addData("m_ySpeed", m_ySpeed);
-        DriverStationJNI.getTelemetry().addData("m_zRotation", m_zRotation);
+        //DriverStationJNI.getTelemetry().addData("left_encoder_cm", get_left_encoder_pos());
+        DriverStationJNI.getTelemetry().addData("m_x", m_x);
+        DriverStationJNI.getTelemetry().addData("m_y", m_y);
 
         // On inverse volontairement x et y pour avoir le x vers l'avant
         m_robotDrive.driveCartesian(m_ySpeed, m_xSpeed, m_zRotation);
-
-        DriverStationJNI.getTelemetry().addData("y", getY());
-        DriverStationJNI.getTelemetry().addData("x", getX());
     }
 
     public double get_left_encoder_pos() {
-        return m_rearLeftMotor.getCurrentPosition();
+        return m_rearLeftMotor.getCurrentPosition() * Constants.ConstantsDrive.ktachoParCm;
     }
 
     public double get_right_encoder_pos() {
-        return m_rearRightMotor.getCurrentPosition();
+        return -m_rearRightMotor.getCurrentPosition() * Constants.ConstantsDrive.ktachoParCm;
     }
 
     public double get_center_encoder_pos() {
-        return m_frontRightMotor.getCurrentPosition();
+        return m_frontRightMotor.getCurrentPosition() * Constants.ConstantsDrive.ktachoParCm;
     }
 
     public double getY() {
+        return m_y;
     }
 
     public double getX() {
+        return m_x;
     }
 
 

@@ -87,6 +87,10 @@ public final class Constants {
     }
 
     public static final class ConstantsDrive {
+        public static final double kCirconference = 2.0 * Math.PI * 2.4; //returns cm
+
+        public static final double ktachoParCm = kCirconference / 2000;
+
         /*public static final double tacho1Tour = 8192.0 / 3.0;
 
         public static final double diametre = 10;*/
