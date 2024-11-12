@@ -10,14 +10,15 @@ public class AvanceAutoCommand extends Command {
 
     private final DriveSubsystem mDriveSubsystem;
 
-    private final double mXSpeed, mYSpeed;
+    private final double mXSpeed, mYSpeed, mZSpeed;
     private double mDistanceInit;
 
-    public AvanceAutoCommand(DriveSubsystem driveSubsystem, double x, double y) {
+    public AvanceAutoCommand(DriveSubsystem driveSubsystem, double x, double y, double z) {
         mDriveSubsystem = driveSubsystem;
 
         mXSpeed = x;
         mYSpeed = y;
+        mZSpeed = z;
 
         addRequirements(driveSubsystem);
     }
@@ -25,7 +26,7 @@ public class AvanceAutoCommand extends Command {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        mDriveSubsystem.drivePIDxy(mXSpeed, mYSpeed);
+        mDriveSubsystem.mecanumDrive(mXSpeed, mYSpeed, mZSpeed);
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -42,11 +43,12 @@ public class AvanceAutoCommand extends Command {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        if (mXSpeed > 0) {
-            return mDriveSubsystem.isAtSetPointx();
-        } else {
-            return mDriveSubsystem.isAtSetPointy();
-        }
+        //if (mXSpeed > 0) {
+        //    return mDriveSubsystem.isAtSetPointx();
+        //} else {
+        //    return mDriveSubsystem.isAtSetPointy();
+        //}
+        return false;
     }
 
 }

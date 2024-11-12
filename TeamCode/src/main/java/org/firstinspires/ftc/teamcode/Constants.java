@@ -14,7 +14,7 @@ public final class Constants {
     public static final class AutonomousConstants {
 
         //POSITION 1, AVANCEMENT INITIAL
-        public static final double kAvancementInitial = 77;
+        public static final double kAvancementInitial = 20;
 
         public static final double kAvancementVersToileEloigne = 230;
 

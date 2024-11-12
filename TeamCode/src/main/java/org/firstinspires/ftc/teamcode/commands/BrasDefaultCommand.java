@@ -1,19 +1,22 @@
-package org.firstinspires.ftc.teamcode.commands.brasCommands;
+package org.firstinspires.ftc.teamcode.commands;
 
 import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.subsystems.BrasSubsystem;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj.XboxController;
 
-public class CalibreBrasRotationCommand extends Command {
+public class BrasDefaultCommand extends Command{
 
     private final BrasSubsystem mBrasSubsystem;
 
-    public CalibreBrasRotationCommand(BrasSubsystem brasSubsystem) {
+    private final XboxController mxBoxController;
 
+    public BrasDefaultCommand(BrasSubsystem brasSubsystem, XboxController xboxController) {
         mBrasSubsystem = brasSubsystem;
+        mxBoxController = xboxController;
 
-        addRequirements(mBrasSubsystem);
+        addRequirements(brasSubsystem);
     }
 
     // Called when the command is initially scheduled.
@@ -24,18 +27,21 @@ public class CalibreBrasRotationCommand extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        mBrasSubsystem.incrementTargetRotation(-Constants.BrasConstants.kIncremetentRotationMax);
+        mBrasSubsystem.incrementTargetRotation(mxBoxController.getRightY() * Constants.BrasConstants.kIncremetentRotationMax);
     }
+
 
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-        mBrasSubsystem.calibreRotationBras();
+
     }
 
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return mBrasSubsystem.isTouchPince();
+        // Commande infinie
+        return false;
     }
 }
+

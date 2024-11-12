@@ -1,43 +1,31 @@
 package org.firstinspires.ftc.teamcode.commandGroups.Bleu.Droite;
 
 import org.firstinspires.ftc.teamcode.Constants;
-import org.firstinspires.ftc.teamcode.commandGroups.PoserSol;
 import org.firstinspires.ftc.teamcode.commands.AvanceAutoCommand;
-import org.firstinspires.ftc.teamcode.commands.brasCommands.BrasRotationPosCommand;
-import org.firstinspires.ftc.teamcode.commands.brasCommands.BrasExtentionPosCommand;
-import org.firstinspires.ftc.teamcode.commands.pinceCommands.PinceOuvreCommand;
-import org.firstinspires.ftc.teamcode.commands.TourneAutoCommand;
 import org.firstinspires.ftc.teamcode.subsystems.BrasSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
-import org.firstinspires.ftc.teamcode.subsystems.PinceSubsystem;
 
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 public class BleuDroiteExtra extends SequentialCommandGroup {
 
-    public BleuDroiteExtra(DriveSubsystem driveSubsystem, PinceSubsystem pinceSubsystem, BrasSubsystem brasSubsystem) {
-
-        AvanceAutoCommand avancer = new AvanceAutoCommand(driveSubsystem, Constants.AutonomousConstants.kAvancementInitial, 0);
-        AvanceAutoCommand avancer2 = new AvanceAutoCommand(driveSubsystem, Constants.AutonomousConstants.kAvancementVersToileEloigne, 0);
-        AvanceAutoCommand avancer3 = new AvanceAutoCommand(driveSubsystem, Constants.AutonomousConstants.kAvancementExtra2, 0);
-        AvanceAutoCommand tasser = new AvanceAutoCommand(driveSubsystem, 0, -Constants.AutonomousConstants.kDeplacementExtraLateral);
-        TourneAutoCommand tourne = new TourneAutoCommand(driveSubsystem, 90);
-        TourneAutoCommand tourne2 = new TourneAutoCommand(driveSubsystem, -90);
-        BrasRotationPosCommand pos1 = new BrasRotationPosCommand(brasSubsystem, 400);
-        PinceOuvreCommand ouvrePince = new PinceOuvreCommand(pinceSubsystem);
-        BrasExtentionPosCommand extention = new BrasExtentionPosCommand(brasSubsystem, Constants.AutonomousConstants.kExtentionPosToile);
-        PoserSol poserSol = new PoserSol(brasSubsystem, pinceSubsystem);
-
-
+    public BleuDroiteExtra(DriveSubsystem driveSubsystem) {
+        //pas de pid pour le moment donc avec un timeout
+        ParallelRaceGroup reculer = new AvanceAutoCommand(driveSubsystem, -1, 0, 0).withTimeout(0.3);
+        ParallelRaceGroup tasserdroite = new AvanceAutoCommand(driveSubsystem, 0, 1, 0).withTimeout(0.6);
+        ParallelRaceGroup avancer = new AvanceAutoCommand(driveSubsystem, 1, 0, 0).withTimeout(1.8);
+        ParallelRaceGroup tassergauche = new AvanceAutoCommand(driveSubsystem, 0, -1, 0).withTimeout(0.7);
 
         addCommands(
+                reculer,
+                new WaitCommand(0.2),
+                tasserdroite,
+                new WaitCommand(0.2),
                 avancer,
-                tourne,
-                avancer2,
-                tourne2,
-                tasser,
-                avancer3,
-                poserSol
+                new WaitCommand(0.2),
+                tassergauche
         );
     }
 
