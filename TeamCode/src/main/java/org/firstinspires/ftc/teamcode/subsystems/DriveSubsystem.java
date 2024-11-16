@@ -7,7 +7,6 @@ import org.firstinspires.ftc.teamcode.Constants;
 import dragons.rev.FtcGyro;
 import dragons.rev.FtcMotor;
 
-import dragons.rev.FtcMotorSimple;
 import edu.wpi.first.hal.DriverStationJNI;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
@@ -22,13 +21,27 @@ public class DriveSubsystem extends Subsystem {
     private final MecanumDrive m_robotDrive = new MecanumDrive(m_frontLeftMotor, m_frontRightMotor, m_rearLeftMotor, m_rearRightMotor);
     private final FtcGyro mGyro = new FtcGyro(RevHubOrientationOnRobot.LogoFacingDirection.UP, RevHubOrientationOnRobot.UsbFacingDirection.FORWARD);
     private double mAngle = 0;
-    private double mAngleInit = 0;
 
     private double m_xSpeed = 0; // The robot's speed along the X axis [-1.0..1.0]. Forward is positive.
     private double m_zRotation = 0; // The robot's rotation rate around the Z axis [-1.0..1.0]. Clockwise is positive.
     private double m_ySpeed = 0;
 
     private double mAngleConsigne;
+
+    double Delta_middle_pos, prev_center_encodeur_pos, Delta_left_encodeur_pos, Delta_right_encodeur_pos, prev_left_encodeur_pos, prev_right_encodeur_pos, Delta_perp_pos, Delta_center_encodeur_pos;
+
+
+    double forward_offset = 16; //en cm
+    double trackwith = 32;
+
+    double heading; //teta 0
+    double phi = 0;
+    double phi_degre;
+    double Y, X;
+
+    double deltaX, deltaY;
+
+    double current_left_encodeur_pos, current_right_encodeur_pos, current_center_encodeur_pos;
 
     private PIDController mPIDz = new PIDController(Constants.ConstantsDrivePID.kP, Constants.ConstantsDrivePID.kI, Constants.ConstantsDrivePID.kD);
 
@@ -48,45 +61,56 @@ public class DriveSubsystem extends Subsystem {
     @Override
     public void periodic() {
 
+        current_left_encodeur_pos = get_left_encoder_pos();
+        current_right_encodeur_pos = get_right_encoder_pos();
+        current_center_encodeur_pos = get_center_encoder_pos();
+
+        Delta_left_encodeur_pos = current_left_encodeur_pos - prev_left_encodeur_pos;
+        Delta_right_encodeur_pos = current_right_encodeur_pos - prev_right_encodeur_pos;
+        Delta_center_encodeur_pos = current_center_encodeur_pos - prev_center_encodeur_pos;
+
+        phi = (Delta_left_encodeur_pos - Delta_right_encodeur_pos) / trackwith * 0.8; //en radian
+        phi_degre = Math.toDegrees(phi);
+        Delta_perp_pos = Delta_center_encodeur_pos - forward_offset * phi;
+        Delta_middle_pos = (Delta_left_encodeur_pos + Delta_right_encodeur_pos) / 2;
+
+        heading -= phi_degre;
+
+        deltaX = Delta_middle_pos * Math.cos(Math.toRadians(heading)) - Delta_perp_pos * Math.sin(Math.toRadians(heading));
+        deltaY = Delta_middle_pos * Math.sin(Math.toRadians(heading)) + Delta_perp_pos * Math.cos(Math.toRadians(heading));
+
+        Y += deltaY * 0.778;
+        X += deltaX * 0.796;
+
+        prev_left_encodeur_pos = current_left_encodeur_pos;
+        prev_right_encodeur_pos = current_right_encodeur_pos;
+        prev_center_encodeur_pos = current_center_encodeur_pos;
+
+        DriverStationJNI.getTelemetry().addData("heading", heading);
+        DriverStationJNI.getTelemetry().addData("Y", Y);
+        DriverStationJNI.getTelemetry().addData("X", X);
+
         mAngle = getAngle();
-        DriverStationJNI.getTelemetry().addData("mGyro angle", mAngle);
-        DriverStationJNI.getTelemetry().addData("angleConsigne", mAngleConsigne);
+        //DriverStationJNI.getTelemetry().addData("mGyro angle", mAngle);
+        //DriverStationJNI.getTelemetry().addData("angleConsigne", mAngleConsigne);
         m_zRotation = mPIDz.calculate(mAngle, mAngleConsigne);
         if (Math.abs(m_zRotation) > Constants.MaxSpeeds.kmaxZspeed) {
             m_zRotation = Math.signum(m_zRotation) * Constants.MaxSpeeds.kmaxZspeed;
         }
-        DriverStationJNI.getTelemetry().addData("m_xSpeed", m_xSpeed);
-        DriverStationJNI.getTelemetry().addData("m_ySpeed", m_ySpeed);
-        DriverStationJNI.getTelemetry().addData("m_zRotation", m_zRotation);
+        //DriverStationJNI.getTelemetry().addData("m_xSpeed", m_xSpeed);
+        //DriverStationJNI.getTelemetry().addData("m_ySpeed", m_ySpeed);
+        //DriverStationJNI.getTelemetry().addData("m_zRotation", m_zRotation);
 
         // On inverse volontairement x et y pour avoir le x vers l'avant
         m_robotDrive.driveCartesian(m_ySpeed, m_xSpeed, m_zRotation);
 
-        DriverStationJNI.getTelemetry().addData("y", getY());
-        DriverStationJNI.getTelemetry().addData("x", getX());
-        DriverStationJNI.getTelemetry().addData("isAtSetPointz", isAtSetPointz());
+        //DriverStationJNI.getTelemetry().addData("y", getY());
+        //DriverStationJNI.getTelemetry().addData("x", getX());
+        //DriverStationJNI.getTelemetry().addData("isAtSetPointz", isAtSetPointz());
 
-        DriverStationJNI.getTelemetry().addData("front left", getFrontLeftPosition());
-        DriverStationJNI.getTelemetry().addData("front right", getFrontRightPosition());
-        DriverStationJNI.getTelemetry().addData("rear left", getRearLeftPosition());
-        DriverStationJNI.getTelemetry().addData("rear right", getRearRightPosition());
-    }
+        DriverStationJNI.getTelemetry().addData("center encodeur", m_frontRightMotor.getCurrentPosition());
 
 
-    public void resetGyro() {
-        mAngleInit = getAngle();
-    }
-
-    public double getY() {
-        return (getFrontLeftPosition() + getRearRightPosition()
-                - getFrontRightPosition() - getRearLeftPosition())
-                / 4.0 * Constants.ConstantsDrive.distanceCalculy;
-    }
-
-    public double getX() {
-        return (getFrontRightPosition() + getRearLeftPosition()
-                + getFrontLeftPosition() + getRearRightPosition())
-                / 4.0 * Constants.ConstantsDrive.distanceCalculx;
     }
 
     public void mecanumDrive(double xSpeed, double ySpeed, double zRotation){
@@ -97,22 +121,21 @@ public class DriveSubsystem extends Subsystem {
         m_ySpeed = ySpeed;
     }
 
+    public double get_left_encoder_pos() {
+        return m_rearLeftMotor.getCurrentPosition() / Constants.ConstantsDrive.ktachoParCm;
+    }
+
+    public double get_right_encoder_pos() {
+        return -m_rearRightMotor.getCurrentPosition() / Constants.ConstantsDrive.ktachoParCm;
+    }
+
+    public double get_center_encoder_pos() {
+        return m_frontRightMotor.getCurrentPosition() / Constants.ConstantsDrive.ktachoParCm;
+    }
+
 
     public boolean isAtSetPointz() {
         return mPIDz.atSetpoint();
-    }
-
-    private double getFrontLeftPosition() {
-        return m_frontLeftMotor.getCurrentPosition();
-    }
-    private double getFrontRightPosition() {
-        return -m_frontRightMotor.getCurrentPosition();
-    }
-    private double getRearLeftPosition() {
-        return -m_rearLeftMotor.getCurrentPosition();
-    }
-    private double getRearRightPosition() {
-        return m_rearRightMotor.getCurrentPosition();
     }
 
     public void stop () {

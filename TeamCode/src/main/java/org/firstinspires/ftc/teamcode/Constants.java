@@ -87,9 +87,9 @@ public final class Constants {
     }
 
     public static final class ConstantsDrive {
-        /*public static final double tacho1Tour = 8192.0 / 3.0;
+        public static final double kCirconference = 2.0 * Math.PI * 2.4;
 
-        public static final double diametre = 10;*/
+        public static final double ktachoParCm = 106; //kCirconference / 2000;
 
         public static final double distanceCalculx = 100.0 / 1510;//(ConstantsDrive.tacho1Tour/(Math.PI * Constants.ConstantsDrive.diametre));
 
@@ -135,7 +135,7 @@ public final class Constants {
     }
 
     public static final class MaxSpeeds {
-        public static final double kmaxZspeed = 0.5;
+        public static final double kmaxZspeed = 10;
 
         public static final double kmaxXspeed = 0.3;
 
