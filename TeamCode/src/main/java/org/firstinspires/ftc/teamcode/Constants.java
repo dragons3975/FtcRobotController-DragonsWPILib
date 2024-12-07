@@ -156,6 +156,10 @@ public final class Constants {
         public static final int kTachoCount = 1440;
     }
 
+    public static final class AprilTagConstants {
+        public static final double[] ID15Position = {180, 0};
+    }
+
 
     
 }

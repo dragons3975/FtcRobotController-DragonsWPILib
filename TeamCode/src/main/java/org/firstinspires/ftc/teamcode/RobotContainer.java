@@ -18,10 +18,10 @@ public class RobotContainer {
     private final XboxController mXboxController = new XboxController(Constants.OIConstants.kDriverControllerPort);
     private final XboxController mXboxController2 = new XboxController(Constants.OIConstants.kDriverControllerPort2);
 
-    private final DriveSubsystem mDriveSubsystem = new DriveSubsystem();
     private final BrasSubsystem mBrasSubsystem = new BrasSubsystem();
 
-    private static final VisionSubsystem mVisionSubsystem = new VisionSubsystem();
+    private final VisionSubsystem mVisionSubsystem = new VisionSubsystem();
+    private final DriveSubsystem mDriveSubsystem = new DriveSubsystem(mVisionSubsystem);
 
     private final TestButtonCommand mTestButtonCommandA = new TestButtonCommand("A");
     private final TestButtonCommand mTestButtonCommandLB = new TestButtonCommand("LB");
@@ -60,5 +60,9 @@ public class RobotContainer {
 
     public Command getAutonomousCommand() {
         return new BleuDroiteExtra(mDriveSubsystem);
+    }
+
+    public void stop() {
+        mVisionSubsystem.close();
     }
 }
