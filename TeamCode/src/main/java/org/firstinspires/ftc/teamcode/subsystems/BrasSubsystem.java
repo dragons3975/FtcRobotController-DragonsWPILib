@@ -1,89 +1,78 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
-
 import org.firstinspires.ftc.teamcode.Constants;
 
 import dragons.rev.FtcMotor;
-import dragons.rev.FtcTouchSensor;
 import edu.wpi.first.hal.DriverStationJNI;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 
+
 public class BrasSubsystem extends Subsystem {
 
-    //private final FtcMotor m_motorRotation = new FtcMotor("bras");
+    private final FtcMotor mMotorBras = new FtcMotor("bras");
 
+    //private final ArduinoServo mServoBras = new ArduinoServo(Constants.MotorPortConstants.kBrasServo);
 
-    private final PIDController mPIDBrasRotation = new PIDController(Constants.BrasConstants.kPRotation, 0, 0);
+    private double mSpeed = 0;
 
-    private final PIDController mPIDExtention = new PIDController(Constants.BrasConstants.kPExtention, 0, 0);
+    //private double mAngle = 0;
 
-    private double mPosRotationTarget;
+    PIDController mPid = new PIDController(-0.055, 0, 0);
 
-    private double mRotationBrasInit = 0;
-
-    private boolean isRotationCalibrated = false;
-
-    private double mExTarget;
-
-    private double minExtention;
-
-    private boolean isExtentionCalibrated = false;
+    private int mConsigne = 0;
 
     public BrasSubsystem() {
-        //m_motorRotation.setInverted(false);
-
-        mPIDBrasRotation.setTolerance(Constants.BrasConstants.kToleranceRotation);
-        //stopRotation();
+        stop();
     }
 
     @Override
     public void periodic() {
 
-        //double consigne = mPIDBrasRotation.calculate(getPositionRotation(), mPosRotationTarget);
-        //if (Math.abs(consigne) > Constants.MaxSpeeds.kmaxRotationSpeed) {
-        //    consigne = Math.signum(consigne) * Constants.MaxSpeeds.kmaxRotationSpeed;
+        //mArduinoMotorBras.set(mSpeed);
+        //mServoBras.setAngle(mAngle);
+        //DriverStationJNI.Telemetry.putNumber("servo bras position", mServoBras.getAngle());
+        DriverStationJNI.Telemetry.putNumber("Encodeur Bras base", mMotorBras.getCurrentPosition());
+        //DriverStationJNI.Telemetry.putNumber("Encodeur Bras servo", mServoBras.getTachoCount());
+
+        double output = mPid.calculate(mMotorBras.getCurrentPosition(), mConsigne);
+
+        //if(output >= 0.7) {
+        //    output = 0.7;
         //}
-        //DriverStationJNI.getTelemetry().addData("CONSIGNE DU BRAS", consigne);
-        //m_motorRotation.set(consigne);
+        //if(output <= 0.0) {
+         //   output = 0.0;
+        //}
+
+        DriverStationJNI.Telemetry.putBoolean("IsConsigne t/f", isConsigne());
+        DriverStationJNI.Telemetry.putNumber("Output", output);
+        mMotorBras.set(output);
 
     }
 
-
-
-    public boolean isRotationAtSetPoint() {
-        return mPIDBrasRotation.atSetpoint();
+    public void setSpeed(double speed) {
+        mSpeed = speed;
     }
 
-    public boolean isExtentionAtSetPoint() {
-        return mPIDExtention.atSetpoint();
+    public double getPos() {
+        return mMotorBras.getCurrentPosition();
     }
 
-    public void incrementTargetRotation(double deltaTarget) {
-        mPosRotationTarget += deltaTarget;
+    public void incrementTargetRotation(double inc) {
+        mConsigne += inc;
     }
 
-    //public double getPositionRotation() {
-    //    return m_motorRotation.getCurrentPosition();
-    //}
+    public void stop() {
+        mConsigne = mMotorBras.getCurrentPosition();
+    }
 
-    //public void calibreRotationBras() {
-    //    stopRotation();
-    //    mRotationBrasInit = getPositionRotation();
-    //    isRotationCalibrated = true;
-    //}
+    public void setConsigne(int consigne) {
+        mConsigne = consigne;
+    }
 
-    //public void setTargetRotation(double target) {
-    //    if (isRotationCalibrated) {
-    //        mPosRotationTarget = mRotationBrasInit + target;
-    //    }
-    //}
-
-    //public void stopRotation() {
-   //     mPosRotationTarget = getPositionRotation();
-    //}
+    public boolean isConsigne() {
+        mPid.setTolerance(10);
+        return mPid.atSetpoint();
+    }
 
 }
-
-
-

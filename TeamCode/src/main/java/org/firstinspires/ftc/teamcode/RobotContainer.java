@@ -3,9 +3,11 @@ package org.firstinspires.ftc.teamcode;
 import org.firstinspires.ftc.teamcode.commandGroups.Bleu.Droite.BleuDroiteExtra;
 import org.firstinspires.ftc.teamcode.commands.DriveDefaultCommand;
 import org.firstinspires.ftc.teamcode.commands.TestButtonCommand;
+import org.firstinspires.ftc.teamcode.commands.TrajectoryCommand;
 import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
 import org.firstinspires.ftc.teamcode.commands.BrasDefaultCommand;
 import org.firstinspires.ftc.teamcode.subsystems.BrasSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.VisionSubsystem;
 
 import edu.wpi.first.hal.DriverStationJNI;
 import edu.wpi.first.wpilibj.XboxController;
@@ -19,11 +21,15 @@ public class RobotContainer {
     private final DriveSubsystem mDriveSubsystem = new DriveSubsystem();
     private final BrasSubsystem mBrasSubsystem = new BrasSubsystem();
 
+    private static final VisionSubsystem mVisionSubsystem = new VisionSubsystem();
+
     private final TestButtonCommand mTestButtonCommandA = new TestButtonCommand("A");
     private final TestButtonCommand mTestButtonCommandLB = new TestButtonCommand("LB");
 
     private final DriveDefaultCommand mDriveDefaultCommand = new DriveDefaultCommand(mDriveSubsystem, mXboxController);
     private final BrasDefaultCommand mBrasDefaultCommand = new BrasDefaultCommand(mBrasSubsystem, mXboxController2);
+
+    private final TrajectoryCommand mTrajectoryCommand = new TrajectoryCommand(mDriveSubsystem);
 
 
 
@@ -42,6 +48,9 @@ public class RobotContainer {
 
         JoystickButton buttonLB = new JoystickButton(mXboxController, XboxController.Button.kLeftBumper.value);
         buttonLB.whileTrue(mTestButtonCommandLB);
+
+        JoystickButton buttonB = new JoystickButton(mXboxController, XboxController.Button.kB.value);
+        buttonB.onTrue(mTrajectoryCommand);
     }
 
     private void configureDefaultCommands() {

@@ -84,6 +84,11 @@ public final class Constants {
         public static final double kInclinaisonPile = kInclinaisonBas + 0.1;
 
         public static final double kInclinaisonMinSol = kInclinaisonBas + 0.025;
+
+        public static final int kPinceOpenAngle = 100;
+        public static final int kPinceCloseAngle = 0;
+        public static final int kPinceOpenPosAngle = 0;
+        public static final int kPinceClosePosAngle = 50;
     }
 
     public static final class ConstantsDrive {
@@ -144,6 +149,11 @@ public final class Constants {
         public static final double kmaxRotationSpeed = 1;
 
         public static final double kmaxExtentionSpeed = 1;
+    }
+
+    public static final class ExtensionConstants {
+        public static final double kCirconference = 20*Math.PI;
+        public static final int kTachoCount = 1440;
     }
 
 

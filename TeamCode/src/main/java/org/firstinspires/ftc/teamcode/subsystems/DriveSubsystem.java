@@ -10,6 +10,8 @@ import dragons.rev.FtcMotor;
 import edu.wpi.first.hal.DriverStationJNI;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 
@@ -133,7 +135,9 @@ public class DriveSubsystem extends Subsystem {
         return m_frontRightMotor.getCurrentPosition() / Constants.ConstantsDrive.ktachoParCm;
     }
 
-
+    public Pose2d getCurrentPose() {
+        return new Pose2d(X, Y, Rotation2d.fromDegrees(heading));
+    }
     public boolean isAtSetPointz() {
         return mPIDz.atSetpoint();
     }
