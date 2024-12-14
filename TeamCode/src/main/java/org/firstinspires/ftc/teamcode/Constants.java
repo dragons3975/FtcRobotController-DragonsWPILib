@@ -155,7 +155,7 @@ public final class Constants {
     }
 
     public static final class ExtensionConstants {
-        public static final double kCirconference = 20*Math.PI;
+        public static final double kCirconference = 20*Math.PI ;
         public static final int kTachoCount = 1440;
         public static final int kXcmExtend = 1000;
     }
