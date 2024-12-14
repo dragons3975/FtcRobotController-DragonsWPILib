@@ -1,27 +1,25 @@
 package org.firstinspires.ftc.teamcode.commands;
 
 import org.firstinspires.ftc.teamcode.Constants;
-import org.firstinspires.ftc.teamcode.subsystems.ExtensionSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.BrasSubsystem;
 
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class ExtendCommand extends Command {
+public class BrasPanier1Command extends Command{
 
-    private final ExtensionSubsystem mExtensionSubsystem;
+    private final BrasSubsystem mBrasSubsystem;
 
+    public BrasPanier1Command(BrasSubsystem brasSubsystem) {
+        mBrasSubsystem = brasSubsystem;
 
-    public ExtendCommand(ExtensionSubsystem extensionSubsystem) {
-
-        mExtensionSubsystem = extensionSubsystem;
-
-        addRequirements(extensionSubsystem);
+        addRequirements(brasSubsystem);
     }
-
 
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        mExtensionSubsystem.setConsigne(Constants.ExtensionConstants.kXcmExtend);
+        mBrasSubsystem.setConsigne(Constants.BrasConstants.kPositionPanier1);
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -29,15 +27,18 @@ public class ExtendCommand extends Command {
     public void execute() {
     }
 
+
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-        mExtensionSubsystem.stop();
+
     }
 
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return mExtensionSubsystem.isConsigne();
+        // Commande infinie
+        return false;
     }
 }
+

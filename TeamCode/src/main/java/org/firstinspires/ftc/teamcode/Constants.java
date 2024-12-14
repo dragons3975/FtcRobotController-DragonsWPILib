@@ -70,6 +70,9 @@ public final class Constants {
         public static final double kPositionPile = 1700;
 
         public static final double kPositionLeverUnPeu = 1000;
+
+        public static final int kPositionPanier1 = 50;
+        public static final int kPositionPanier2 = 50;
     }
 
     public static final class ConstantsPince {
@@ -154,6 +157,7 @@ public final class Constants {
     public static final class ExtensionConstants {
         public static final double kCirconference = 20*Math.PI;
         public static final int kTachoCount = 1440;
+        public static final int kXcmExtend = 10;
     }
 
 

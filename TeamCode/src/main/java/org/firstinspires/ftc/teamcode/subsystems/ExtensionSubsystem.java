@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.subsystems;
 import dragons.rev.FtcMotor;
 import dragons.rev.FtcTouchSensor;
 import edu.wpi.first.hal.DriverStationJNI;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import org.firstinspires.ftc.teamcode.Constants;
 
@@ -11,6 +12,11 @@ public class ExtensionSubsystem extends Subsystem {
     private final FtcMotor mMotorCalib = new FtcMotor("Extension");
 
     private final FtcTouchSensor mFtcTouchSensor = new FtcTouchSensor("touch");
+
+
+    PIDController mPid = new PIDController(-0.055, 0, 0);
+
+    private int mConsigne = 0;
 
     private double mSpeed = 0;
 
@@ -36,6 +42,20 @@ public class ExtensionSubsystem extends Subsystem {
         DriverStationJNI.Telemetry.putBoolean("TouchSensor", mFtcTouchSensor.getState());
         DriverStationJNI.Telemetry.putNumber("Speed Calib", mSpeed);
         DriverStationJNI.Telemetry.putNumber("Distance mm", mDistance);
+
+        double output = mPid.calculate(getCalibratedTacho(), mConsigne);
+
+        //if(output >= 0.7) {
+        //    output = 0.7;
+        //}
+        //if(output <= 0.0) {
+        //   output = 0.0;
+        //}
+
+        DriverStationJNI.Telemetry.putBoolean("IsConsigne t/f", isConsigne());
+        DriverStationJNI.Telemetry.putNumber("Output", output);
+        mMotorCalib.set(output);
+
     }
 
     public void StartCalibration() {
@@ -52,7 +72,7 @@ public class ExtensionSubsystem extends Subsystem {
     }
 
     public void stop() {
-        mSpeed = 0;
+        mConsigne = getCalibratedTacho();
     }
 
     public void setSpeed(double speed) {
@@ -70,6 +90,16 @@ public class ExtensionSubsystem extends Subsystem {
     public int getTacho() {
         return mMotorCalib.getCurrentPosition();
     }
+
+    public void setConsigne(int consigne) {
+        mConsigne = consigne;
+    }
+
+    public boolean isConsigne() {
+        mPid.setTolerance(10);
+        return mPid.atSetpoint();
+    }
+
 
 }
 
