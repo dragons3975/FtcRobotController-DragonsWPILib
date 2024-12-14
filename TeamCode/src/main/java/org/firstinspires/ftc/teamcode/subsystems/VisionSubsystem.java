@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
+import android.annotation.SuppressLint;
+
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -13,13 +15,12 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 import java.util.List;
 
 import edu.wpi.first.hal.DriverStationJNI;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 
 
 public class VisionSubsystem extends Subsystem {
-
-    private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
-
 
     /**
      * Variables to store the position and orientation of the camera on the robot. Setting these
@@ -55,6 +56,11 @@ public class VisionSubsystem extends Subsystem {
      */
     private AprilTagProcessor aprilTag;
 
+    private boolean detecting = false;
+    private double[] position = new double[2];
+
+    private double detectingID;
+
     /**
      * The variable to store our instance of the vision portal.
      */
@@ -63,35 +69,6 @@ public class VisionSubsystem extends Subsystem {
     public VisionSubsystem() {
         initAprilTag();
     }
-
-    @Override
-    public void periodic() {
-
-        // Wait for the DS start button to be touched.
-        DriverStationJNI.getTelemetry().addData("DS preview on/off", "3 dots, Camera Stream");
-        DriverStationJNI.getTelemetry().addData(">", "Touch START to start OpMode");
-
-        //while (opModeIsActive()) {
-
-        telemetryAprilTag();
-
-
-
-            // Save CPU resources; can resume streaming when needed.
-            //if (gamepad1.dpad_down) {
-            //    visionPortal.stopStreaming();
-            //} else if (gamepad1.dpad_up) {
-            //    visionPortal.resumeStreaming();
-            //}
-
-            // Share the CPU.
-            //sleep(20);
-
-
-        // Save more CPU resources when camera is no longer needed.
-        visionPortal.close();
-
-    }   // end method runOpMode()
 
     /**
      * Initialize the AprilTag processor.
@@ -129,13 +106,7 @@ public class VisionSubsystem extends Subsystem {
 
         // Create the vision portal by using a builder.
         VisionPortal.Builder builder = new VisionPortal.Builder();
-
-        // Set the camera (webcam vs. built-in RC phone camera).
-        if (USE_WEBCAM) {
-            builder.setCamera(DriverStationJNI.getHardwareMap().get(WebcamName.class, "Webcam 1"));
-        } else {
-            builder.setCamera(BuiltinCameraDirection.BACK);
-        }
+        builder.setCamera(DriverStationJNI.getHardwareMap().get(WebcamName.class, "Webcam 1"));
 
         // Choose a camera resolution. Not all cameras support all resolutions.
         //builder.setCameraResolution(new Size(640, 480));
@@ -162,9 +133,18 @@ public class VisionSubsystem extends Subsystem {
 
     }   // end method initAprilTag()
 
+    @Override
+    public void periodic() {
+
+        telemetryAprilTag();
+
+    }
+
+
     /**
      * Add telemetry about AprilTag detections.
      */
+    @SuppressLint("DefaultLocale")
     private void telemetryAprilTag() {
 
         List<AprilTagDetection> currentDetections = aprilTag.getDetections();
@@ -173,6 +153,8 @@ public class VisionSubsystem extends Subsystem {
         // Step through the list of detections and display info for each one.
         for (AprilTagDetection detection : currentDetections) {
             if (detection.metadata != null) {
+                detecting = true;
+                detectingID = detection.id;
                 DriverStationJNI.getTelemetry().addLine(String.format("\n==== (ID %d) %s", detection.id, detection.metadata.name));
                 DriverStationJNI.getTelemetry().addLine(String.format("XYZ %6.1f %6.1f %6.1f  (inch)",
                         detection.robotPose.getPosition().x,
@@ -182,7 +164,12 @@ public class VisionSubsystem extends Subsystem {
                         detection.robotPose.getOrientation().getPitch(AngleUnit.DEGREES),
                         detection.robotPose.getOrientation().getRoll(AngleUnit.DEGREES),
                         detection.robotPose.getOrientation().getYaw(AngleUnit.DEGREES)));
+
+                position[0] = detection.robotPose.getPosition().x;
+                position[1] = detection.robotPose.getPosition().y;
+
             } else {
+                detecting = false;
                 DriverStationJNI.getTelemetry().addLine(String.format("\n==== (ID %d) Unknown", detection.id));
                 DriverStationJNI.getTelemetry().addLine(String.format("Center %6.0f %6.0f   (pixels)", detection.center.x, detection.center.y));
             }
@@ -194,7 +181,28 @@ public class VisionSubsystem extends Subsystem {
 
     }   // end method telemetryAprilTag()
 
-}   // end class
+    public void close() {
+        // Save more CPU resources when camera is no longer needed.
+        visionPortal.close();
+    }
 
+    public void stopStreaming() {
+        visionPortal.stopStreaming();
+    }
 
+    public void resumeStreaming() {
+        visionPortal.resumeStreaming();
+    }
 
+    public boolean isDetecting() {
+        return detecting;
+    }
+
+    public double DetectingID() {
+        return detectingID;
+    }
+    public Pose2d getPosition() {
+        return new Pose2d(position[0], position[1], Rotation2d.fromDegrees(0));
+    }
+
+}

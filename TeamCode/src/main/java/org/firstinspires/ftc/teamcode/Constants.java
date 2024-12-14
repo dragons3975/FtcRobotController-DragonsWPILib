@@ -160,6 +160,10 @@ public final class Constants {
         public static final int kXcmExtend = 10;
     }
 
+    public static final class AprilTagConstants {
+        public static final double[] ID15Position = {180, 0};
+    }
+
 
     
 }

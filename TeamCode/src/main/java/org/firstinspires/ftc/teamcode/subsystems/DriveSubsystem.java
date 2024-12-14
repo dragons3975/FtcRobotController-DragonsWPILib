@@ -40,14 +40,17 @@ public class DriveSubsystem extends Subsystem {
     double phi = 0;
     double phi_degre;
     double Y, X;
+    double YApril, XApril;
 
     double deltaX, deltaY;
 
     double current_left_encodeur_pos, current_right_encodeur_pos, current_center_encodeur_pos;
 
     private PIDController mPIDz = new PIDController(Constants.ConstantsDrivePID.kP, Constants.ConstantsDrivePID.kI, Constants.ConstantsDrivePID.kD);
+    private VisionSubsystem mVisionSubsystem;
 
-    public DriveSubsystem() {
+    public DriveSubsystem(VisionSubsystem visionSubsystem) {
+        mVisionSubsystem = visionSubsystem;
         m_robotDrive.setMaxOutput(Constants.ConstantsDrive.kVitesseHaute);
         mPIDz.setTolerance(Constants.ConstantsDrivePID.kToleranceZ);
         m_frontLeftMotor.setInverted(false);
@@ -62,6 +65,12 @@ public class DriveSubsystem extends Subsystem {
 
     @Override
     public void periodic() {
+        if (mVisionSubsystem.isDetecting()) {
+            if (mVisionSubsystem.DetectingID() == 15) {
+                XApril = mVisionSubsystem.getPosition().getX() * 2.54 + 183;
+                YApril = mVisionSubsystem.getPosition().getY() * 2.54;
+            }
+        }
 
         current_left_encodeur_pos = get_left_encoder_pos();
         current_right_encodeur_pos = get_right_encoder_pos();
@@ -91,6 +100,8 @@ public class DriveSubsystem extends Subsystem {
         DriverStationJNI.getTelemetry().addData("heading", heading);
         DriverStationJNI.getTelemetry().addData("Y", Y);
         DriverStationJNI.getTelemetry().addData("X", X);
+        DriverStationJNI.getTelemetry().addData("YApril", YApril);
+        DriverStationJNI.getTelemetry().addData("XApril", XApril);
 
         mAngle = getAngle();
         //DriverStationJNI.getTelemetry().addData("mGyro angle", mAngle);
