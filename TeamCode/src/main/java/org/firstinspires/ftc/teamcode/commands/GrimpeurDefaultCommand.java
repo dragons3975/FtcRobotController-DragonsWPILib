@@ -28,8 +28,8 @@ public class GrimpeurDefaultCommand extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        mGrimpeurSubsystem.setSpeed(mXboxController2.getLeftY()*0.5);
-        mGrimpeurSubsystem.setSpeedP(mXboxController2.getRightY()*0.5);
+        mGrimpeurSubsystem.setSpeed(mXboxController2.getLeftY());
+        mGrimpeurSubsystem.setSpeedP(mXboxController2.getRightY());
     }
 
     // Called once the command ends or is interrupted.

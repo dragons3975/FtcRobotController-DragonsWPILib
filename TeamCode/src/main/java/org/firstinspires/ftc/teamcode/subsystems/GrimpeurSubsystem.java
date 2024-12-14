@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 
 public class GrimpeurSubsystem extends Subsystem {
 
-    private final FtcMotor mMotorGrimpeur = new FtcMotor("grimpeur");
+    //private final FtcMotor mMotorGrimpeur = new FtcMotor("grimpeur");
     private final FtcMotor mMotorPoulie = new FtcMotor("poulie");
     private double mSpeed = 0;
     private double mSpeedP = 0;
@@ -15,7 +15,7 @@ public class GrimpeurSubsystem extends Subsystem {
 
     @Override
     public void periodic() {
-        mMotorGrimpeur.set(mSpeed);
+        //mMotorGrimpeur.set(mSpeed);
         mMotorPoulie.set(mSpeedP);
     }
 

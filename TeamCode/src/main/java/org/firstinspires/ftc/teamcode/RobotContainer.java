@@ -1,10 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
 import org.firstinspires.ftc.teamcode.commandGroups.Bleu.Droite.BleuDroiteExtra;
-import org.firstinspires.ftc.teamcode.commands.BrasPanier1Command;
-import org.firstinspires.ftc.teamcode.commands.BrasPanier2Command;
 import org.firstinspires.ftc.teamcode.commands.DriveDefaultCommand;
-import org.firstinspires.ftc.teamcode.commands.GrimpeurDefaultCommand;
+import org.firstinspires.ftc.teamcode.commands.ExtendCommand;
 import org.firstinspires.ftc.teamcode.commands.PinceRotationDefaultCommand;
 import org.firstinspires.ftc.teamcode.commands.TestButtonCommand;
 import org.firstinspires.ftc.teamcode.commands.TrajectoryCommand;
@@ -26,7 +24,7 @@ public class RobotContainer {
     private final XboxController mXboxController = new XboxController(Constants.OIConstants.kDriverControllerPort);
     private final XboxController mXboxController2 = new XboxController(Constants.OIConstants.kDriverControllerPort2);
 
-    private final DriveSubsystem mDriveSubsystem = new DriveSubsystem();
+
     private final BrasSubsystem mBrasSubsystem = new BrasSubsystem();
     private final ExtensionSubsystem mExtensionSubsystem = new ExtensionSubsystem();
     private final GrimpeurSubsystem mGrimpeurSubsystem = new GrimpeurSubsystem();
@@ -35,16 +33,15 @@ public class RobotContainer {
 
     private final VisionSubsystem mVisionSubsystem = new VisionSubsystem();
 
+    private final DriveSubsystem mDriveSubsystem = new DriveSubsystem(mVisionSubsystem);
+
     private final TestButtonCommand mTestButtonCommandA = new TestButtonCommand("A");
     private final TestButtonCommand mTestButtonCommandLB = new TestButtonCommand("LB");
 
     private final DriveDefaultCommand mDriveDefaultCommand = new DriveDefaultCommand(mDriveSubsystem, mXboxController);
-    //private final BrasDefaultCommand mBrasDefaultCommand = new BrasDefaultCommand(mBrasSubsystem, mXboxController2);
-    private final PinceRotationDefaultCommand mPinceRotationDefaultCommand = new PinceRotationDefaultCommand(mPinceExtensionSubsystem, mXboxController2);
-    //private final GrimpeurDefaultCommand mGrimpeurDefaultCommand = new GrimpeurDefaultCommand(mGrimpeurSubsystem, mXboxController);
-
-    private final BrasPanier1Command mBrasPanier1Command = new BrasPanier1Command(mBrasSubsystem);
-    private final BrasPanier2Command mBrasPanier2Command = new BrasPanier2Command(mBrasSubsystem);
+    private final BrasDefaultCommand mBrasDefaultCommand = new BrasDefaultCommand(mBrasSubsystem, mXboxController2);
+    private final ExtendCommand mExtendCommand = new ExtendCommand(mExtensionSubsystem);
+    private final PinceRotationDefaultCommand mPinceRotationDefaultCommand = new PinceRotationDefaultCommand(mPinceExtensionSubsystem, mXboxController);
 
     private final TrajectoryCommand mTrajectoryCommand = new TrajectoryCommand(mDriveSubsystem);
 
@@ -68,14 +65,23 @@ public class RobotContainer {
 
         JoystickButton buttonB = new JoystickButton(mXboxController, XboxController.Button.kB.value);
         buttonB.onTrue(mTrajectoryCommand);
+
+        JoystickButton buttonX = new JoystickButton(mXboxController, XboxController.Button.kX.value);
+        buttonX.onTrue(mExtendCommand);
+
+
     }
 
     private void configureDefaultCommands() {
         mDriveSubsystem.setDefaultCommand(mDriveDefaultCommand);
-        mExtensionSubsystem.setDefaultCommand(mPinceRotationDefaultCommand);
+        mBrasSubsystem.setDefaultCommand(mBrasDefaultCommand);
     }
 
     public Command getAutonomousCommand() {
         return new BleuDroiteExtra(mDriveSubsystem);
+    }
+
+    public void stop() {
+        mVisionSubsystem.close();
     }
 }

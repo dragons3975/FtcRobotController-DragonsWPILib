@@ -66,10 +66,8 @@ public class DriveSubsystem extends Subsystem {
     @Override
     public void periodic() {
         if (mVisionSubsystem.isDetecting()) {
-            if (mVisionSubsystem.DetectingID() == 15) {
-                XApril = mVisionSubsystem.getPosition().getX() * 2.54 + 183;
-                YApril = mVisionSubsystem.getPosition().getY() * 2.54;
-            }
+            XApril = mVisionSubsystem.getPosition().getX() * 2.54;
+            YApril = mVisionSubsystem.getPosition().getY() * 2.54;
         }
 
         current_left_encodeur_pos = get_left_encoder_pos();

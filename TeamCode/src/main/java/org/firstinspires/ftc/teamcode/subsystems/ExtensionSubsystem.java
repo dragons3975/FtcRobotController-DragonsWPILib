@@ -14,7 +14,7 @@ public class ExtensionSubsystem extends Subsystem {
     private final FtcTouchSensor mFtcTouchSensor = new FtcTouchSensor("touch");
 
 
-    PIDController mPid = new PIDController(-0.055, 0, 0);
+    PIDController mPid = new PIDController(0.01 , 0, 0);
 
     private int mConsigne = 0;
 
@@ -25,23 +25,25 @@ public class ExtensionSubsystem extends Subsystem {
     private double mDistance = 0;
 
     public ExtensionSubsystem() {
-        mMotorCalib.setInverted(true);
+        mMotorCalib.setInverted(false);
+
+        mPid.setTolerance(3);
     }
 
     @Override
     public void periodic() {
 
-        if (mFtcTouchSensor.getState()) {
-            mSpeed = 0;
-        }
+        //if (mFtcTouchSensor.getState()) {
+        //    mSpeed = 0;
+        //}
         mMotorCalib.set(mSpeed);
 
         mDistance = ((1.0/Constants.ExtensionConstants.kTachoCount)*getCalibratedTacho())*(Constants.ExtensionConstants.kCirconference);
 
-        DriverStationJNI.Telemetry.putNumber("Encodeur Calib", getCalibratedTacho());
-        DriverStationJNI.Telemetry.putBoolean("TouchSensor", mFtcTouchSensor.getState());
-        DriverStationJNI.Telemetry.putNumber("Speed Calib", mSpeed);
-        DriverStationJNI.Telemetry.putNumber("Distance mm", mDistance);
+        DriverStationJNI.getTelemetry().addData("Encodeur Calib", getCalibratedTacho());
+        DriverStationJNI.getTelemetry().addData("TouchSensor", mFtcTouchSensor.getState());
+        DriverStationJNI.getTelemetry().addData("Speed Calib", mSpeed);
+        DriverStationJNI.getTelemetry().addData("Distance mm", mDistance);
 
         double output = mPid.calculate(getCalibratedTacho(), mConsigne);
 
@@ -52,10 +54,14 @@ public class ExtensionSubsystem extends Subsystem {
         //   output = 0.0;
         //}
 
-        DriverStationJNI.Telemetry.putBoolean("IsConsigne t/f", isConsigne());
-        DriverStationJNI.Telemetry.putNumber("Output", output);
+        DriverStationJNI.getTelemetry().addData("IsConsigne t/f", isConsigne());
+        DriverStationJNI.getTelemetry().addData("Output", output);
         mMotorCalib.set(output);
 
+    }
+
+    public void testBouger() {
+        mMotorCalib.set(1);
     }
 
     public void StartCalibration() {
@@ -68,7 +74,7 @@ public class ExtensionSubsystem extends Subsystem {
     }
 
     private int getCalibratedTacho() {
-        return mMotorCalib.getCurrentPosition() - mTachoCalib;
+        return mMotorCalib.getCurrentPosition();// - mTachoCalib;
     }
 
     public void stop() {
@@ -96,7 +102,6 @@ public class ExtensionSubsystem extends Subsystem {
     }
 
     public boolean isConsigne() {
-        mPid.setTolerance(10);
         return mPid.atSetpoint();
     }
 
