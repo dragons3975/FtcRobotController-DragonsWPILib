@@ -164,6 +164,10 @@ public final class Constants {
         public static final double[] ID15Position = {180, 0};
     }
 
+    public static final class GrimpeurConstants {
+        public static final int kGrimper1 = 350;
+    }
+
 
     
 }

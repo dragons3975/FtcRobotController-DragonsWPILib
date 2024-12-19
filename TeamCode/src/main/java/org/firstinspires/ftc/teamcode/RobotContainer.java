@@ -1,8 +1,10 @@
 package org.firstinspires.ftc.teamcode;
 
 import org.firstinspires.ftc.teamcode.commandGroups.Bleu.Droite.BleuDroiteExtra;
+import org.firstinspires.ftc.teamcode.commands.BrasPanier1Command;
 import org.firstinspires.ftc.teamcode.commands.DriveDefaultCommand;
 import org.firstinspires.ftc.teamcode.commands.ExtendCommand;
+import org.firstinspires.ftc.teamcode.commands.GrimperCommand;
 import org.firstinspires.ftc.teamcode.commands.PinceRotationDefaultCommand;
 import org.firstinspires.ftc.teamcode.commands.TestButtonCommand;
 import org.firstinspires.ftc.teamcode.commands.TrajectoryCommand;
@@ -37,6 +39,8 @@ public class RobotContainer {
 
     private final TestButtonCommand mTestButtonCommandA = new TestButtonCommand("A");
     private final TestButtonCommand mTestButtonCommandLB = new TestButtonCommand("LB");
+    private final GrimperCommand mGrimperCommand = new GrimperCommand(mGrimpeurSubsystem);
+    private final BrasPanier1Command mBrasPanier1Command = new BrasPanier1Command(mBrasSubsystem, mXboxController2);
 
     private final DriveDefaultCommand mDriveDefaultCommand = new DriveDefaultCommand(mDriveSubsystem, mXboxController);
     private final BrasDefaultCommand mBrasDefaultCommand = new BrasDefaultCommand(mBrasSubsystem, mXboxController2);
@@ -69,12 +73,18 @@ public class RobotContainer {
         JoystickButton buttonX = new JoystickButton(mXboxController, XboxController.Button.kX.value);
         buttonX.onTrue(mExtendCommand);
 
+        JoystickButton buttonY = new JoystickButton(mXboxController, XboxController.Button.kY.value);
+        buttonY.whileTrue(mGrimperCommand);
+
+        ///JoystickButton buttonA2 = new JoystickButton(mXboxController2, XboxController.Button.kA.value);
+        ///buttonA2.whileTrue(mBrasPanier1Command);
+
 
     }
 
     private void configureDefaultCommands() {
         mDriveSubsystem.setDefaultCommand(mDriveDefaultCommand);
-        mBrasSubsystem.setDefaultCommand(mBrasDefaultCommand);
+        mBrasSubsystem.setDefaultCommand(mBrasPanier1Command);
     }
 
     public Command getAutonomousCommand() {

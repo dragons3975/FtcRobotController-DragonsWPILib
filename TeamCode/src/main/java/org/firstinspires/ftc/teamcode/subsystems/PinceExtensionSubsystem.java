@@ -8,9 +8,9 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 
 public class PinceExtensionSubsystem extends Subsystem {
 
-    private final FtcServo mServoPince = new FtcServo("PinceExt");//3
+    private final FtcServo mServoPince = new FtcServo("PinceExt");//2
 
-    private final FtcServo mServoPosition = new FtcServo("PositionPinceExt");//2
+    private final FtcServo mServoPosition = new FtcServo("PositionPinceExt");//3
 
     private final FtcServo mServoRotation = new FtcServo("RotationPinceExt");//4
 

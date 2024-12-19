@@ -18,12 +18,13 @@ public class BrasSubsystem extends Subsystem {
 
     //private double mAngle = 0;
 
-    PIDController mPid = new PIDController(-0.055, 0, 0);
+    PIDController mPid = new PIDController(0.01, 0, 0);
 
     private int mConsigne = 0;
 
     public BrasSubsystem() {
         stop();
+        mMotorBras.setInverted(true);
     }
 
     @Override
@@ -32,7 +33,7 @@ public class BrasSubsystem extends Subsystem {
         //mArduinoMotorBras.set(mSpeed);
         //mServoBras.setAngle(mAngle);
         //DriverStationJNI.Telemetry.putNumber("servo bras position", mServoBras.getAngle());
-        DriverStationJNI.Telemetry.putNumber("Encodeur Bras base", mMotorBras.getCurrentPosition());
+        DriverStationJNI.getTelemetry().addData("Encodeur Bras base", mMotorBras.getCurrentPosition());
         //DriverStationJNI.Telemetry.putNumber("Encodeur Bras servo", mServoBras.getTachoCount());
 
         double output = mPid.calculate(mMotorBras.getCurrentPosition(), mConsigne);
@@ -44,8 +45,9 @@ public class BrasSubsystem extends Subsystem {
          //   output = 0.0;
         //}
 
-        DriverStationJNI.Telemetry.putBoolean("IsConsigne t/f", isConsigne());
-        DriverStationJNI.Telemetry.putNumber("Output", output);
+        DriverStationJNI.getTelemetry().addData("IsConsigne t/f bras", isConsigne());
+        DriverStationJNI.getTelemetry().addData("Output bras", output);
+        DriverStationJNI.getTelemetry().addData("consigne", mConsigne);
         mMotorBras.set(output);
 
     }
@@ -68,6 +70,10 @@ public class BrasSubsystem extends Subsystem {
 
     public void setConsigne(int consigne) {
         mConsigne = consigne;
+    }
+
+    public void incrementConsigne(double incr) {
+        mConsigne += incr;
     }
 
     public boolean isConsigne() {
