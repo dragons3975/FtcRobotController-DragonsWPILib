@@ -10,7 +10,7 @@ public class DriveDefaultCommand extends Command {
     private final DriveSubsystem mDriveSubsystem;
     private final XboxController mXboxController;
     private double mX;
-    private double mY;
+
     private double mZ;
 
     public DriveDefaultCommand(DriveSubsystem driveSubsystem, XboxController xboxController) {
@@ -28,11 +28,10 @@ public class DriveDefaultCommand extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        mX = 2 * -mXboxController.getLeftY();
-        mY = 2 * mXboxController.getLeftX();
-        mZ = 20 * mXboxController.getRightX();
+        mX = mXboxController.getLeftY();
+        mZ = mXboxController.getRightX();
 
-        mDriveSubsystem.mecanumDrive(mX, mY, mZ);
+    mDriveSubsystem.tankDrive(mX, mZ);
     }
 
     // Called once the command ends or is interrupted.

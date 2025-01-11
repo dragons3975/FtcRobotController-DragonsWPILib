@@ -3,17 +3,17 @@ package org.firstinspires.ftc.teamcode.subsystems;
 
 import org.firstinspires.ftc.teamcode.Constants;
 
-import dragons.rev.FtcMotor;
-import dragons.rev.FtcTouchSensor;
-import edu.wpi.first.hal.DriverStationJNI;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 
-public class BrasSubsystem extends Subsystem {
+public class LiftSubsystem extends Subsystem {
 
-    private final FtcMotor m_motorRotation = new FtcMotor("bras");
+    //private final FtcMotor m_motorRotation = new FtcMotor("bras");
+
 
     private final PIDController mPIDBrasRotation = new PIDController(Constants.BrasConstants.kPRotation, 0, 0);
+
+    private final PIDController mPIDExtention = new PIDController(Constants.BrasConstants.kPExtention, 0, 0);
 
     private double mPosRotationTarget;
 
@@ -21,8 +21,13 @@ public class BrasSubsystem extends Subsystem {
 
     private boolean isRotationCalibrated = false;
 
+    private double mExTarget;
 
-    public BrasSubsystem() {
+    private double minExtention;
+
+    private boolean isExtentionCalibrated = false;
+
+    public LiftSubsystem() {
         //m_motorRotation.setInverted(false);
 
         mPIDBrasRotation.setTolerance(Constants.BrasConstants.kToleranceRotation);
@@ -32,12 +37,13 @@ public class BrasSubsystem extends Subsystem {
     @Override
     public void periodic() {
 
-        double consigne = mPIDBrasRotation.calculate(getPositionRotation(), mPosRotationTarget);
-        if (Math.abs(consigne) > Constants.MaxSpeeds.kmaxRotationSpeed) {
-            consigne = Math.signum(consigne) * Constants.MaxSpeeds.kmaxRotationSpeed;
-        }
-        DriverStationJNI.getTelemetry().addData("CONSIGNE DU BRAS", consigne);
+        //double consigne = mPIDBrasRotation.calculate(getPositionRotation(), mPosRotationTarget);
+        //if (Math.abs(consigne) > Constants.MaxSpeeds.kmaxRotationSpeed) {
+        //    consigne = Math.signum(consigne) * Constants.MaxSpeeds.kmaxRotationSpeed;
+        //}
+        //DriverStationJNI.getTelemetry().addData("CONSIGNE DU BRAS", consigne);
         //m_motorRotation.set(consigne);
+
     }
 
 
@@ -46,14 +52,17 @@ public class BrasSubsystem extends Subsystem {
         return mPIDBrasRotation.atSetpoint();
     }
 
+    public boolean isExtentionAtSetPoint() {
+        return mPIDExtention.atSetpoint();
+    }
 
     public void incrementTargetRotation(double deltaTarget) {
         mPosRotationTarget += deltaTarget;
     }
 
-    public double getPositionRotation() {
-        return m_motorRotation.getCurrentPosition();
-    }
+    //public double getPositionRotation() {
+    //    return m_motorRotation.getCurrentPosition();
+    //}
 
     //public void calibreRotationBras() {
     //    stopRotation();
