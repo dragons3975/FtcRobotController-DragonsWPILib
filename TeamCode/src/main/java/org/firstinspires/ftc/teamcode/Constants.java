@@ -49,7 +49,7 @@ public final class Constants {
 
         public static final double kHauteurSolMin = 5;
 
-        public static final double kPRotation = 0.008;
+        public static final double kPRotation = 0.03;
 
         public static final double kToleranceRotation = 15;
 

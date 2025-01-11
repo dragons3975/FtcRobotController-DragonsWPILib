@@ -39,7 +39,9 @@ public class BrasSubsystem extends Subsystem {
             consigne = Math.signum(consigne) * Constants.MaxSpeeds.kmaxRotationSpeed;
         }
         DriverStationJNI.getTelemetry().addData("CONSIGNE DU BRAS", consigne);
-        //m_motorRotation.set(consigne);
+        DriverStationJNI.getTelemetry().addData("BRAS POSITION", getPositionRotation());
+        DriverStationJNI.getTelemetry().addData("TARGET BRAS", mPosRotationTarget);
+        m_motorRotation.set(consigne);
     }
 
 
