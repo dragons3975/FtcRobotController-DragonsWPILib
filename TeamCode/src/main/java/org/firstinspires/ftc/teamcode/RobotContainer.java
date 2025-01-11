@@ -16,8 +16,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 public class RobotContainer {
-    private final XboxController mXboxController = new XboxController(Constants.OIConstants.kDriverControllerPort);
-    private final XboxController mXboxController2 = new XboxController(Constants.OIConstants.kDriverControllerPort2);
+    private final XboxController mXboxController = new XboxController(0);
+    private final XboxController mXboxController2 = new XboxController(1);
 
     private final DriveSubsystem mDriveSubsystem = new DriveSubsystem();
     private final BrasSubsystem mBrasSubsystem = new BrasSubsystem();

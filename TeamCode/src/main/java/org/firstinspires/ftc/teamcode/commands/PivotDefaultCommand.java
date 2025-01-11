@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.commands;
 
 import org.firstinspires.ftc.teamcode.subsystems.PinceSubsystem;
 
+import edu.wpi.first.hal.DriverStationJNI;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -26,8 +27,8 @@ public class PivotDefaultCommand extends Command{
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        mPinceSubsystem.IncrementPivotPosition(mxBoxController.getRightY());
-
+        mPinceSubsystem.IncrementPivotPosition(mxBoxController.getRightY() * 0.01);
+        DriverStationJNI.getTelemetry().addData("debug", "");
     }
 
 

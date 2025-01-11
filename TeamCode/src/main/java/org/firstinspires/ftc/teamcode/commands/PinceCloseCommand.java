@@ -15,7 +15,7 @@ public class PinceCloseCommand extends Command{
         mxBoxController = xboxController;
         mPinceSubsystem = pinceSubsystem;
 
-        addRequirements(pinceSubsystem);
+        addRequirements();
     }
 
     // Called when the command is initially scheduled.

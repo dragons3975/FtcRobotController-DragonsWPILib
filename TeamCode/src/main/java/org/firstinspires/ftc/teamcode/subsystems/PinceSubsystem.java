@@ -4,6 +4,7 @@ package org.firstinspires.ftc.teamcode.subsystems;
 import org.firstinspires.ftc.teamcode.Constants;
 
 import dragons.rev.FtcServo;
+import edu.wpi.first.hal.DriverStationJNI;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 
 public class PinceSubsystem extends Subsystem {
@@ -23,18 +24,25 @@ public class PinceSubsystem extends Subsystem {
     @Override
     public void periodic() {
         pivotServo.setPosition(mPosition);
+        DriverStationJNI.getTelemetry().addData("servo pos", pivotServo.getPosition());
     }
 
     public void IncrementPivotPosition(double increment) {
         mPosition += increment;
+        if (mPosition > 1) {
+            mPosition = 1;
+        }
+        if (mPosition < 0) {
+            mPosition = 0;
+        }
     }
 
-    public void setGripOpenPosition() {
+    public void setGripClosePosition() {
         leftServo.setPosition(Constants.ConstantsPince.kPinceGaucheOuvreMax);
         rightServo.setPosition(Constants.ConstantsPince.kPinceDroitOuvreMax);
     }
 
-    public void setGripClosePosition() {
+    public void setGripOpenPosition() {
         leftServo.setPosition(Constants.ConstantsPince.kPinceGaucheOuvreMin);
         rightServo.setPosition(Constants.ConstantsPince.kPinceDroitOuvreMin);
     }

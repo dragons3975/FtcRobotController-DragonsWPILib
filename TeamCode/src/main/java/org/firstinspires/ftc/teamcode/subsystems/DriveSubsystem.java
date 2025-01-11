@@ -34,8 +34,7 @@ public class DriveSubsystem extends Subsystem {
     public void periodic() {
 
 
-        // On inverse volontairement x et y pour avoir le x vers l'avant
-        m_robotDrive.arcadeDrive(m_xSpeed, m_zRotation);
+        m_robotDrive.arcadeDrive(m_zRotation, m_xSpeed);
 
 //        DriverStationJNI.getTelemetry().addData("x", getX());
 

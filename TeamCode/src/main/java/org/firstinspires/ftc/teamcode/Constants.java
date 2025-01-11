@@ -76,10 +76,10 @@ public final class Constants {
 
         public static final double kInclinaisonHaut = 0.2;
         public static final double kInclinaisonBas = 0.31;
-        public static final double kPinceGaucheOuvreMax = 0.2;
-        public static final double kPinceGaucheOuvreMin = 0.4;
-        public static final double kPinceDroitOuvreMax = 0.35;
-        public static final double kPinceDroitOuvreMin = 0.15;
+        public static final double kPinceGaucheOuvreMax = 0.6;
+        public static final double kPinceGaucheOuvreMin = 0.1;
+        public static final double kPinceDroitOuvreMax = 0.1;
+        public static final double kPinceDroitOuvreMin = 0.6;
 
         public static final double kInclinaisonPile = kInclinaisonBas + 0.1;
 
