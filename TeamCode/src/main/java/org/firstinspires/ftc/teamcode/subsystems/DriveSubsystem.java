@@ -133,15 +133,15 @@ public class DriveSubsystem extends Subsystem {
     }
 
     public double get_left_encoder_pos() {
-        return m_rearLeftMotor.getCurrentPosition() / Constants.ConstantsDrive.ktachoParCm;
+        return m_frontLeftMotor.getCurrentPosition() / Constants.ConstantsDrive.ktachoParCm;
     }
 
     public double get_right_encoder_pos() {
-        return -m_rearRightMotor.getCurrentPosition() / Constants.ConstantsDrive.ktachoParCm;
+        return -m_frontRightMotor.getCurrentPosition() / Constants.ConstantsDrive.ktachoParCm;
     }
 
     public double get_center_encoder_pos() {
-        return m_frontRightMotor.getCurrentPosition() / Constants.ConstantsDrive.ktachoParCm;
+        return m_rearRightMotor.getCurrentPosition() / Constants.ConstantsDrive.ktachoParCm;
     }
 
     public Pose2d getCurrentPose() {

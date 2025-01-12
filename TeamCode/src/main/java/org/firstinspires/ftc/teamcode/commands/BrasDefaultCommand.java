@@ -27,7 +27,7 @@ public class BrasDefaultCommand extends Command{
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        mBrasSubsystem.incrementTargetRotation(mxBoxController.getRightY() * Constants.BrasConstants.kIncremetentRotationMax);
+        mBrasSubsystem.incrementTargetRotation(-mxBoxController.getRightY() * Constants.BrasConstants.kIncremetentRotationMax);
     }
 
 

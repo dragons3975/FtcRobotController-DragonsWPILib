@@ -6,13 +6,11 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 
 public class GrimpeurSubsystem extends Subsystem {
-
-    //private final FtcMotor mMotorGrimpeur = new FtcMotor("grimpeur");
     private final FtcMotor mMotorPoulie = new FtcMotor("poulie");//1
-    PIDController mPid = new PIDController(0.01 , 0, 0);
+    PIDController mPid = new PIDController(0.003, 0, 0);
     //private double mSpeed = 0;
     private double mSpeedP = 0;
-    private int mConsigne = 0;
+    private double mConsigne = 0;
 
     public GrimpeurSubsystem() {
     }
@@ -22,7 +20,8 @@ public class GrimpeurSubsystem extends Subsystem {
         //mMotorGrimpeur.set(mSpeed);
         //mMotorPoulie.set(mSpeedP);
         double output = mPid.calculate(mMotorPoulie.getCurrentPosition(), mConsigne);
-        DriverStationJNI.getTelemetry().addData("IsConsigne t/f poulie", isConsigne());
+        DriverStationJNI.getTelemetry().addData("POULIE position", mMotorPoulie.getCurrentPosition());
+        DriverStationJNI.getTelemetry().addData("POULIE conigne", mConsigne);
         DriverStationJNI.getTelemetry().addData("Output", output);
         mMotorPoulie.set(output);
     }
@@ -46,7 +45,7 @@ public class GrimpeurSubsystem extends Subsystem {
         mConsigne = consigne;
     }
 
-    public void incrementConsigne(int incr) {
+    public void incrementConsigne(double incr) {
         mConsigne += incr;
     }
 

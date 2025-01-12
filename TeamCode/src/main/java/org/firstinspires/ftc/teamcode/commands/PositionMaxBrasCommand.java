@@ -1,24 +1,25 @@
 package org.firstinspires.ftc.teamcode.commands;
 
-import org.firstinspires.ftc.teamcode.Constants;
-import org.firstinspires.ftc.teamcode.subsystems.BrasSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.PinceBrasSubsystem;
 
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class BrasPanier2Command extends Command{
+public class PositionMaxBrasCommand extends Command {
 
-    private final BrasSubsystem mBrasSubsystem;
+    private final PinceBrasSubsystem mPinceBrasSubsystem;
 
-    public BrasPanier2Command(BrasSubsystem brasSubsystem) {
-        mBrasSubsystem = brasSubsystem;
+    public PositionMaxBrasCommand(PinceBrasSubsystem pinceBrasSubsystem) {
 
-        addRequirements(brasSubsystem);
+        mPinceBrasSubsystem = pinceBrasSubsystem;
+
+
+        addRequirements(pinceBrasSubsystem);
     }
 
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        mBrasSubsystem.setConsigne(Constants.BrasConstants.kPositionPanier2);
+        mPinceBrasSubsystem.PositionPinceMax();
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -26,18 +27,14 @@ public class BrasPanier2Command extends Command{
     public void execute() {
     }
 
-
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-
     }
 
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        // Commande infinie
-        return false;
+        return true;
     }
 }
-

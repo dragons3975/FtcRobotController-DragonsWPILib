@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
-import org.firstinspires.ftc.teamcode.Constants;
-
 import dragons.rev.FtcMotor;
 import edu.wpi.first.hal.DriverStationJNI;
 import edu.wpi.first.math.controller.PIDController;
@@ -18,13 +16,13 @@ public class BrasSubsystem extends Subsystem {
 
     //private double mAngle = 0;
 
-    PIDController mPid = new PIDController(0.01, 0, 0);
+    PIDController mPid = new PIDController(-0.006, 0, 0);
 
-    private int mConsigne = 0;
+    private double mConsigne = 0;
 
     public BrasSubsystem() {
         stop();
-        mMotorBras.setInverted(true);
+        mMotorBras.setInverted(false);
     }
 
     @Override
@@ -38,14 +36,14 @@ public class BrasSubsystem extends Subsystem {
 
         double output = mPid.calculate(mMotorBras.getCurrentPosition(), mConsigne);
 
-        //if(output >= 0.7) {
-        //    output = 0.7;
-        //}
-        //if(output <= 0.0) {
-         //   output = 0.0;
-        //}
+//        if(output >= 0.5) {
+//            output = 0.5;
+//        }
+//        if(output <= -0.5) {
+//            output = -0.5;
+//        }
 
-        DriverStationJNI.getTelemetry().addData("IsConsigne t/f bras", isConsigne());
+        DriverStationJNI.getTelemetry().addData("IsConsigne bras", isConsigne());
         DriverStationJNI.getTelemetry().addData("Output bras", output);
         DriverStationJNI.getTelemetry().addData("consigne", mConsigne);
         mMotorBras.set(output);
@@ -68,7 +66,7 @@ public class BrasSubsystem extends Subsystem {
         mConsigne = mMotorBras.getCurrentPosition();
     }
 
-    public void setConsigne(int consigne) {
+    public void setTarget(double consigne) {
         mConsigne = consigne;
     }
 

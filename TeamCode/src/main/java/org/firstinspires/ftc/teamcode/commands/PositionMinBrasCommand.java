@@ -1,34 +1,30 @@
 package org.firstinspires.ftc.teamcode.commands;
 
-import org.firstinspires.ftc.teamcode.Constants;
-import org.firstinspires.ftc.teamcode.subsystems.GrimpeurSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.PinceBrasSubsystem;
 
-import edu.wpi.first.hal.DriverStationJNI;
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class GrimperCommand extends Command {
+public class PositionMinBrasCommand extends Command {
 
-    private final GrimpeurSubsystem mGrimpeurSubsystem;
+    private final PinceBrasSubsystem mPinceBrasSubsystem;
+
+    public PositionMinBrasCommand(PinceBrasSubsystem pinceBrasSubsystem) {
+
+        mPinceBrasSubsystem = pinceBrasSubsystem;
 
 
-    public GrimperCommand(GrimpeurSubsystem grimpeurSubsystem) {
-
-        mGrimpeurSubsystem = grimpeurSubsystem;
-
-        addRequirements(grimpeurSubsystem);
+        addRequirements(pinceBrasSubsystem);
     }
-
 
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-
+        mPinceBrasSubsystem.PositionPinceMin();
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        //mGrimpeurSubsystem.incrementConsigne(50);
     }
 
     // Called once the command ends or is interrupted.
@@ -39,6 +35,6 @@ public class GrimperCommand extends Command {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return false;
+        return true;
     }
 }

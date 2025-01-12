@@ -22,8 +22,8 @@ public class  PinceBrasSubsystem extends Subsystem {
     public void periodic() {
         DriverStationJNI.Telemetry.putNumber("Servo Pince Angle", mAngle);
         DriverStationJNI.Telemetry.putNumber("Servo Pince Position", mPositionAngle);
-        mServoPince.setPosition(mAngle);
-        mServoPincePosition.setPosition(mPositionAngle);
+        mServoPincePosition.setPosition(mAngle);
+        mServoPince.setPosition(mPositionAngle);
     }
 
     public void openPince() {
@@ -35,8 +35,12 @@ public class  PinceBrasSubsystem extends Subsystem {
         mAngle = Constants.ConstantsPince.kPinceCloseAngle;
     }
 
-    public void setAngle(double angle) {
-        mAngle = angle;
+    public void PositionPinceMax() {
+        mPositionAngle = 1;
+    }
+
+    public void PositionPinceMin() {
+        mPositionAngle = 0;
     }
 
     public void setPositionAngle(double position) {

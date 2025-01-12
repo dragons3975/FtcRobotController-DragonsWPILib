@@ -53,7 +53,7 @@ public final class Constants {
 
         public static final double kToleranceRotation = 15;
 
-        public static final double kIncremetentRotationMax = 340;
+        public static final double kIncremetentRotationMax = 2;
 
         public static final double kRotationPositionToile = 4300;
         public static final double kmaxExt = 24000;
@@ -88,8 +88,8 @@ public final class Constants {
 
         public static final double kInclinaisonMinSol = kInclinaisonBas + 0.025;
 
-        public static final int kPinceOpenAngle = 100;
-        public static final int kPinceCloseAngle = 0;
+        public static final double kPinceOpenAngle = 0.8;
+        public static final double kPinceCloseAngle = 0.2;
         public static final int kPinceOpenPosAngle = 0;
         public static final int kPinceClosePosAngle = 50;
     }

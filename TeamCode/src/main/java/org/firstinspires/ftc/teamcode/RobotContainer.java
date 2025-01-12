@@ -2,10 +2,16 @@ package org.firstinspires.ftc.teamcode;
 
 import org.firstinspires.ftc.teamcode.commandGroups.Bleu.Droite.BleuDroiteExtra;
 import org.firstinspires.ftc.teamcode.commands.BrasPanier1Command;
+import org.firstinspires.ftc.teamcode.commands.BrasPositionCommand;
+import org.firstinspires.ftc.teamcode.commands.ClosePinceBrasCommand;
 import org.firstinspires.ftc.teamcode.commands.DriveDefaultCommand;
 import org.firstinspires.ftc.teamcode.commands.ExtendCommand;
 import org.firstinspires.ftc.teamcode.commands.GrimperCommand;
+import org.firstinspires.ftc.teamcode.commands.GrimpeurDefaultCommand;
+import org.firstinspires.ftc.teamcode.commands.OpenPinceBrasCommand;
 import org.firstinspires.ftc.teamcode.commands.PinceRotationDefaultCommand;
+import org.firstinspires.ftc.teamcode.commands.PositionMaxBrasCommand;
+import org.firstinspires.ftc.teamcode.commands.PositionMinBrasCommand;
 import org.firstinspires.ftc.teamcode.commands.TestButtonCommand;
 import org.firstinspires.ftc.teamcode.commands.TrajectoryCommand;
 import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
@@ -40,7 +46,6 @@ public class RobotContainer {
     private final TestButtonCommand mTestButtonCommandA = new TestButtonCommand("A");
     private final TestButtonCommand mTestButtonCommandLB = new TestButtonCommand("LB");
     private final GrimperCommand mGrimperCommand = new GrimperCommand(mGrimpeurSubsystem);
-    private final BrasPanier1Command mBrasPanier1Command = new BrasPanier1Command(mBrasSubsystem, mXboxController2);
 
     private final DriveDefaultCommand mDriveDefaultCommand = new DriveDefaultCommand(mDriveSubsystem, mXboxController);
     private final BrasDefaultCommand mBrasDefaultCommand = new BrasDefaultCommand(mBrasSubsystem, mXboxController2);
@@ -49,6 +54,16 @@ public class RobotContainer {
 
     private final TrajectoryCommand mTrajectoryCommand = new TrajectoryCommand(mDriveSubsystem);
 
+    private final OpenPinceBrasCommand mOpenPinceBrasCommand = new OpenPinceBrasCommand(mPinceBrasSubsystem);
+
+    private final ClosePinceBrasCommand mClosePinceBrasCommand = new ClosePinceBrasCommand(mPinceBrasSubsystem);
+
+    private final PositionMinBrasCommand mPositionMinBrasCommand = new PositionMinBrasCommand(mPinceBrasSubsystem);
+    private final PositionMaxBrasCommand mPositionMaxBrasCommand = new PositionMaxBrasCommand(mPinceBrasSubsystem);
+
+    private final GrimpeurDefaultCommand mGrimperDefaultCommand = new GrimpeurDefaultCommand(mGrimpeurSubsystem, mXboxController2);
+
+    private final BrasPositionCommand mBrasPositionCommandTest = new BrasPositionCommand(mBrasSubsystem, -300);
 
 
     public RobotContainer() {
@@ -62,7 +77,7 @@ public class RobotContainer {
 
     private void configureButtonBindings() {
         JoystickButton buttonA = new JoystickButton(mXboxController, XboxController.Button.kA.value);
-        buttonA.whileTrue(mTestButtonCommandA);
+        buttonA.whileTrue(mBrasPositionCommandTest);
 
         JoystickButton buttonLB = new JoystickButton(mXboxController, XboxController.Button.kLeftBumper.value);
         buttonLB.whileTrue(mTestButtonCommandLB);
@@ -73,8 +88,22 @@ public class RobotContainer {
         JoystickButton buttonX = new JoystickButton(mXboxController, XboxController.Button.kX.value);
         buttonX.onTrue(mExtendCommand);
 
-        JoystickButton buttonY = new JoystickButton(mXboxController, XboxController.Button.kY.value);
-        buttonY.whileTrue(mGrimperCommand);
+        //JoystickButton buttonY = new JoystickButton(mXboxController, XboxController.Button.kY.value);
+        //buttonY.whileTrue(mGrimperCommand);
+
+        //
+
+        JoystickButton buttonA2 = new JoystickButton(mXboxController2, XboxController.Button.kA.value);
+        buttonA2.onTrue(mOpenPinceBrasCommand);
+
+        JoystickButton buttonB2 = new JoystickButton(mXboxController2, XboxController.Button.kB.value);
+        buttonB2.onTrue(mClosePinceBrasCommand);
+
+        JoystickButton buttonX2 = new JoystickButton(mXboxController2, XboxController.Button.kX.value);
+        buttonX2.onTrue(mPositionMinBrasCommand);
+
+        JoystickButton buttonY2 = new JoystickButton(mXboxController2, XboxController.Button.kY.value);
+        buttonY2.onTrue(mPositionMaxBrasCommand);
 
         ///JoystickButton buttonA2 = new JoystickButton(mXboxController2, XboxController.Button.kA.value);
         ///buttonA2.whileTrue(mBrasPanier1Command);
@@ -84,7 +113,8 @@ public class RobotContainer {
 
     private void configureDefaultCommands() {
         mDriveSubsystem.setDefaultCommand(mDriveDefaultCommand);
-        mBrasSubsystem.setDefaultCommand(mBrasPanier1Command);
+        mBrasSubsystem.setDefaultCommand(mBrasDefaultCommand);
+        mGrimpeurSubsystem.setDefaultCommand(mGrimperDefaultCommand);
     }
 
     public Command getAutonomousCommand() {
