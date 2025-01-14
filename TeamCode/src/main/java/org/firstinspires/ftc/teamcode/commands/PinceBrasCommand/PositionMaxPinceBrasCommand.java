@@ -1,14 +1,14 @@
-package org.firstinspires.ftc.teamcode.commands;
+package org.firstinspires.ftc.teamcode.commands.PinceBrasCommand;
 
 import org.firstinspires.ftc.teamcode.subsystems.PinceBrasSubsystem;
 
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class PositionMaxBrasCommand extends Command {
+public class PositionMaxPinceBrasCommand extends Command {
 
     private final PinceBrasSubsystem mPinceBrasSubsystem;
 
-    public PositionMaxBrasCommand(PinceBrasSubsystem pinceBrasSubsystem) {
+    public PositionMaxPinceBrasCommand(PinceBrasSubsystem pinceBrasSubsystem) {
 
         mPinceBrasSubsystem = pinceBrasSubsystem;
 

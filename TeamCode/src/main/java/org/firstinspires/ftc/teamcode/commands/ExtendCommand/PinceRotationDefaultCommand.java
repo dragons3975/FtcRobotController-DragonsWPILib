@@ -1,22 +1,21 @@
-package org.firstinspires.ftc.teamcode.commands;
+package org.firstinspires.ftc.teamcode.commands.ExtendCommand;
 
-import org.firstinspires.ftc.teamcode.Constants;
-import org.firstinspires.ftc.teamcode.subsystems.BrasSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.PinceExtensionSubsystem;
 
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.Command;
 
-public class BrasDefaultCommand extends Command{
+public class PinceRotationDefaultCommand extends Command{
 
-    private final BrasSubsystem mBrasSubsystem;
+    private final PinceExtensionSubsystem mPinceExtensionSubsystem;
 
     private final XboxController mxBoxController;
 
-    public BrasDefaultCommand(BrasSubsystem brasSubsystem, XboxController xboxController) {
-        mBrasSubsystem = brasSubsystem;
+    public PinceRotationDefaultCommand(PinceExtensionSubsystem pinceExtensionSubsystem, XboxController xboxController) {
+        mPinceExtensionSubsystem = pinceExtensionSubsystem;
         mxBoxController = xboxController;
 
-        addRequirements(brasSubsystem);
+        addRequirements(pinceExtensionSubsystem);
     }
 
     // Called when the command is initially scheduled.
@@ -27,7 +26,7 @@ public class BrasDefaultCommand extends Command{
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        mBrasSubsystem.incrementTargetRotation(-mxBoxController.getRightY() * Constants.BrasConstants.kIncremetentRotationMax);
+        mPinceExtensionSubsystem.setRotationAngle(mxBoxController.getLeftX());
     }
 
 

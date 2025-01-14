@@ -1,8 +1,6 @@
 package org.firstinspires.ftc.teamcode.commandGroups.Bleu.Droite;
 
-import org.firstinspires.ftc.teamcode.Constants;
-import org.firstinspires.ftc.teamcode.commands.AvanceAutoCommand;
-import org.firstinspires.ftc.teamcode.subsystems.BrasSubsystem;
+import org.firstinspires.ftc.teamcode.commands.DriveCommand.AvanceAutoCommand;
 import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
 
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.commands;
+package org.firstinspires.ftc.teamcode.commands.ExtendCommand;
 
 
 import org.firstinspires.ftc.teamcode.subsystems.PinceExtensionSubsystem;

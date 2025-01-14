@@ -20,9 +20,11 @@ public class ExtensionSubsystem extends Subsystem {
 
     private double mSpeed = 0;
 
-    private int mTachoCalib = 0;
-
     private double mDistance = 0;
+
+    private boolean isCalib = false;
+
+    private double mTachoCalib = 0;
 
     public ExtensionSubsystem() {
         mMotorCalib.setInverted(false);
@@ -36,7 +38,6 @@ public class ExtensionSubsystem extends Subsystem {
         //if (mFtcTouchSensor.getState()) {
         //    mSpeed = 0;
         //}
-        mMotorCalib.set(mSpeed);
 
         mDistance = ((1.0/Constants.ExtensionConstants.kTachoCount)*getCalibratedTacho())*(Constants.ExtensionConstants.kCirconference);
 
@@ -56,12 +57,13 @@ public class ExtensionSubsystem extends Subsystem {
 
         DriverStationJNI.getTelemetry().addData("IsConsigne t/f", isConsigne());
         DriverStationJNI.getTelemetry().addData("Output", output);
-        mMotorCalib.set(output);
 
-    }
+        if (!isCalib) {
+            mMotorCalib.set(mSpeed);
+        } else {
+            mMotorCalib.set(output);
+        }
 
-    public void testBouger() {
-        mMotorCalib.set(1);
     }
 
     public void StartCalibration() {
@@ -74,7 +76,7 @@ public class ExtensionSubsystem extends Subsystem {
     }
 
     private int getCalibratedTacho() {
-        return mMotorCalib.getCurrentPosition();// - mTachoCalib;
+        return mMotorCalib.getCurrentPosition();
     }
 
     public void stop() {
@@ -89,13 +91,6 @@ public class ExtensionSubsystem extends Subsystem {
         return mFtcTouchSensor.getState();
     }
 
-    public double getDistanceXcm() {
-        return mDistance;
-    }
-
-    public int getTacho() {
-        return mMotorCalib.getCurrentPosition();
-    }
 
     public void setConsigne(int consigne) {
         mConsigne = consigne;

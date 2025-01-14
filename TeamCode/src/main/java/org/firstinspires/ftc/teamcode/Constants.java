@@ -165,7 +165,7 @@ public final class Constants {
     }
 
     public static final class GrimpeurConstants {
-        public static final int kGrimper1 = 350;
+        public static final int GrimperValue = 10;
     }
 
 

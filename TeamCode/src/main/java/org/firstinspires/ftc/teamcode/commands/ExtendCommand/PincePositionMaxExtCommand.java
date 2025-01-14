@@ -1,25 +1,25 @@
-package org.firstinspires.ftc.teamcode.commands;
+package org.firstinspires.ftc.teamcode.commands.ExtendCommand;
 
-import org.firstinspires.ftc.teamcode.subsystems.PinceBrasSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.PinceExtensionSubsystem;
 
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class PositionMinBrasCommand extends Command {
+public class PincePositionMaxExtCommand extends Command {
 
-    private final PinceBrasSubsystem mPinceBrasSubsystem;
+    private final PinceExtensionSubsystem mPinceExtensionSubsystem;
 
-    public PositionMinBrasCommand(PinceBrasSubsystem pinceBrasSubsystem) {
+    public PincePositionMaxExtCommand(PinceExtensionSubsystem pinceExtensionSubsystem) {
 
-        mPinceBrasSubsystem = pinceBrasSubsystem;
+        mPinceExtensionSubsystem = pinceExtensionSubsystem;
 
 
-        addRequirements(pinceBrasSubsystem);
+        addRequirements(pinceExtensionSubsystem);
     }
 
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        mPinceBrasSubsystem.PositionPinceMin();
+        mPinceExtensionSubsystem.setPositionAngle(1);
     }
 
     // Called every time the scheduler runs while the command is scheduled.

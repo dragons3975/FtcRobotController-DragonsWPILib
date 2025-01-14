@@ -1,14 +1,14 @@
-package org.firstinspires.ftc.teamcode.commands;
+package org.firstinspires.ftc.teamcode.commands.ExtendCommand;
 
 import org.firstinspires.ftc.teamcode.subsystems.PinceExtensionSubsystem;
 
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class OpenPinceExtCommand extends Command {
+public class PincePositionMinExtCommand extends Command {
 
     private final PinceExtensionSubsystem mPinceExtensionSubsystem;
 
-    public OpenPinceExtCommand(PinceExtensionSubsystem pinceExtensionSubsystem) {
+    public PincePositionMinExtCommand(PinceExtensionSubsystem pinceExtensionSubsystem) {
 
         mPinceExtensionSubsystem = pinceExtensionSubsystem;
 
@@ -19,7 +19,7 @@ public class OpenPinceExtCommand extends Command {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        mPinceExtensionSubsystem.openPince();
+        mPinceExtensionSubsystem.setPositionAngle(0);
     }
 
     // Called every time the scheduler runs while the command is scheduled.

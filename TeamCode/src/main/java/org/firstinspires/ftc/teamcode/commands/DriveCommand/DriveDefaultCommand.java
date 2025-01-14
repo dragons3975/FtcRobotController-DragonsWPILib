@@ -1,24 +1,21 @@
-package org.firstinspires.ftc.teamcode.commands;
+package org.firstinspires.ftc.teamcode.commands.DriveCommand;
 
 import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
 
-import java.util.Objects;
-
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class AvanceAutoCommand extends Command {
+public class DriveDefaultCommand extends Command {
 
     private final DriveSubsystem mDriveSubsystem;
+    private final XboxController mXboxController;
+    private double mX;
+    private double mY;
+    private double mZ;
 
-    private final double mXSpeed, mYSpeed, mZSpeed;
-    private double mDistanceInit;
-
-    public AvanceAutoCommand(DriveSubsystem driveSubsystem, double x, double y, double z) {
+    public DriveDefaultCommand(DriveSubsystem driveSubsystem, XboxController xboxController) {
         mDriveSubsystem = driveSubsystem;
-
-        mXSpeed = x;
-        mYSpeed = y;
-        mZSpeed = z;
+        mXboxController = xboxController;
 
         addRequirements(driveSubsystem);
     }
@@ -26,12 +23,16 @@ public class AvanceAutoCommand extends Command {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        mDriveSubsystem.mecanumDrive(mXSpeed, mYSpeed, mZSpeed);
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
+        mX = 2 * -mXboxController.getLeftY();
+        mY = 2 * mXboxController.getLeftX();
+        mZ = 20 * mXboxController.getRightX();
+
+        mDriveSubsystem.mecanumDrive(mX, mY, mZ);
     }
 
     // Called once the command ends or is interrupted.
@@ -43,12 +44,6 @@ public class AvanceAutoCommand extends Command {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        //if (mXSpeed > 0) {
-        //    return mDriveSubsystem.isAtSetPointx();
-        //} else {
-        //    return mDriveSubsystem.isAtSetPointy();
-        //}
         return false;
     }
-
 }

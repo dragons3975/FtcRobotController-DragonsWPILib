@@ -1,29 +1,30 @@
-package org.firstinspires.ftc.teamcode.commands;
+package org.firstinspires.ftc.teamcode.commands.PinceBrasCommand;
 
-import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.PinceBrasSubsystem;
 
-import edu.wpi.first.hal.DriverStationJNI;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class TestButtonCommand extends Command {
+public class OpenPinceBrasCommand extends Command {
 
-    String mtelemetrie = "";
+    private final PinceBrasSubsystem mPinceBrasSubsystem;
 
-    public TestButtonCommand(String telemertrie) {
-        mtelemetrie = telemertrie;
-        addRequirements();
+    public OpenPinceBrasCommand(PinceBrasSubsystem pinceBrasSubsystem) {
+
+        mPinceBrasSubsystem = pinceBrasSubsystem;
+
+
+        addRequirements(pinceBrasSubsystem);
     }
 
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
+        mPinceBrasSubsystem.openPince();
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        DriverStationJNI.getTelemetry().addData("test boutton ", mtelemetrie + " appuyé");
     }
 
     // Called once the command ends or is interrupted.
@@ -34,6 +35,6 @@ public class TestButtonCommand extends Command {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return false;
+        return true;
     }
 }

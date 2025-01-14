@@ -41,12 +41,8 @@ public class PinceExtensionSubsystem extends Subsystem {
         mPositionAngle = Constants.ConstantsPince.kPinceClosePosAngle;
     }
 
-    public void setAngle(double angle) {
-        mAngle += angle;
-    }
-
     public void setPositionAngle(double position) {
-        mPositionAngle += position;
+        mPositionAngle = position;
     }
 
     public void setRotationAngle(double rotation) {
