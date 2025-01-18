@@ -72,6 +72,44 @@ public final class Constants {
         public static final double kPositionLeverUnPeu = 1000;
     }
 
+    public static final class LiftConstants {
+        public static final double coeficiant = 0.01;
+
+        public static final double kmax = 8500;
+
+        public static final double kRotationMilieu = 4000;
+
+        public static final double kHauteurSecurite = 3500;
+
+        public static final double kHauteurSolMin = 5;
+
+        public static final double kPRotation = 0.03;
+
+        public static final double kToleranceRotation = 15;
+
+        public static final double kIncremetentRotationMax = 340;
+
+        public static final double kRotationPositionToile = 4300;
+        public static final double kmaxExt = 24000;
+        public static final double kExtentionToile = 24000;
+
+        public static final double kPExtention = 0.001;
+
+        public static final double kToleranceExtention = 100;
+
+        public static final double kVitesseMaxExtention = 1300;
+
+        public static final double kExtentionMinimalToile = 4000;
+
+        public static final double kPositionPile = 1700;
+
+        public static final double kPositionLeverUnPeu = 1000;
+
+        public static final double kMaximumPosition = 100;  //A CHANGER!!!!!!!!
+        public static final double kMinimumPosition = 0;  //A CHANGER!!!!!!!!
+    }
+
+
     public static final class ConstantsPince {
 
         public static final double kInclinaisonHaut = 0.2;

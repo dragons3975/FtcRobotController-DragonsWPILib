@@ -3,47 +3,44 @@ package org.firstinspires.ftc.teamcode.subsystems;
 
 import org.firstinspires.ftc.teamcode.Constants;
 
+import dragons.rev.FtcMotor;
+import edu.wpi.first.hal.DriverStationJNI;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 
 public class LiftSubsystem extends Subsystem {
 
-    //private final FtcMotor m_motorRotation = new FtcMotor("bras");
-
+    private final FtcMotor m_motorRotation = new FtcMotor("lift");
 
     private final PIDController mPIDBrasRotation = new PIDController(Constants.BrasConstants.kPRotation, 0, 0);
 
-    private final PIDController mPIDExtention = new PIDController(Constants.BrasConstants.kPExtention, 0, 0);
-
     private double mPosRotationTarget;
+
 
     private double mRotationBrasInit = 0;
 
     private boolean isRotationCalibrated = false;
 
-    private double mExTarget;
 
-    private double minExtention;
-
-    private boolean isExtentionCalibrated = false;
 
     public LiftSubsystem() {
         //m_motorRotation.setInverted(false);
 
-        mPIDBrasRotation.setTolerance(Constants.BrasConstants.kToleranceRotation);
+        mPIDBrasRotation.setTolerance(Constants.LiftConstants.kToleranceRotation);
         //stopRotation();
     }
 
     @Override
     public void periodic() {
 
-        //double consigne = mPIDBrasRotation.calculate(getPositionRotation(), mPosRotationTarget);
-        //if (Math.abs(consigne) > Constants.MaxSpeeds.kmaxRotationSpeed) {
-        //    consigne = Math.signum(consigne) * Constants.MaxSpeeds.kmaxRotationSpeed;
-        //}
-        //DriverStationJNI.getTelemetry().addData("CONSIGNE DU BRAS", consigne);
-        //m_motorRotation.set(consigne);
-
+        double consigne = mPIDBrasRotation.calculate(getPositionRotation(), mPosRotationTarget);
+        if (Math.abs(consigne) > Constants.MaxSpeeds.kmaxRotationSpeed) {
+            consigne = Math.signum(consigne) * Constants.MaxSpeeds.kmaxRotationSpeed;
+        }
+        DriverStationJNI.getTelemetry().addData("CONSIGNE DU LIFT", consigne);
+        DriverStationJNI.getTelemetry().addData("LIFT POSITION", getPositionRotation());
+        DriverStationJNI.getTelemetry().addData("TARGET LIFT", mPosRotationTarget);
+//        m_motorRotation.set(consigne);
     }
 
 
@@ -52,17 +49,23 @@ public class LiftSubsystem extends Subsystem {
         return mPIDBrasRotation.atSetpoint();
     }
 
-    public boolean isExtentionAtSetPoint() {
-        return mPIDExtention.atSetpoint();
-    }
 
     public void incrementTargetRotation(double deltaTarget) {
         mPosRotationTarget += deltaTarget;
+        if(mPosRotationTarget >= Constants.LiftConstants.kMaximumPosition) {
+            mPosRotationTarget = Constants.LiftConstants.kMaximumPosition;
+        }
+        if(mPosRotationTarget <= Constants.LiftConstants.kMinimumPosition) {
+            mPosRotationTarget = Constants.LiftConstants.kMinimumPosition;
+        }
     }
 
-    //public double getPositionRotation() {
-    //    return m_motorRotation.getCurrentPosition();
-    //}
+    public double getPositionRotation() {
+        return m_motorRotation.getCurrentPosition();
+
+    }
+
+
 
     //public void calibreRotationBras() {
     //    stopRotation();
