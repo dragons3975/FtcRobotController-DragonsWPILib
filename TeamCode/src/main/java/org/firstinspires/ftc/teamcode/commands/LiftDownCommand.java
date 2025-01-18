@@ -1,27 +1,24 @@
 package org.firstinspires.ftc.teamcode.commands;
+
 import org.firstinspires.ftc.teamcode.subsystems.LiftSubsystem;
-import edu.wpi.first.wpilibj.XboxController;
 
-
-import dragons.rev.FtcServo;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Subsystem;
 
-public class LiftUpCommand extends Command {
+public class LiftDownCommand extends Command {
 
     private final XboxController mXboxController2;
 
     private final LiftSubsystem mLiftSubsystem;
 
-    public LiftUpCommand(LiftSubsystem liftSubsystem, XboxController xboxController2) {
+    public LiftDownCommand(LiftSubsystem liftSubsystem, XboxController xboxController2) {
         mXboxController2 = xboxController2;
         mLiftSubsystem = liftSubsystem;
 
         addRequirements(liftSubsystem);
     }
     public void execute() {
-        mLiftSubsystem.incrementTargetRotation(0.1);
+        mLiftSubsystem.incrementTargetRotation(-0.1);
     }
 
     @Override

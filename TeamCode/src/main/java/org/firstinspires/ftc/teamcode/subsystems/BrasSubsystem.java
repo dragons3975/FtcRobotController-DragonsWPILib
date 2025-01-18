@@ -41,7 +41,7 @@ public class BrasSubsystem extends Subsystem {
         DriverStationJNI.getTelemetry().addData("CONSIGNE DU BRAS", consigne);
         DriverStationJNI.getTelemetry().addData("BRAS POSITION", getPositionRotation());
         DriverStationJNI.getTelemetry().addData("TARGET BRAS", mPosRotationTarget);
-        m_motorRotation.set(consigne);
+//        m_motorRotation.set(consigne);
     }
 
 
@@ -51,8 +51,15 @@ public class BrasSubsystem extends Subsystem {
     }
 
 
+
     public void incrementTargetRotation(double deltaTarget) {
         mPosRotationTarget += deltaTarget;
+        if(mPosRotationTarget >= Constants.BrasConstants.kMaximumPosition) {
+            mPosRotationTarget = Constants.BrasConstants.kMaximumPosition;
+        }
+        if(mPosRotationTarget <= Constants.BrasConstants.kMinimumPosition) {
+            mPosRotationTarget = Constants.BrasConstants.kMinimumPosition;
+        }
     }
 
     public double getPositionRotation() {

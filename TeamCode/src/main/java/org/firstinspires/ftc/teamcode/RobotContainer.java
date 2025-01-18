@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import org.firstinspires.ftc.teamcode.commandGroups.Bleu.Droite.BleuDroiteExtra;
 import org.firstinspires.ftc.teamcode.commands.DriveDefaultCommand;
+import org.firstinspires.ftc.teamcode.commands.LiftDownCommand;
 import org.firstinspires.ftc.teamcode.commands.LiftUpCommand;
 import org.firstinspires.ftc.teamcode.commands.PinceCloseCommand;
 import org.firstinspires.ftc.teamcode.commands.PinceOpenCommand;
@@ -33,6 +34,7 @@ public class RobotContainer {
     private final PinceOpenCommand mPinceOpenCommand = new PinceOpenCommand(mPinceSubsystem, mXboxController2);
     private final PinceCloseCommand mPinceCloseCommand = new PinceCloseCommand(mPinceSubsystem, mXboxController2);
     private final LiftUpCommand mLiftUpCommand = new LiftUpCommand(mLiftSubsystem, mXboxController2);
+    private final LiftDownCommand mLiftDownCommand = new LiftDownCommand(mLiftSubsystem, mXboxController2);
 
 
 
@@ -53,7 +55,10 @@ public class RobotContainer {
         buttonB.onTrue(mPinceCloseCommand);
 
         JoystickButton rightBumper = new JoystickButton(mXboxController2, XboxController.Button.kRightBumper.value);
-        rightBumper.onTrue(mLiftUpCommand);
+        rightBumper.whileTrue(mLiftUpCommand);
+
+        JoystickButton leftBumper = new JoystickButton(mXboxController2, XboxController.Button.kLeftBumper.value);
+        leftBumper.whileTrue(mLiftDownCommand);
     }
 
     private void configureDefaultCommands() {

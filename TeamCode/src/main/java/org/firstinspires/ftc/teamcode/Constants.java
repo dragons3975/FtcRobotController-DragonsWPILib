@@ -70,6 +70,9 @@ public final class Constants {
         public static final double kPositionPile = 1700;
 
         public static final double kPositionLeverUnPeu = 1000;
+        public static final double kMaximumPosition = 50;  //A CHANGER!!!!!!!!
+        public static final double kMinimumPosition = -10;  //A CHANGER!!!!!!!!
+
     }
 
     public static final class LiftConstants {
@@ -106,7 +109,7 @@ public final class Constants {
         public static final double kPositionLeverUnPeu = 1000;
 
         public static final double kMaximumPosition = 100;  //A CHANGER!!!!!!!!
-        public static final double kMinimumPosition = 0;  //A CHANGER!!!!!!!!
+        public static final double kMinimumPosition = -100;  //A CHANGER!!!!!!!!
     }
 
 
