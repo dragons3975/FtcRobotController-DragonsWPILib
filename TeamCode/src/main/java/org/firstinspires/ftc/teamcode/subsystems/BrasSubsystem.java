@@ -41,7 +41,7 @@ public class BrasSubsystem extends Subsystem {
         DriverStationJNI.getTelemetry().addData("CONSIGNE DU BRAS", consigne);
         DriverStationJNI.getTelemetry().addData("BRAS POSITION", getPositionRotation());
         DriverStationJNI.getTelemetry().addData("TARGET BRAS", mPosRotationTarget);
-//        m_motorRotation.set(consigne);
+        m_motorRotation.set(consigne);
     }
 
 

@@ -70,8 +70,8 @@ public final class Constants {
         public static final double kPositionPile = 1700;
 
         public static final double kPositionLeverUnPeu = 1000;
-        public static final double kMaximumPosition = 50;  //A CHANGER!!!!!!!!
-        public static final double kMinimumPosition = -10;  //A CHANGER!!!!!!!!
+        public static final double kMaximumPosition = 0;  //A CHANGER!!!!!!!!
+        public static final double kMinimumPosition = -330;  //A CHANGER!!!!!!!!
 
     }
 
@@ -86,7 +86,7 @@ public final class Constants {
 
         public static final double kHauteurSolMin = 5;
 
-        public static final double kPRotation = 0.03;
+        public static final double kPRotation = 25.0/2500;
 
         public static final double kToleranceRotation = 15;
 
@@ -108,8 +108,8 @@ public final class Constants {
 
         public static final double kPositionLeverUnPeu = 1000;
 
-        public static final double kMaximumPosition = 100;  //A CHANGER!!!!!!!!
-        public static final double kMinimumPosition = -100;  //A CHANGER!!!!!!!!
+        public static final double kMaximumPosition = 2650;  //A CHANGER!!!!!!!!
+        public static final double kMinimumPosition = 0;  //A CHANGER!!!!!!!!
     }
 
 
@@ -183,6 +183,18 @@ public final class Constants {
         public static final double kmaxYspeed = 0.5;
 
         public static final double kmaxRotationSpeed = 1;
+
+        public static final double kmaxExtentionSpeed = 1;
+    }
+
+    public static final class MaxSpeeds_lift {
+        public static final double kmaxZspeed = 0.5;
+
+        public static final double kmaxXspeed = 0.3;
+
+        public static final double kmaxYspeed = 0.5;
+
+        public static final double kmaxRotationSpeed = 0.5;
 
         public static final double kmaxExtentionSpeed = 1;
     }

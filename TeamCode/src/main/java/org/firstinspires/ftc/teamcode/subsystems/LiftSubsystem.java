@@ -12,7 +12,7 @@ public class LiftSubsystem extends Subsystem {
 
     private final FtcMotor m_motorRotation = new FtcMotor("lift");
 
-    private final PIDController mPIDBrasRotation = new PIDController(Constants.BrasConstants.kPRotation, 0, 0);
+    private final PIDController mPIDBrasRotation = new PIDController(Constants.LiftConstants.kPRotation, 0, 0);
 
     private double mPosRotationTarget;
 
@@ -24,7 +24,7 @@ public class LiftSubsystem extends Subsystem {
 
 
     public LiftSubsystem() {
-        //m_motorRotation.setInverted(false);
+//        m_motorRotation.setInverted(true);
 
         mPIDBrasRotation.setTolerance(Constants.LiftConstants.kToleranceRotation);
         //stopRotation();
@@ -34,13 +34,13 @@ public class LiftSubsystem extends Subsystem {
     public void periodic() {
 
         double consigne = mPIDBrasRotation.calculate(getPositionRotation(), mPosRotationTarget);
-        if (Math.abs(consigne) > Constants.MaxSpeeds.kmaxRotationSpeed) {
-            consigne = Math.signum(consigne) * Constants.MaxSpeeds.kmaxRotationSpeed;
+        if (Math.abs(consigne) > Constants.MaxSpeeds_lift.kmaxRotationSpeed) {
+            consigne = Math.signum(consigne) * Constants.MaxSpeeds_lift.kmaxRotationSpeed;
         }
         DriverStationJNI.getTelemetry().addData("CONSIGNE DU LIFT", consigne);
         DriverStationJNI.getTelemetry().addData("LIFT POSITION", getPositionRotation());
         DriverStationJNI.getTelemetry().addData("TARGET LIFT", mPosRotationTarget);
-//        m_motorRotation.set(consigne);
+        m_motorRotation.set(consigne);
     }
 
 

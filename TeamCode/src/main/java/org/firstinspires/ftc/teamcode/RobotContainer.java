@@ -68,6 +68,6 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return new BleuDroiteExtra(mDriveSubsystem);
+        return new BleuDroiteExtra(mDriveSubsystem, mPinceSubsystem, mXboxController2);
     }
 }

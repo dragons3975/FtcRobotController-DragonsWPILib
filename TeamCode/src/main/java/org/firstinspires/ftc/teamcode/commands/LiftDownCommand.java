@@ -18,7 +18,7 @@ public class LiftDownCommand extends Command {
         addRequirements(liftSubsystem);
     }
     public void execute() {
-        mLiftSubsystem.incrementTargetRotation(-0.1);
+        mLiftSubsystem.incrementTargetRotation(-30);
     }
 
     @Override

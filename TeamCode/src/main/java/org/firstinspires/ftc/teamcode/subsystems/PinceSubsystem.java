@@ -13,7 +13,7 @@ public class PinceSubsystem extends Subsystem {
     private final FtcServo rightServo = new FtcServo("rightServo");
     private final FtcServo pivotServo = new FtcServo("pivotServo");
 
-    private double mPosition = 0;
+    private double mPosition = 1;
 
 
     public PinceSubsystem() {
