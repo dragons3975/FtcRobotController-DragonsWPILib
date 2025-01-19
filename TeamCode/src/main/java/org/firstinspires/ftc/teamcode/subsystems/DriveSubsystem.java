@@ -21,7 +21,7 @@ public class DriveSubsystem extends Subsystem {
     private final FtcMotor m_rearLeftMotor = new FtcMotor("rleft");
     private final FtcMotor m_rearRightMotor = new FtcMotor("rright");
     private final MecanumDrive m_robotDrive = new MecanumDrive(m_frontLeftMotor, m_frontRightMotor, m_rearLeftMotor, m_rearRightMotor);
-    private final FtcGyro mGyro = new FtcGyro(RevHubOrientationOnRobot.LogoFacingDirection.UP, RevHubOrientationOnRobot.UsbFacingDirection.FORWARD);
+    private final FtcGyro mGyro = new FtcGyro(RevHubOrientationOnRobot.LogoFacingDirection.RIGHT, RevHubOrientationOnRobot.UsbFacingDirection.UP);
     private double mAngle = 0;
 
     private double m_xSpeed = 0; // The robot's speed along the X axis [-1.0..1.0]. Forward is positive.
@@ -54,9 +54,9 @@ public class DriveSubsystem extends Subsystem {
         m_robotDrive.setMaxOutput(Constants.ConstantsDrive.kVitesseHaute);
         mPIDz.setTolerance(Constants.ConstantsDrivePID.kToleranceZ);
         m_frontLeftMotor.setInverted(false);
-        m_frontRightMotor.setInverted(false);
-        m_rearLeftMotor.setInverted(true);
-        m_rearRightMotor.setInverted(true);
+        m_frontRightMotor.setInverted(true);
+        m_rearLeftMotor.setInverted(false);
+        m_rearRightMotor.setInverted(false);
 
         mAngleConsigne = getAngle();
 
@@ -96,6 +96,7 @@ public class DriveSubsystem extends Subsystem {
         prev_center_encodeur_pos = current_center_encodeur_pos;
 
         DriverStationJNI.getTelemetry().addData("heading", heading);
+        DriverStationJNI.getTelemetry().addData("consigne drive", mAngleConsigne);
         DriverStationJNI.getTelemetry().addData("Y", Y);
         DriverStationJNI.getTelemetry().addData("X", X);
         DriverStationJNI.getTelemetry().addData("YApril", YApril);
@@ -141,7 +142,7 @@ public class DriveSubsystem extends Subsystem {
     }
 
     public double get_center_encoder_pos() {
-        return m_rearRightMotor.getCurrentPosition() / Constants.ConstantsDrive.ktachoParCm;
+        return m_rearLeftMotor.getCurrentPosition() / Constants.ConstantsDrive.ktachoParCm;
     }
 
     public Pose2d getCurrentPose() {
@@ -158,6 +159,7 @@ public class DriveSubsystem extends Subsystem {
     private double getAngle() {
         return MathUtil.inputModulus(-mGyro.getAngle(), -180, 180);
     }
+
 }
 
 

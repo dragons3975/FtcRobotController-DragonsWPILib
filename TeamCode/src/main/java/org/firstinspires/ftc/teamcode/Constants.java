@@ -166,6 +166,8 @@ public final class Constants {
 
     public static final class GrimpeurConstants {
         public static final int GrimperValue = 10;
+
+        public static final double PositionCOrde = 0;
     }
 
 

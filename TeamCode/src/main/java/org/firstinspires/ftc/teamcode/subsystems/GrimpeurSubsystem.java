@@ -6,50 +6,39 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 
 public class GrimpeurSubsystem extends Subsystem {
-    private final FtcMotor mMotorPoulie = new FtcMotor("poulie");//1
-    PIDController mPid = new PIDController(0.003, 0, 0);
+    private final FtcMotor mMotorPlieur = new FtcMotor("plieur");//1
+    PIDController mPidPlieur = new PIDController(0.003, 0, 0);
     //private double mSpeed = 0;
     private double mSpeedP = 0;
-    private double mConsigne = 0;
+    private double mConsignePlieur = 0;
 
     public GrimpeurSubsystem() {
+        mPidPlieur.setTolerance(10);
     }
 
     @Override
     public void periodic() {
         //mMotorGrimpeur.set(mSpeed);
         //mMotorPoulie.set(mSpeedP);
-        double output = mPid.calculate(mMotorPoulie.getCurrentPosition(), mConsigne);
-        DriverStationJNI.getTelemetry().addData("POULIE position", mMotorPoulie.getCurrentPosition());
-        DriverStationJNI.getTelemetry().addData("POULIE conigne", mConsigne);
-        DriverStationJNI.getTelemetry().addData("Output", output);
-        mMotorPoulie.set(output);
+        double output = mPidPlieur.calculate(mMotorPlieur.getCurrentPosition(), mConsignePlieur);
+
+        DriverStationJNI.getTelemetry().addData("PlIEUR position", mMotorPlieur.getCurrentPosition());
+        DriverStationJNI.getTelemetry().addData("PLIEUR consigne", mConsignePlieur);
+        DriverStationJNI.getTelemetry().addData("PLIEUR Output", output);
+
+        mMotorPlieur.set(output);
     }
 
-    public void stop() {
-        //mSpeed = 0;
-        mSpeedP = 0;
+    public void incrementConsignePlieur(double incr) {
+        mConsignePlieur += incr;
+    }
+
+    public boolean isConsignePlieur() {
+        return mPidPlieur.atSetpoint();
     }
 
 
-    //public void setSpeed(double speed) {
-    //    mSpeed = speed;
-    //}
-
-
-    public void setSpeedP(double speed) {
-        mSpeedP = speed;
-    }
-
-    public void setConsigne(int consigne) {
-        mConsigne = consigne;
-    }
-
-    public void incrementConsigne(double incr) {
-        mConsigne += incr;
-    }
-
-    public boolean isConsigne() {
-        return mPid.atSetpoint();
+    public void setConsignePlieur(double consigne) {
+        mConsignePlieur = consigne;
     }
 }

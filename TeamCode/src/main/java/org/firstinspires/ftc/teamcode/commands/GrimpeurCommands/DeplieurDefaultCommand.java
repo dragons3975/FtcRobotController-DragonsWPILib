@@ -6,13 +6,13 @@ import org.firstinspires.ftc.teamcode.subsystems.GrimpeurSubsystem;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class DegrimpeurDefaultCommand extends Command {
+public class DeplieurDefaultCommand extends Command {
 
     private final GrimpeurSubsystem mGrimpeurSubsystem;
     private final XboxController mXboxController2;
 
 
-    public DegrimpeurDefaultCommand(GrimpeurSubsystem grimpeurSubsystem, XboxController xboxController2) {
+    public DeplieurDefaultCommand(GrimpeurSubsystem grimpeurSubsystem, XboxController xboxController2) {
 
         mGrimpeurSubsystem = grimpeurSubsystem;
 
@@ -29,7 +29,7 @@ public class DegrimpeurDefaultCommand extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        mGrimpeurSubsystem.incrementConsigne(-Constants.GrimpeurConstants.GrimperValue);
+        mGrimpeurSubsystem.incrementConsignePlieur(-Constants.GrimpeurConstants.GrimperValue * mXboxController2.getLeftY());
     }
 
     // Called once the command ends or is interrupted.
