@@ -16,7 +16,7 @@ public class GrimpeurCordeSubsystem extends Subsystem {
     private double mConsigneCorde = 0;
 
     public GrimpeurCordeSubsystem() {
-        mPidCorde.setTolerance(50);
+        mPidCorde.setTolerance(100);
     }
 
     @Override
