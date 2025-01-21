@@ -17,13 +17,11 @@ public class GrimpeAutoCommand extends SequentialCommandGroup {
     public GrimpeAutoCommand(GrimpeurSubsystem grimpeurSubsystem, GrimpeurCordeSubsystem grimpeurCordeSubsystem) {
 
         PlieurPositionCommand deplier = new PlieurPositionCommand(grimpeurSubsystem, -4000);
-        CordePositionCommand grimper = new CordePositionCommand(grimpeurCordeSubsystem, -15000);
+        CordePositionCommand grimper = new CordePositionCommand(grimpeurCordeSubsystem, -20000);
         PlieurPositionCommand plier = new PlieurPositionCommand(grimpeurSubsystem, 0);
 
 
         addCommands(
-                deplier,
-                new WaitCommand(3),
                 grimper.alongWith(new WaitCommand(1), plier)
         );
     }

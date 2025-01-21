@@ -52,12 +52,12 @@ public class RobotContainer {
     private final ClosePinceBrasCommand mClosePinceBrasCommand = new ClosePinceBrasCommand(mPinceBrasSubsystem);
     private final PositionMinPinceBrasCommand mPositionMinPinceBrasCommand = new PositionMinPinceBrasCommand(mPinceBrasSubsystem);
     private final PositionMaxPinceBrasCommand mPositionMaxPinceBrasCommand = new PositionMaxPinceBrasCommand(mPinceBrasSubsystem);
-    private final PlieurDefaultCommand mGrimperDefaultCommand = new PlieurDefaultCommand(mGrimpeurSubsystem, mXboxController2);
+    private final PlieurDefaultCommand mGrimperDefaultCommand = new PlieurDefaultCommand(mGrimpeurSubsystem, mGrimpeurCordeSubsystem, mXboxController2);
     private final BrasPositionCommand mBrasPositionCommandTest = new BrasPositionCommand(mBrasSubsystem, -400);
     private final PincePositionMinExtCommand mPincePositionMinExtCommand = new PincePositionMinExtCommand(mPinceExtensionSubsystem);
     private final PincePositionMaxExtCommand mPincePositionMaxExtCommand = new PincePositionMaxExtCommand(mPinceExtensionSubsystem);
 
-    private final CordePositionCommand mCordePositionCommand = new CordePositionCommand(mGrimpeurCordeSubsystem, -20000);
+    private final CordePositionCommand mCordePositionCommand = new CordePositionCommand(mGrimpeurCordeSubsystem, 10000);
 
     private final PlieurPositionCommand mPlieurPositionCommand = new PlieurPositionCommand(mGrimpeurSubsystem, 4500);
 
@@ -112,8 +112,8 @@ public class RobotContainer {
         JoystickButton buttonLB2 = new JoystickButton(mXboxController2, XboxController.Button.kLeftBumper.value);
         buttonLB2.onTrue(mPincePositionMinExtCommand);
 
-        JoystickButton buttonRB2 = new JoystickButton(mXboxController2, XboxController.Button.kRightBumper.value);
-        buttonRB2.onTrue(mPincePositionMaxExtCommand);
+        //JoystickButton buttonRB2 = new JoystickButton(mXboxController2, XboxController.Button.kRightBumper.value);
+        //buttonRB2.onTrue(mPincePositionMaxExtCommand);
 
         //JoystickButton buttonA2 = new JoystickButton(mXboxController2, XboxController.Button.kA.value);
         //buttonA2.whileTrue(mBrasPanier1Command);
