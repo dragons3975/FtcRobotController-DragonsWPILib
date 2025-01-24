@@ -10,7 +10,7 @@ public class BrasPositionCommand extends Command{
     private final BrasSubsystem mBrasSubsystem;
     private static double kDt = 0.02;
 
-    private final TrapezoidProfile mProfile = new TrapezoidProfile(new TrapezoidProfile.Constraints(0.00000001, 0.0000000001));
+    private final TrapezoidProfile mProfile = new TrapezoidProfile(new TrapezoidProfile.Constraints(10, 2));
 
     private TrapezoidProfile.State mGoal;
     private TrapezoidProfile.State mSetPoint;
@@ -30,7 +30,6 @@ public class BrasPositionCommand extends Command{
     public void initialize() {
         mRotationInit = mBrasSubsystem.getPos();
         mSetPoint = new TrapezoidProfile.State(mRotationInit, 0);
-        kDt = 0.02;
     }
 
     // Called every time the scheduler runs while the command is scheduled.
