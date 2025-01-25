@@ -14,7 +14,7 @@ public class ExtensionSubsystem extends Subsystem {
     private final FtcTouchSensor mFtcTouchSensor = new FtcTouchSensor("touch");
 
 
-    PIDController mPid = new PIDController(0.01 , 0, 0);
+    PIDController mPid = new PIDController(0.015, 0, 0);
 
     private int mConsigne = 0;
 
@@ -41,10 +41,8 @@ public class ExtensionSubsystem extends Subsystem {
 
         mDistance = ((1.0/Constants.ExtensionConstants.kTachoCount)*getCalibratedTacho())*(Constants.ExtensionConstants.kCirconference);
 
-        DriverStationJNI.getTelemetry().addData("Encodeur Calib", getCalibratedTacho());
-        DriverStationJNI.getTelemetry().addData("TouchSensor", mFtcTouchSensor.getState());
-        DriverStationJNI.getTelemetry().addData("Speed Calib", mSpeed);
-        DriverStationJNI.getTelemetry().addData("Distance mm", mDistance);
+        DriverStationJNI.getTelemetry().addData("Extend Position", getCalibratedTacho());
+        DriverStationJNI.getTelemetry().addData("Extend consigne", mConsigne);
 
         double output = mPid.calculate(getCalibratedTacho(), mConsigne);
 
@@ -56,13 +54,9 @@ public class ExtensionSubsystem extends Subsystem {
         //}
 
         DriverStationJNI.getTelemetry().addData("IsConsigne t/f", isConsigne());
-        DriverStationJNI.getTelemetry().addData("Output", output);
+        DriverStationJNI.getTelemetry().addData("Extend Output", output);
 
-        if (!isCalib) {
-            mMotorCalib.set(mSpeed);
-        } else {
-            mMotorCalib.set(output);
-        }
+        mMotorCalib.set(output);
 
     }
 
@@ -94,6 +88,10 @@ public class ExtensionSubsystem extends Subsystem {
 
     public void setConsigne(int consigne) {
         mConsigne = consigne;
+    }
+
+    public void incrementConsigne(double incr) {
+        mConsigne += incr;
     }
 
     public boolean isConsigne() {

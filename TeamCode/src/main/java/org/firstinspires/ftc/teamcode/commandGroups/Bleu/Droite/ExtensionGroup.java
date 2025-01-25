@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.commandGroups.Bleu.Droite;
 
 //import CalibrationCommand;
 
-import org.firstinspires.ftc.teamcode.commands.ExtendCommand.ExtendCommand;
 import org.firstinspires.ftc.teamcode.commands.ExtendCommand.OpenPinceExtCommand;
 import org.firstinspires.ftc.teamcode.subsystems.ExtensionSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.PinceExtensionSubsystem;
@@ -15,7 +14,7 @@ public class ExtensionGroup extends SequentialCommandGroup {
         //pas de pid pour le moment donc avec un tiBleuDroiteExtrameout
         //ParallelRaceGroup reculer = new AvanceAutoCommand(driveSubsystem, -1, 0, 0).withTimeout(0.3);
         //CalibrationCommand calib = new CalibrationCommand(extensionSubsystem);
-        ExtendCommand extensionXcm = new ExtendCommand(extensionSubsystem);
+        //ExtendCommand extensionXcm = new ExtendCommand(extensionSubsystem);
         OpenPinceExtCommand ramasse = new OpenPinceExtCommand(pinceExtensionSubsystem);
 
 
@@ -23,7 +22,7 @@ public class ExtensionGroup extends SequentialCommandGroup {
                 //reculer,
                 //new WaitCommand(0.2),
                 //calib,
-                extensionXcm,
+                //extensionXcm,
                 ramasse
 
         );
