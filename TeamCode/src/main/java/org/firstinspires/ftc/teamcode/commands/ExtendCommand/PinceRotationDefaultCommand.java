@@ -26,7 +26,7 @@ public class PinceRotationDefaultCommand extends Command{
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        mPinceExtensionSubsystem.setRotationAngle(mxBoxController.getLeftX());
+        mPinceExtensionSubsystem.incrementRotationAngle(mxBoxController.getRightX() / 20);
     }
 
 

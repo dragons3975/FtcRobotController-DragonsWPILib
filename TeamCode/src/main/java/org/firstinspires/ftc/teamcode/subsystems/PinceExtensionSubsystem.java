@@ -15,10 +15,11 @@ public class PinceExtensionSubsystem extends Subsystem {
     private final FtcServo mServoRotation = new FtcServo("RotationPinceExt");//4
 
     private double mAngle = 0;
-    private double mPositionAngle = 0;
-    private double mRotationAngle = 0;
+    private double mPositionAngle = 0.5;
+    private double mRotationAngle = 0.5;
 
     public PinceExtensionSubsystem() {
+        openPince();
     }
 
     @Override
@@ -32,20 +33,17 @@ public class PinceExtensionSubsystem extends Subsystem {
 
     public void openPince() {
         mAngle = Constants.ConstantsPince.kPinceOpenAngle;
-        mPositionAngle = Constants.ConstantsPince.kPinceOpenPosAngle;
     }
 
     public void closePince() {
-        //mServoPince.setAngle(0);
         mAngle = Constants.ConstantsPince.kPinceCloseAngle;
-        mPositionAngle = Constants.ConstantsPince.kPinceClosePosAngle;
     }
 
     public void setPositionAngle(double position) {
         mPositionAngle = position;
     }
 
-    public void setRotationAngle(double rotation) {
+    public void incrementRotationAngle(double rotation) {
         mRotationAngle += rotation;
     }
 

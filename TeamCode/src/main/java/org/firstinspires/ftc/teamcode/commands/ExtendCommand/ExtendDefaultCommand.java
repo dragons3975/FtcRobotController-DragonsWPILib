@@ -32,11 +32,6 @@ public class ExtendDefaultCommand extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        //if (mXboxController.getLeftTriggerAxis() != 0) {
-        //    mExtensionSubsystem.incrementConsigne(mXboxController.getLeftTriggerAxis());
-        //} else if (mXboxController.getRightTriggerAxis() != 0) {
-        //    mExtensionSubsystem.incrementConsigne(mXboxController.getRightTriggerAxis());
-        //}
         mExtensionSubsystem.incrementConsigne(mXboxController.getLeftX() * 15);
     }
 

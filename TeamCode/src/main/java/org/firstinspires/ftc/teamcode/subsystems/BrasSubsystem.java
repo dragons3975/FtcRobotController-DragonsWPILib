@@ -16,7 +16,7 @@ public class BrasSubsystem extends Subsystem {
 
     //private double mAngle = 0;
 
-    PIDController mPid = new PIDController(-0.007, 0, 0);
+    PIDController mPid = new PIDController(-0.0075, 0, 0);
 
     private double mConsigne = 0;
 
@@ -75,7 +75,7 @@ public class BrasSubsystem extends Subsystem {
     }
 
     public boolean isConsigne() {
-        mPid.setTolerance(10);
+        mPid.setTolerance(8);
         return mPid.atSetpoint();
     }
 

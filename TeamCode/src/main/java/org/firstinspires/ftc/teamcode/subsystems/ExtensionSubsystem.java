@@ -24,7 +24,7 @@ public class ExtensionSubsystem extends Subsystem {
 
     private boolean isCalib = false;
 
-    private double mTachoCalib = 0;
+    private int mTachoCalib = 0;
 
     public ExtensionSubsystem() {
         mMotorCalib.setInverted(false);
@@ -60,26 +60,15 @@ public class ExtensionSubsystem extends Subsystem {
 
     }
 
-    public void StartCalibration() {
-        mSpeed = -0.5;
-        //mTachoCalib = (mArduinoCalib.getTachoCount()-mArduinoCalib.getTachoCount());
-    }
 
     public void CalibrationZero() {
         mTachoCalib = mMotorCalib.getCurrentPosition();
     }
 
     private int getCalibratedTacho() {
-        return mMotorCalib.getCurrentPosition();
+        return mMotorCalib.getCurrentPosition() - mTachoCalib;
     }
 
-    public void stop() {
-        mConsigne = getCalibratedTacho();
-    }
-
-    public void setSpeed(double speed) {
-        mSpeed = speed;
-    }
 
     public boolean isCalibrationFinished() {
         return mFtcTouchSensor.getState();

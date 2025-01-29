@@ -5,7 +5,10 @@ import org.firstinspires.ftc.teamcode.commandGroups.Bleu.Droite.GrimpeAutoComman
 import org.firstinspires.ftc.teamcode.commandGroups.Bleu.Droite.PanierAutoCommand;
 import org.firstinspires.ftc.teamcode.commands.BrasCommand.BrasPositionCommand;
 import org.firstinspires.ftc.teamcode.commands.BrasCommand.BrasPositionCommandtest;
+import org.firstinspires.ftc.teamcode.commands.ExtendCommand.CalibrationCommand;
+import org.firstinspires.ftc.teamcode.commands.ExtendCommand.ClosePinceExtCommand;
 import org.firstinspires.ftc.teamcode.commands.ExtendCommand.ExtendPositionCommand;
+import org.firstinspires.ftc.teamcode.commands.ExtendCommand.OpenPinceExtCommand;
 import org.firstinspires.ftc.teamcode.commands.ExtendCommand.PincePositionMaxExtCommand;
 import org.firstinspires.ftc.teamcode.commands.ExtendCommand.PincePositionMinExtCommand;
 import org.firstinspires.ftc.teamcode.commands.GrimpeurCommands.CordePositionCommand;
@@ -47,12 +50,19 @@ public class RobotContainer {
 
     //-// //-// //-// //-// //-// //-// //-// //-// //-// //-// //-// //-// //-// //-// //-// //-// //-//
 
+    private final CalibrationCommand mCalibrationCommand = new CalibrationCommand(mExtensionSubsystem);
+
+    private final ClosePinceExtCommand mClosePinceExtCommand = new ClosePinceExtCommand(mPinceExtensionSubsystem);
+
+
+    private final OpenPinceExtCommand mOpenPinceExtCommand = new OpenPinceExtCommand(mPinceExtensionSubsystem);
+
     private final DriveDefaultCommand mDriveDefaultCommand = new DriveDefaultCommand(mDriveSubsystem, mXboxController);
     private final BrasDefaultCommand mBrasDefaultCommand = new BrasDefaultCommand(mBrasSubsystem, mXboxController2);
     private final ExtendDefaultCommand mExtendDefaultCommand = new ExtendDefaultCommand(mExtensionSubsystem, mXboxController2);
 
-    private final ExtendPositionCommand mExtendPositionCommand = new ExtendPositionCommand(mExtensionSubsystem, -1200);
-    private final PinceRotationDefaultCommand mPinceRotationDefaultCommand = new PinceRotationDefaultCommand(mPinceExtensionSubsystem, mXboxController);
+    private final ExtendPositionCommand mExtendPositionCommand = new ExtendPositionCommand(mExtensionSubsystem, 200);
+    private final PinceRotationDefaultCommand mPinceRotationDefaultCommand = new PinceRotationDefaultCommand(mPinceExtensionSubsystem, mXboxController2);
     private final TrajectoryCommand mTrajectoryCommand = new TrajectoryCommand(mDriveSubsystem);
     private final OpenPinceBrasCommand mOpenPinceBrasCommand = new OpenPinceBrasCommand(mPinceBrasSubsystem);
     private final ClosePinceBrasCommand mClosePinceBrasCommand = new ClosePinceBrasCommand(mPinceBrasSubsystem);
@@ -94,10 +104,10 @@ public class RobotContainer {
         buttonRB.onTrue(mCordePositionCommand);
 
         JoystickButton buttonB = new JoystickButton(mXboxController, XboxController.Button.kB.value);
-        buttonB.onTrue(mTrajectoryCommand);
+        buttonB.onTrue(mCalibrationCommand);
 
-        JoystickButton buttonX = new JoystickButton(mXboxController, XboxController.Button.kX.value);
-        buttonX.onTrue(mExtendDefaultCommand);
+        //JoystickButton buttonX = new JoystickButton(mXboxController, XboxController.Button.kX.value);
+        //buttonX.onTrue();
 
         JoystickButton buttonY = new JoystickButton(mXboxController, XboxController.Button.kY.value);
         buttonY.onTrue(mGrimpeAutoCommand);
@@ -109,10 +119,10 @@ public class RobotContainer {
         buttonA2.onTrue(mExtendPositionCommand);
 
         JoystickButton buttonB2 = new JoystickButton(mXboxController2, XboxController.Button.kB.value);
-        buttonB2.onTrue(mClosePinceBrasCommand);
+        buttonB2.onTrue(mPincePositionMaxExtCommand);
 
         JoystickButton buttonX2 = new JoystickButton(mXboxController2, XboxController.Button.kX.value);
-        buttonX2.onTrue(mPositionMinPinceBrasCommand);
+        buttonX2.onTrue(mPincePositionMinExtCommand);
 
         JoystickButton buttonY2 = new JoystickButton(mXboxController2, XboxController.Button.kY.value);
         buttonY2.onTrue(mPositionMaxPinceBrasCommand);
