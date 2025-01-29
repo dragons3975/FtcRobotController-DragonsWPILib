@@ -62,11 +62,12 @@ public class ExtensionSubsystem extends Subsystem {
 
 
     public void CalibrationZero() {
-        mTachoCalib = mMotorCalib.getCurrentPosition();
+        mMotorCalib.resetEncoder();
+        mConsigne = 0;
     }
 
     private int getCalibratedTacho() {
-        return mMotorCalib.getCurrentPosition() - mTachoCalib;
+        return mMotorCalib.getCurrentPosition();
     }
 
 

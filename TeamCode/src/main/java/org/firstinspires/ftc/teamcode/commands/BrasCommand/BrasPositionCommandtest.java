@@ -20,6 +20,8 @@ public class BrasPositionCommandtest extends Command{
 
     private double posInit;
 
+    private double diference;
+
     public BrasPositionCommandtest(BrasSubsystem brasSubsystem, double goal, double temps) {
         mBrasSubsystem = brasSubsystem;
         mGoal = goal;
@@ -32,8 +34,9 @@ public class BrasPositionCommandtest extends Command{
     @Override
     public void initialize() {
         posInit = mBrasSubsystem.getPos();
-        mGoal -= posInit;
-        increments = (mGoal) / (mTemps * 30);
+        diference = mGoal - posInit;
+        //mGoal += posInit;
+        increments = (diference) / (mTemps * 30);
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -49,7 +52,7 @@ public class BrasPositionCommandtest extends Command{
                 total = mGoal;
             }
         }
-        mBrasSubsystem.setTarget(total  + posInit);
+        mBrasSubsystem.setTarget(total + posInit);
     }
 
 
@@ -62,7 +65,7 @@ public class BrasPositionCommandtest extends Command{
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return mBrasSubsystem.isConsigne();
+        return false;
     }
 }
 

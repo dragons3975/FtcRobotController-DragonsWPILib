@@ -89,7 +89,7 @@ public final class Constants {
         public static final double kInclinaisonMinSol = kInclinaisonBas + 0.025;
 
         public static final double kPinceOpenAngle = 1;
-        public static final double kPinceCloseAngle = 0.3;
+        public static final double kPinceCloseAngle = 0.7;
         public static final int kPinceOpenPosAngle = 0;
         public static final int kPinceClosePosAngle = 50;
     }

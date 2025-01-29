@@ -15,8 +15,8 @@ public class PinceExtensionSubsystem extends Subsystem {
     private final FtcServo mServoRotation = new FtcServo("RotationPinceExt");//4
 
     private double mAngle = 0;
-    private double mPositionAngle = 0.5;
-    private double mRotationAngle = 0.5;
+    private double mPositionAngle = 1;
+    private double mRotationAngle = 1;
 
     public PinceExtensionSubsystem() {
         openPince();
@@ -45,6 +45,10 @@ public class PinceExtensionSubsystem extends Subsystem {
 
     public void incrementRotationAngle(double rotation) {
         mRotationAngle += rotation;
+    }
+
+    public void setRotationAngle(double rotation) {
+        mRotationAngle = rotation;
     }
 
 
