@@ -53,7 +53,7 @@ public final class Constants {
 
         public static final double kToleranceRotation = 15;
 
-        public static final double kIncremetentRotationMax = 2;
+        public static final double kIncremetentRotationMax = 5;
 
         public static final double kRotationPositionToile = 4300;
         public static final double kmaxExt = 24000;

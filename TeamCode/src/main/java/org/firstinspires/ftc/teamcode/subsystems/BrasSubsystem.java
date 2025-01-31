@@ -16,7 +16,7 @@ public class BrasSubsystem extends Subsystem {
 
     //private double mAngle = 0;
 
-    PIDController mPid = new PIDController(-0.0075, 0, 0);
+    PIDController mPid = new PIDController(-0.015, 0, 0);
 
     private double mConsigne = 0;
 

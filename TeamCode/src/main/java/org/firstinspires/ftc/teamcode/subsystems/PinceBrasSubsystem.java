@@ -13,7 +13,7 @@ public class  PinceBrasSubsystem extends Subsystem {
     private final FtcServo mServoPincePosition = new FtcServo("PincePositionBras");
 
     private double mAngle = 0;
-    private double mPositionAngle = 0;
+    private double mPositionAngle = 1;
 
     public PinceBrasSubsystem() {
     }
@@ -22,8 +22,8 @@ public class  PinceBrasSubsystem extends Subsystem {
     public void periodic() {
         DriverStationJNI.Telemetry.putNumber("Servo Pince Angle", mAngle);
         DriverStationJNI.Telemetry.putNumber("Servo Pince Position", mPositionAngle);
-        //mServoPincePosition.setPosition(mAngle);
-        //mServoPince.setPosition(mPositionAngle);
+        mServoPincePosition.setPosition(mPositionAngle);
+        mServoPince.setPosition(mAngle);
     }
 
     public void openPince() {

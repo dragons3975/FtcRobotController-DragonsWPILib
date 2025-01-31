@@ -1,7 +1,10 @@
 package org.firstinspires.ftc.teamcode.commands.BrasCommand;
 
+import static java.lang.Math.abs;
+
 import org.firstinspires.ftc.teamcode.subsystems.BrasSubsystem;
 
+import edu.wpi.first.hal.DriverStationJNI;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -33,6 +36,7 @@ public class BrasPositionCommandtest extends Command{
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
+        total = 0;
         posInit = mBrasSubsystem.getPos();
         diference = mGoal - posInit;
         //mGoal += posInit;
@@ -42,17 +46,20 @@ public class BrasPositionCommandtest extends Command{
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        total += increments;
         if (increments < 0) {
-            if (total <= mGoal) {
-                total = mGoal;
+            if (total + posInit >= mGoal) {
+                total += increments;
             }
         } else {
-            if (total >= mGoal) {
-                total = mGoal;
+            if (total + posInit <= mGoal) {
+                total += increments;
             }
         }
         mBrasSubsystem.setTarget(total + posInit);
+        DriverStationJNI.getTelemetry().addData("difference", diference);
+        DriverStationJNI.getTelemetry().addData("total - init", total + posInit);
+        DriverStationJNI.getTelemetry().addData("total", total);
+        DriverStationJNI.getTelemetry().addData("increments", increments);
     }
 
 
@@ -65,7 +72,7 @@ public class BrasPositionCommandtest extends Command{
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return false;
+        return (abs((total + posInit) - mGoal)) < 5;
     }
 }
 

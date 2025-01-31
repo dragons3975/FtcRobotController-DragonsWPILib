@@ -9,6 +9,8 @@ import org.firstinspires.ftc.teamcode.commands.ExtendCommand.PinceRotationComman
 import org.firstinspires.ftc.teamcode.commands.PinceBrasCommand.ClosePinceBrasCommand;
 //import ClosePinceExtCommand;
 import org.firstinspires.ftc.teamcode.commands.PinceBrasCommand.OpenPinceBrasCommand;
+import org.firstinspires.ftc.teamcode.commands.PinceBrasCommand.PositionMaxPinceBrasCommand;
+import org.firstinspires.ftc.teamcode.commands.PinceBrasCommand.PositionMinPinceBrasCommand;
 import org.firstinspires.ftc.teamcode.subsystems.BrasSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ExtensionSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.PinceBrasSubsystem;
@@ -29,8 +31,9 @@ public class RamasseurCommand extends SequentialCommandGroup {
         ExtendPositionCommand extendZero = new ExtendPositionCommand(extensionSubsystem, 200);
         PinceRotationCommand rotationZero = new PinceRotationCommand(pinceExtensionSubsystem, 1);
         OpenPinceBrasCommand openPinceBras = new OpenPinceBrasCommand(pinceBrasSubsystem);
-        ParallelRaceGroup bras = new ParallelRaceGroup(new BrasPositionCommandtest(brasSubsystem, -200, 3), new WaitCommand(2));
-
+        BrasPositionCommandtest bras1 = new BrasPositionCommandtest(brasSubsystem, -120, 1);
+        BrasPositionCommandtest bras2 = new BrasPositionCommandtest(brasSubsystem, -30, 2);
+        PositionMaxPinceBrasCommand pinceBras = new PositionMaxPinceBrasCommand(pinceBrasSubsystem);
 
         addCommands(
                 replie,
@@ -39,7 +42,10 @@ public class RamasseurCommand extends SequentialCommandGroup {
                 new WaitCommand(0.2),
                 rotationZero,
                 openPinceBras,
-                bras
+                pinceBras,
+                bras1,
+                bras2
+
         );
     }
 
