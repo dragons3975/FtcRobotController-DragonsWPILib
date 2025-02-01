@@ -33,7 +33,7 @@ public class RamasseurCommand extends SequentialCommandGroup {
         OpenPinceBrasCommand openPinceBras = new OpenPinceBrasCommand(pinceBrasSubsystem);
         BrasPositionCommandtest bras1 = new BrasPositionCommandtest(brasSubsystem, -120, 1);
         BrasPositionCommandtest bras2 = new BrasPositionCommandtest(brasSubsystem, -30, 2);
-        PositionMaxPinceBrasCommand pinceBras = new PositionMaxPinceBrasCommand(pinceBrasSubsystem);
+        PositionMinPinceBrasCommand pinceBras = new PositionMinPinceBrasCommand(pinceBrasSubsystem);
 
         addCommands(
                 replie,
@@ -45,7 +45,6 @@ public class RamasseurCommand extends SequentialCommandGroup {
                 pinceBras,
                 bras1,
                 bras2
-
         );
     }
 

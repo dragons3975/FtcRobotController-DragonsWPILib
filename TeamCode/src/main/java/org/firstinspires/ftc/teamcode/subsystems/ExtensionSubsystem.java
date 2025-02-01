@@ -44,6 +44,10 @@ public class ExtensionSubsystem extends Subsystem {
         DriverStationJNI.getTelemetry().addData("Extend Position", getCalibratedTacho());
         DriverStationJNI.getTelemetry().addData("Extend consigne", mConsigne);
 
+        if (mConsigne >= 1700) {
+            mConsigne = 1699;
+        }
+
         double output = mPid.calculate(getCalibratedTacho(), mConsigne);
 
         //if(output >= 0.7) {
@@ -66,7 +70,7 @@ public class ExtensionSubsystem extends Subsystem {
         mConsigne = 0;
     }
 
-    private int getCalibratedTacho() {
+    public int getCalibratedTacho() {
         return mMotorCalib.getCurrentPosition();
     }
 

@@ -37,12 +37,8 @@ public class PlieurDefaultCommand extends Command {
     @Override
     public void execute() {
         if (mXboxController2.getRightBumper()) {
-            DriverStationJNI.getTelemetry().addData("test", "test");
-            mGrimpeurSubsystem.incrementConsignePlieur(Constants.GrimpeurConstants.GrimperValue * mXboxController2.getLeftY());
-        } else {
-            mGrimpeurCordeSubsystem.incrementConsigneCorde(50 * mXboxController2.getLeftY());
+            mGrimpeurSubsystem.incrementConsignePlieur(Constants.GrimpeurConstants.GrimperValue);
         }
-
     }
 
     // Called once the command ends or is interrupted.

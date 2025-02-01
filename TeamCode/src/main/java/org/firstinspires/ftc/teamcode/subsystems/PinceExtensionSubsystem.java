@@ -8,11 +8,11 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 
 public class PinceExtensionSubsystem extends Subsystem {
 
-    private final FtcServo mServoPince = new FtcServo("PinceExt");//2
+    private final FtcServo mServoRotation = new FtcServo("RotationPinceExt");//2
 
     private final FtcServo mServoPosition = new FtcServo("PositionPinceExt");//3
 
-    private final FtcServo mServoRotation = new FtcServo("RotationPinceExt");//4
+    private final FtcServo mServoPince = new FtcServo("PinceExt");//4
 
     private double mAngle = 0;
     private double mPositionAngle = 1;
@@ -24,23 +24,32 @@ public class PinceExtensionSubsystem extends Subsystem {
 
     @Override
     public void periodic() {
-        DriverStationJNI.Telemetry.putNumber("Servo Pince extend Angle", mAngle);
-        DriverStationJNI.Telemetry.putNumber("Servo Pince  extend Position", mPositionAngle);
+        DriverStationJNI.getTelemetry().addData("Servo Pince extend Angle", mAngle);
+        DriverStationJNI.getTelemetry().addData("Servo Pince extend Position", mPositionAngle);
+        DriverStationJNI.getTelemetry().addData("Servo Pince rotation", mRotationAngle);
         mServoPince.setPosition(mAngle);
         mServoPosition.setPosition(mPositionAngle);
         mServoRotation.setPosition(mRotationAngle);
     }
 
     public void openPince() {
-        mAngle = Constants.ConstantsPince.kPinceOpenAngle;
+        mAngle = 1;
     }
 
     public void closePince() {
-        mAngle = Constants.ConstantsPince.kPinceCloseAngle;
+        mAngle = 0.78;
+    }
+
+    public boolean isOpen() {
+        return (mAngle == 1);
     }
 
     public void setPositionAngle(double position) {
         mPositionAngle = position;
+    }
+
+    public void incrementPositionAngle(double position) {
+        mPositionAngle += position;
     }
 
     public void incrementRotationAngle(double rotation) {

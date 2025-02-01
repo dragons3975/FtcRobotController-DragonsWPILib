@@ -5,15 +5,17 @@ import org.firstinspires.ftc.teamcode.subsystems.PinceExtensionSubsystem;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class PinceRotationDefaultCommand extends Command{
+public class PincePositionDefaultExtCommand extends Command {
 
     private final PinceExtensionSubsystem mPinceExtensionSubsystem;
 
-    private final XboxController mxBoxController;
+    private final XboxController mXboxController;
 
-    public PinceRotationDefaultCommand(PinceExtensionSubsystem pinceExtensionSubsystem, XboxController xboxController) {
+    public PincePositionDefaultExtCommand(PinceExtensionSubsystem pinceExtensionSubsystem, XboxController xboxController) {
+
         mPinceExtensionSubsystem = pinceExtensionSubsystem;
-        mxBoxController = xboxController;
+        mXboxController = xboxController;
+
 
         addRequirements(pinceExtensionSubsystem);
     }
@@ -26,21 +28,17 @@ public class PinceRotationDefaultCommand extends Command{
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        mPinceExtensionSubsystem.incrementRotationAngle(mxBoxController.getRightX() / 20);
+        mPinceExtensionSubsystem.incrementPositionAngle(mXboxController.getLeftY() / 15);
     }
-
 
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-
     }
 
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        // Commande infinie
-        return false;
+        return true;
     }
 }
-

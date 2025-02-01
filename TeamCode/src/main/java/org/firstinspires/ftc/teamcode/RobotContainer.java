@@ -4,14 +4,16 @@ import org.firstinspires.ftc.teamcode.commandGroups.Bleu.Droite.BleuDroiteExtra;
 import org.firstinspires.ftc.teamcode.commandGroups.Bleu.Droite.GrimpeAutoCommand;
 import org.firstinspires.ftc.teamcode.commandGroups.Bleu.Droite.PanierAutoCommand;
 import org.firstinspires.ftc.teamcode.commandGroups.Bleu.Droite.RamasseurCommand;
-import org.firstinspires.ftc.teamcode.commands.BrasCommand.BrasPositionCommand;
 import org.firstinspires.ftc.teamcode.commands.BrasCommand.BrasPositionCommandtest;
 import org.firstinspires.ftc.teamcode.commands.ExtendCommand.CalibrationCommand;
 import org.firstinspires.ftc.teamcode.commands.ExtendCommand.ClosePinceExtCommand;
 import org.firstinspires.ftc.teamcode.commands.ExtendCommand.ExtendPositionCommand;
 import org.firstinspires.ftc.teamcode.commands.ExtendCommand.OpenPinceExtCommand;
+import org.firstinspires.ftc.teamcode.commands.ExtendCommand.PincePositionDefaultExtCommand;
 import org.firstinspires.ftc.teamcode.commands.ExtendCommand.PincePositionMaxExtCommand;
 import org.firstinspires.ftc.teamcode.commands.ExtendCommand.PincePositionMinExtCommand;
+import org.firstinspires.ftc.teamcode.commands.ExtendCommand.PinceRotationCommand;
+import org.firstinspires.ftc.teamcode.commands.ExtendCommand.TogglePinceExtCommand;
 import org.firstinspires.ftc.teamcode.commands.GrimpeurCommands.CordePositionCommand;
 import org.firstinspires.ftc.teamcode.commands.GrimpeurCommands.PlieurPositionCommand;
 import org.firstinspires.ftc.teamcode.commands.PinceBrasCommand.ClosePinceBrasCommand;
@@ -19,9 +21,10 @@ import org.firstinspires.ftc.teamcode.commands.DriveCommand.DriveDefaultCommand;
 import org.firstinspires.ftc.teamcode.commands.ExtendCommand.ExtendDefaultCommand;
 import org.firstinspires.ftc.teamcode.commands.GrimpeurCommands.PlieurDefaultCommand;
 import org.firstinspires.ftc.teamcode.commands.PinceBrasCommand.OpenPinceBrasCommand;
-import org.firstinspires.ftc.teamcode.commands.ExtendCommand.PinceRotationDefaultCommand;
+import org.firstinspires.ftc.teamcode.commands.ExtendCommand.PinceRotationIncrementCommand;
 import org.firstinspires.ftc.teamcode.commands.PinceBrasCommand.PositionMaxPinceBrasCommand;
 import org.firstinspires.ftc.teamcode.commands.PinceBrasCommand.PositionMinPinceBrasCommand;
+import org.firstinspires.ftc.teamcode.commands.PinceBrasCommand.TogglePinceBrasCommand;
 import org.firstinspires.ftc.teamcode.commands.TrajectoryCommand;
 import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
 import org.firstinspires.ftc.teamcode.commands.BrasCommand.BrasDefaultCommand;
@@ -64,7 +67,7 @@ public class RobotContainer {
 
     private final ExtendPositionCommand mExtendPositionCommandSol = new ExtendPositionCommand(mExtensionSubsystem, 800);
     private final ExtendPositionCommand mExtendPositionCommandZero = new ExtendPositionCommand(mExtensionSubsystem, 0);
-    private final PinceRotationDefaultCommand mPinceRotationDefaultCommand = new PinceRotationDefaultCommand(mPinceExtensionSubsystem, mXboxController2);
+    //private final PinceRotationIncrementCommand mPinceRotationIncrementCommand = new PinceRotationIncrementCommand(mPinceExtensionSubsystem, mXboxController2);
     private final TrajectoryCommand mTrajectoryCommand = new TrajectoryCommand(mDriveSubsystem);
     private final OpenPinceBrasCommand mOpenPinceBrasCommand = new OpenPinceBrasCommand(mPinceBrasSubsystem);
     private final ClosePinceBrasCommand mClosePinceBrasCommand = new ClosePinceBrasCommand(mPinceBrasSubsystem);
@@ -81,10 +84,19 @@ public class RobotContainer {
 
     private final PlieurPositionCommand mPlieurPositionCommand0 = new PlieurPositionCommand(mGrimpeurSubsystem, 0);
 
+    private final TogglePinceExtCommand mTogglePinceExtCommand = new TogglePinceExtCommand(mPinceExtensionSubsystem);
+
+    private final TogglePinceBrasCommand mTogglePinceBras = new TogglePinceBrasCommand(mPinceBrasSubsystem);
+
+    private final PinceRotationIncrementCommand mPinceRotationMax = new PinceRotationIncrementCommand(mPinceExtensionSubsystem, 0.01);
+    private final PinceRotationIncrementCommand mPinceRotationMin = new PinceRotationIncrementCommand(mPinceExtensionSubsystem, -0.01);
+
+    private final PincePositionDefaultExtCommand mPincePositionDefaultCommand = new PincePositionDefaultExtCommand(mPinceExtensionSubsystem, mXboxController2);
+
     private final GrimpeAutoCommand mGrimpeAutoCommand = new GrimpeAutoCommand(mGrimpeurSubsystem, mGrimpeurCordeSubsystem);
     private final PanierAutoCommand mPanierAutoCommand = new PanierAutoCommand(mBrasSubsystem, mPinceBrasSubsystem);
 
-    private final RamasseurCommand mRamasseurCommand = new RamasseurCommand(mExtensionSubsystem, mPinceExtensionSubsystem, mPinceBrasSubsystem, mBrasSubsystem);
+    private final RamasseurCommand mRamasseurAutoCommand = new RamasseurCommand(mExtensionSubsystem, mPinceExtensionSubsystem, mPinceBrasSubsystem, mBrasSubsystem);
 
 
 
@@ -118,34 +130,49 @@ public class RobotContainer {
 
         //-// //-// //-// //-// //-// //-// //-// //-// //-// //-// //-// //-// //-// //-// //-// //-// //-//
 
-        JoystickButton buttonA2 = new JoystickButton(mXboxController2, XboxController.Button.kA.value);
-        //buttonA2.onTrue(mOpenPinceBrasCommand);
-        buttonA2.onTrue(mExtendPositionCommandSol);
-
-        JoystickButton buttonB2 = new JoystickButton(mXboxController2, XboxController.Button.kB.value);
-        buttonB2.onTrue(mPincePositionMaxExtCommand);
-
-        JoystickButton buttonX2 = new JoystickButton(mXboxController2, XboxController.Button.kX.value);
-        buttonX2.onTrue(mPincePositionMinExtCommand);
+//        JoystickButton buttonA2 = new JoystickButton(mXboxController2, XboxController.Button.kA.value);
+//        //buttonA2.onTrue(mOpenPinceBrasCommand);
+//        buttonA2.onTrue(mExtendPositionCommandSol);
+//
+//        JoystickButton buttonB2 = new JoystickButton(mXboxController2, XboxController.Button.kB.value);
+//        buttonB2.onTrue(mPincePositionMaxExtCommand);
+//
+//        JoystickButton buttonX2 = new JoystickButton(mXboxController2, XboxController.Button.kX.value);
+//        buttonX2.onTrue(mPincePositionMinExtCommand);
+//
+//        JoystickButton buttonY2 = new JoystickButton(mXboxController2, XboxController.Button.kY.value);
+//        buttonY2.onTrue(mPositionMaxPinceBrasCommand);
+//
+//        JoystickButton buttonLB2 = new JoystickButton(mXboxController2, XboxController.Button.kLeftBumper.value);
+//        buttonLB2.onTrue(mRamasseurCommand);
 
         JoystickButton buttonY2 = new JoystickButton(mXboxController2, XboxController.Button.kY.value);
-        buttonY2.onTrue(mPositionMaxPinceBrasCommand);
+        buttonY2.onTrue(mTogglePinceExtCommand);
+
+        JoystickButton buttonX2 = new JoystickButton(mXboxController2, XboxController.Button.kX.value);
+        buttonX2.onTrue(mCalibrationCommand);
+
+        JoystickButton buttonB2 = new JoystickButton(mXboxController2, XboxController.Button.kB.value);
+        buttonB2.onTrue(mTogglePinceBras);
+
+        JoystickButton buttonA2 = new JoystickButton(mXboxController2, XboxController.Button.kA.value);
+        buttonA2.onTrue(mRamasseurAutoCommand);
 
         JoystickButton buttonLB2 = new JoystickButton(mXboxController2, XboxController.Button.kLeftBumper.value);
-        buttonLB2.onTrue(mRamasseurCommand);
+        buttonLB2.onTrue(mPanierAutoCommand);
 
-        //JoystickButton buttonRB2 = new JoystickButton(mXboxController2, XboxController.Button.kRightBumper.value);
-        //buttonRB2.onTrue(mPincePositionMaxExtCommand);
+        JoystickButton buttonStart = new JoystickButton(mXboxController2, XboxController.Button.kStart.value);
+        buttonStart.whileTrue(mPinceRotationMax);
 
-        //JoystickButton buttonA2 = new JoystickButton(mXboxController2, XboxController.Button.kA.value);
-        //buttonA2.whileTrue(mBrasPanier1Command);
+        JoystickButton buttonBack = new JoystickButton(mXboxController2, XboxController.Button.kBack.value);
+        buttonBack.whileTrue(mPinceRotationMin);
     }
 
     private void configureDefaultCommands() {
         mDriveSubsystem.setDefaultCommand(mDriveDefaultCommand);
         mBrasSubsystem.setDefaultCommand(mBrasDefaultCommand);
         mGrimpeurSubsystem.setDefaultCommand(mGrimperDefaultCommand);
-        mPinceExtensionSubsystem.setDefaultCommand(mPinceRotationDefaultCommand);
+        mPinceExtensionSubsystem.setDefaultCommand(mPincePositionDefaultCommand);
         mExtensionSubsystem.setDefaultCommand(mExtendDefaultCommand);
     }
 
