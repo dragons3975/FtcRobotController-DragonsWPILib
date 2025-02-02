@@ -22,16 +22,14 @@ public class PanierAutoCommand extends SequentialCommandGroup {
 
     public PanierAutoCommand(BrasSubsystem brasSubsystem, PinceBrasSubsystem pinceBrasSubsystem) {
 
-        ParallelRaceGroup leverBras = new BrasPositionCommandtest(brasSubsystem, 600, 1).withTimeout(3);
-        PositionMinPinceBrasCommand pinceMax = new PositionMinPinceBrasCommand(pinceBrasSubsystem);
-        ClosePinceBrasCommand open = new ClosePinceBrasCommand(pinceBrasSubsystem);
+        BrasPositionCommandtest leverBras = new BrasPositionCommandtest(brasSubsystem, -450, 0.7);
+        PositionMinPinceBrasCommand pinceMin = new PositionMinPinceBrasCommand(pinceBrasSubsystem);
 
 
 
         addCommands(
                 leverBras,
-                pinceMax,
-                open
+                pinceMin
         );
     }
 

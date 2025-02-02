@@ -4,14 +4,14 @@ import org.firstinspires.ftc.teamcode.subsystems.PinceBrasSubsystem;
 
 import edu.wpi.first.wpilibj2.command.Command;
 
-
-public class ClosePinceBrasCommand extends Command {
+public class PositionTogglePinceBrasCommand extends Command {
 
     private final PinceBrasSubsystem mPinceBrasSubsystem;
 
-    public ClosePinceBrasCommand(PinceBrasSubsystem pinceBrasSubsystem) {
+    public PositionTogglePinceBrasCommand(PinceBrasSubsystem pinceBrasSubsystem) {
 
         mPinceBrasSubsystem = pinceBrasSubsystem;
+
 
         addRequirements(pinceBrasSubsystem);
     }
@@ -19,7 +19,11 @@ public class ClosePinceBrasCommand extends Command {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        mPinceBrasSubsystem.OpenPince();
+        if (mPinceBrasSubsystem.isPositionMax()) {
+            mPinceBrasSubsystem.PositionPinceMin();
+        } else  {
+            mPinceBrasSubsystem.PositionPinceMax();
+        }
     }
 
     // Called every time the scheduler runs while the command is scheduled.

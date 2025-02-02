@@ -53,7 +53,7 @@ public final class Constants {
 
         public static final double kToleranceRotation = 15;
 
-        public static final double kIncremetentRotationMax = 5;
+        public static final double kIncremetentRotationMax = 8;
 
         public static final double kRotationPositionToile = 4300;
         public static final double kmaxExt = 24000;
@@ -108,7 +108,7 @@ public final class Constants {
     }
 
     public static final class ConstantsDrivePID {
-        public static final double kP = 0.1;
+        public static final double kP = 0.04;
         public static final double kI = 0;
         public static final double kD = 0;
 

@@ -1,44 +1,46 @@
-package org.firstinspires.ftc.teamcode.commands.ExtendCommand;
+package org.firstinspires.ftc.teamcode.commands.DriveCommand;
 
-import org.firstinspires.ftc.teamcode.subsystems.PinceExtensionSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class PincePositionDefaultExtCommand extends Command {
+public class DriveTestCommand extends Command {
 
-    private final PinceExtensionSubsystem mPinceExtensionSubsystem;
-
+    private final DriveSubsystem mDriveSubsystem;
     private final XboxController mXboxController;
+    private double mX;
+    private double mY;
+    private double mZ;
 
-    public PincePositionDefaultExtCommand(PinceExtensionSubsystem pinceExtensionSubsystem, XboxController xboxController) {
-
-        mPinceExtensionSubsystem = pinceExtensionSubsystem;
+    public DriveTestCommand(DriveSubsystem driveSubsystem, XboxController xboxController) {
+        mDriveSubsystem = driveSubsystem;
         mXboxController = xboxController;
 
-
-        addRequirements(pinceExtensionSubsystem);
+        addRequirements(driveSubsystem);
     }
 
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
+        mDriveSubsystem.testMotor();
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        //mPinceExtensionSubsystem.incrementPositionAngle(mXboxController.getLeftY() / 15);
+
     }
 
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
+        mDriveSubsystem.stop();
     }
 
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return true;
+        return false;
     }
 }

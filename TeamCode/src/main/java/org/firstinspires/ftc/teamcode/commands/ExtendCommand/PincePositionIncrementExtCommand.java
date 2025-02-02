@@ -5,16 +5,16 @@ import org.firstinspires.ftc.teamcode.subsystems.PinceExtensionSubsystem;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class PincePositionDefaultExtCommand extends Command {
+public class PincePositionIncrementExtCommand extends Command {
 
     private final PinceExtensionSubsystem mPinceExtensionSubsystem;
 
-    private final XboxController mXboxController;
+    private final double increment;
 
-    public PincePositionDefaultExtCommand(PinceExtensionSubsystem pinceExtensionSubsystem, XboxController xboxController) {
+    public PincePositionIncrementExtCommand(PinceExtensionSubsystem pinceExtensionSubsystem, double incr) {
 
         mPinceExtensionSubsystem = pinceExtensionSubsystem;
-        mXboxController = xboxController;
+        increment = incr;
 
 
         addRequirements(pinceExtensionSubsystem);
@@ -28,7 +28,7 @@ public class PincePositionDefaultExtCommand extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        //mPinceExtensionSubsystem.incrementPositionAngle(mXboxController.getLeftY() / 15);
+        mPinceExtensionSubsystem.incrementPositionAngle(increment);
     }
 
     // Called once the command ends or is interrupted.
@@ -39,6 +39,6 @@ public class PincePositionDefaultExtCommand extends Command {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return true;
+        return false;
     }
 }

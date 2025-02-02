@@ -20,7 +20,7 @@ public class DriveSubsystem extends Subsystem {
     private final FtcMotor m_frontRightMotor = new FtcMotor("fright");
     private final FtcMotor m_rearLeftMotor = new FtcMotor("rleft");
     private final FtcMotor m_rearRightMotor = new FtcMotor("rright");
-    private final MecanumDrive m_robotDrive = new MecanumDrive(m_frontLeftMotor, m_frontRightMotor, m_rearLeftMotor, m_rearRightMotor);
+    private final MecanumDrive m_robotDrive = new MecanumDrive(m_frontLeftMotor, m_rearLeftMotor, m_frontRightMotor, m_rearRightMotor);
     private final FtcGyro mGyro = new FtcGyro(RevHubOrientationOnRobot.LogoFacingDirection.RIGHT, RevHubOrientationOnRobot.UsbFacingDirection.UP);
     private double mAngle = 0;
 
@@ -50,12 +50,13 @@ public class DriveSubsystem extends Subsystem {
     private VisionSubsystem mVisionSubsystem;
 
     public DriveSubsystem(VisionSubsystem visionSubsystem) {
+        mGyro.reset();
         mVisionSubsystem = visionSubsystem;
         m_robotDrive.setMaxOutput(Constants.ConstantsDrive.kVitesseHaute);
         mPIDz.setTolerance(Constants.ConstantsDrivePID.kToleranceZ);
-        m_frontLeftMotor.setInverted(false);
-        m_frontRightMotor.setInverted(true);
-        m_rearLeftMotor.setInverted(false);
+        m_frontLeftMotor.setInverted(true);
+        m_frontRightMotor.setInverted(false);
+        m_rearLeftMotor.setInverted(true);
         m_rearRightMotor.setInverted(false);
 
         mAngleConsigne = getAngle();
@@ -101,6 +102,7 @@ public class DriveSubsystem extends Subsystem {
         DriverStationJNI.getTelemetry().addData("X", X);
         DriverStationJNI.getTelemetry().addData("YApril", YApril);
         DriverStationJNI.getTelemetry().addData("XApril", XApril);
+        DriverStationJNI.getTelemetry().addData("gat angle", getAngle());
 
         mAngle = getAngle();
         //DriverStationJNI.getTelemetry().addData("mGyro angle", mAngle);
@@ -126,11 +128,14 @@ public class DriveSubsystem extends Subsystem {
     }
 
     public void mecanumDrive(double xSpeed, double ySpeed, double zRotation){
-        if (Math.abs(zRotation) > 0.1) {
-            mAngleConsigne = getAngle() + zRotation;
-        }
+        mAngleConsigne += zRotation;
+
         m_xSpeed = xSpeed;
         m_ySpeed = ySpeed;
+    }
+
+    public void testMotor() {
+        m_rearRightMotor.set(1);
     }
 
     public double get_left_encoder_pos() {

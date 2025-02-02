@@ -14,12 +14,12 @@ public class PinceExtensionSubsystem extends Subsystem {
 
     private final FtcServo mServoPince = new FtcServo("PinceExt");//4
 
-    private double mAngle = 0;
+    private double mAngle = 0.78;
     private double mPositionAngle = 1;
     private double mRotationAngle = 0.5;
 
     public PinceExtensionSubsystem() {
-        openPince();
+        closePince();
     }
 
     @Override

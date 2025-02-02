@@ -20,9 +20,9 @@ public class TogglePinceBrasCommand extends Command {
     @Override
     public void initialize() {
         if (mPinceBrasSubsystem.isOpen()) {
-            mPinceBrasSubsystem.closePince();
+            mPinceBrasSubsystem.OpenPince();
         } else {
-            mPinceBrasSubsystem.openPince();
+            mPinceBrasSubsystem.FermePince();
         }
     }
 

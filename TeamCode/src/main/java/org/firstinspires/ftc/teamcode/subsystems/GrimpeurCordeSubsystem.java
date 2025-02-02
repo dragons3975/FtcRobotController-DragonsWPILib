@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 
 public class GrimpeurCordeSubsystem extends Subsystem {
 
-    private final FtcMotor mMotorCorde = new FtcMotor("corde");//1
+    //private final FtcMotor mMotorCorde = new FtcMotor("corde");//1
 
     PIDController mPidCorde = new PIDController(-0.003, 0, 0);
     //private double mSpeed = 0;
@@ -23,13 +23,13 @@ public class GrimpeurCordeSubsystem extends Subsystem {
     public void periodic() {
         //mMotorGrimpeur.set(mSpeed);
         //mMotorPoulie.set(mSpeedP);
-        double outputCorde = mPidCorde.calculate(mMotorCorde.getCurrentPosition(), mConsigneCorde);
+        //double outputCorde = mPidCorde.calculate(mMotorCorde.getCurrentPosition(), mConsigneCorde);
 
-        DriverStationJNI.getTelemetry().addData("CORDE position", mMotorCorde.getCurrentPosition());
+        //DriverStationJNI.getTelemetry().addData("CORDE position", mMotorCorde.getCurrentPosition());
         DriverStationJNI.getTelemetry().addData("CORDE consigne", mConsigneCorde);
-        DriverStationJNI.getTelemetry().addData("CORDE Output", outputCorde);
+        //DriverStationJNI.getTelemetry().addData("CORDE Output", outputCorde);
 
-        mMotorCorde.set(outputCorde);
+        //mMotorCorde.set(outputCorde);
     }
 
     public void stop() {

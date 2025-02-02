@@ -19,7 +19,7 @@ public class OpenPinceBrasCommand extends Command {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        mPinceBrasSubsystem.openPince();
+        mPinceBrasSubsystem.FermePince();
     }
 
     // Called every time the scheduler runs while the command is scheduled.
