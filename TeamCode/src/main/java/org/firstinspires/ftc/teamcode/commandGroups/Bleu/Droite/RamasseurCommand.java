@@ -42,9 +42,9 @@ public class RamasseurCommand extends SequentialCommandGroup {
                 new WaitCommand(0.2),
                 rotationZero,
                 openPinceBras,
-                pinceBras,
-                bras1,
-                bras2
+                pinceBras
+                //bras1,
+                //bras2
         );
     }
 

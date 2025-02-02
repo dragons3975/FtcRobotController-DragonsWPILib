@@ -39,11 +39,11 @@ public class  PinceBrasSubsystem extends Subsystem {
     }
 
     public void PositionPinceMax() {
-        mPositionAngle = 1;
+        mPositionAngle = 0.8;
     }
 
     public void PositionPinceMin() {
-        mPositionAngle = 0;
+        mPositionAngle = 0.05;
     }
 
     public void setPositionAngle(double position) {

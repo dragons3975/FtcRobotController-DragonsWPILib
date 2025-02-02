@@ -28,7 +28,7 @@ public class PincePositionDefaultExtCommand extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        mPinceExtensionSubsystem.incrementPositionAngle(mXboxController.getLeftY() / 15);
+        mPinceExtensionSubsystem.incrementPositionAngle(mXboxController.getRightY() / 15);
     }
 
     // Called once the command ends or is interrupted.

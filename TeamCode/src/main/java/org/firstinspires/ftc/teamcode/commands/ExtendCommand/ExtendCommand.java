@@ -5,18 +5,18 @@ import org.firstinspires.ftc.teamcode.subsystems.ExtensionSubsystem;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class ExtendDefaultCommand extends Command {
+public class ExtendCommand extends Command {
 
     private final ExtensionSubsystem mExtensionSubsystem;
 
-    private final XboxController mXboxController;
+    private final double increment;
 
 
-    public ExtendDefaultCommand(ExtensionSubsystem extensionSubsystem, XboxController xboxController) {
+    public ExtendCommand(ExtensionSubsystem extensionSubsystem, double incr) {
 
         mExtensionSubsystem = extensionSubsystem;
 
-        mXboxController = xboxController;
+        increment = incr;
 
         addRequirements(extensionSubsystem);
     }
@@ -32,7 +32,7 @@ public class ExtendDefaultCommand extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        //mExtensionSubsystem.incrementConsigne(mXboxController.getLeftX() * 35);
+        mExtensionSubsystem.incrementConsigne(increment);
     }
 
     // Called once the command ends or is interrupted.

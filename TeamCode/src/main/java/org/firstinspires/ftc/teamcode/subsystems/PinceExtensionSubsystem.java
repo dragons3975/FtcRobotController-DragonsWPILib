@@ -16,7 +16,7 @@ public class PinceExtensionSubsystem extends Subsystem {
 
     private double mAngle = 0;
     private double mPositionAngle = 1;
-    private double mRotationAngle = 1;
+    private double mRotationAngle = 0.5;
 
     public PinceExtensionSubsystem() {
         openPince();
@@ -27,6 +27,18 @@ public class PinceExtensionSubsystem extends Subsystem {
         DriverStationJNI.getTelemetry().addData("Servo Pince extend Angle", mAngle);
         DriverStationJNI.getTelemetry().addData("Servo Pince extend Position", mPositionAngle);
         DriverStationJNI.getTelemetry().addData("Servo Pince rotation", mRotationAngle);
+        if (mRotationAngle >= 1) {
+            mRotationAngle = 0.99;
+        } else if (mRotationAngle <= 0) {
+            mRotationAngle = 0.01;
+        }
+
+        if (mPositionAngle >= 1) {
+            mPositionAngle = 0.99;
+        } else if (mPositionAngle <= 0) {
+            mPositionAngle = 0.01;
+        }
+
         mServoPince.setPosition(mAngle);
         mServoPosition.setPosition(mPositionAngle);
         mServoRotation.setPosition(mRotationAngle);
