@@ -1,9 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
-import org.firstinspires.ftc.teamcode.commandGroups.Bleu.Droite.BleuDroiteExtra;
-import org.firstinspires.ftc.teamcode.commandGroups.Bleu.Droite.GrimpeAutoCommand;
-import org.firstinspires.ftc.teamcode.commandGroups.Bleu.Droite.PanierAutoCommand;
-import org.firstinspires.ftc.teamcode.commandGroups.Bleu.Droite.RamasseurCommand;
+import org.firstinspires.ftc.teamcode.AutonomousCommands.GrimpeAutoCommand;
+import org.firstinspires.ftc.teamcode.AutonomousCommands.PanierAutoCommand;
+import org.firstinspires.ftc.teamcode.AutonomousCommands.RamasseurCommand;
 import org.firstinspires.ftc.teamcode.commands.BrasCommand.BrasPositionCommandtest;
 import org.firstinspires.ftc.teamcode.commands.DriveCommand.DriveTestCommand;
 import org.firstinspires.ftc.teamcode.commands.ExtendCommand.CalibrationCommand;
@@ -15,7 +14,6 @@ import org.firstinspires.ftc.teamcode.commands.ExtendCommand.PincePositionDefaul
 import org.firstinspires.ftc.teamcode.commands.ExtendCommand.PincePositionIncrementExtCommand;
 import org.firstinspires.ftc.teamcode.commands.ExtendCommand.PincePositionMaxExtCommand;
 import org.firstinspires.ftc.teamcode.commands.ExtendCommand.PincePositionMinExtCommand;
-import org.firstinspires.ftc.teamcode.commands.ExtendCommand.PinceRotationCommand;
 import org.firstinspires.ftc.teamcode.commands.ExtendCommand.TogglePinceExtCommand;
 import org.firstinspires.ftc.teamcode.commands.GrimpeurCommands.CordeIncrementCommand;
 import org.firstinspires.ftc.teamcode.commands.GrimpeurCommands.CordePositionCommand;
@@ -197,7 +195,7 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return new BleuDroiteExtra(mDriveSubsystem);
+        return null;
     }
 
     public void stop() {

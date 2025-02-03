@@ -1,23 +1,18 @@
-package org.firstinspires.ftc.teamcode.commandGroups.Bleu.Droite;
+package org.firstinspires.ftc.teamcode.AutonomousCommands;
 
 //import CalibrationCommand;
 import org.firstinspires.ftc.teamcode.commands.BrasCommand.BrasPositionCommandtest;
 import org.firstinspires.ftc.teamcode.commands.ExtendCommand.ExtendPositionCommand;
 import org.firstinspires.ftc.teamcode.commands.ExtendCommand.PincePositionMaxExtCommand;
-import org.firstinspires.ftc.teamcode.commands.ExtendCommand.PincePositionMinExtCommand;
 import org.firstinspires.ftc.teamcode.commands.ExtendCommand.PinceRotationCommand;
-import org.firstinspires.ftc.teamcode.commands.PinceBrasCommand.ClosePinceBrasCommand;
 //import ClosePinceExtCommand;
 import org.firstinspires.ftc.teamcode.commands.PinceBrasCommand.OpenPinceBrasCommand;
-import org.firstinspires.ftc.teamcode.commands.PinceBrasCommand.PositionMaxPinceBrasCommand;
 import org.firstinspires.ftc.teamcode.commands.PinceBrasCommand.PositionMinPinceBrasCommand;
 import org.firstinspires.ftc.teamcode.subsystems.BrasSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ExtensionSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.PinceBrasSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.PinceExtensionSubsystem;
 
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 

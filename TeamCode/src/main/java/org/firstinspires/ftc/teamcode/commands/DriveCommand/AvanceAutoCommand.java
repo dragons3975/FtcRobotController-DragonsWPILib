@@ -1,22 +1,24 @@
 package org.firstinspires.ftc.teamcode.commands.DriveCommand;
 
+import static java.lang.Math.abs;
+
 import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class AvanceAutoCommand extends Command {
 
     private final DriveSubsystem mDriveSubsystem;
 
-    private final double mXSpeed, mYSpeed, mZSpeed;
-    private double mDistanceInit;
+    private final double mXSpeed;
+    private final double mXDist;
 
-    public AvanceAutoCommand(DriveSubsystem driveSubsystem, double x, double y, double z) {
+    public AvanceAutoCommand(DriveSubsystem driveSubsystem, double xSpeed, double xDist) {
         mDriveSubsystem = driveSubsystem;
 
-        mXSpeed = x;
-        mYSpeed = y;
-        mZSpeed = z;
+        mXDist = xDist;
+        mXSpeed = xSpeed;
 
         addRequirements(driveSubsystem);
     }
@@ -24,7 +26,7 @@ public class AvanceAutoCommand extends Command {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        mDriveSubsystem.mecanumDrive(mXSpeed, mYSpeed, mZSpeed);
+        mDriveSubsystem.mecanumDrive(mXSpeed, 0, 0);
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -41,12 +43,6 @@ public class AvanceAutoCommand extends Command {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        //if (mXSpeed > 0) {
-        //    return mDriveSubsystem.isAtSetPointx();
-        //} else {
-        //    return mDriveSubsystem.isAtSetPointy();
-        //}
-        return false;
+        return (abs(mDriveSubsystem.getCurrentPose().getX()) > mXDist);
     }
-
 }
