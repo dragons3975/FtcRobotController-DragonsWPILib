@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import org.firstinspires.ftc.teamcode.AutonomousCommands.Gauche;
 import org.firstinspires.ftc.teamcode.AutonomousCommands.GrimpeAutoCommand;
 import org.firstinspires.ftc.teamcode.AutonomousCommands.PanierAutoCommand;
 import org.firstinspires.ftc.teamcode.AutonomousCommands.RamasseurCommand;
@@ -113,6 +114,7 @@ public class RobotContainer {
 
 
     public RobotContainer() {
+        mDriveSubsystem.resetGyro();
         configureButtonBindings();
         configureDefaultCommands();
     }
@@ -129,7 +131,7 @@ public class RobotContainer {
         //buttonLB.onTrue(mPositionMinPinceBrasCommand);
 
         JoystickButton buttonRB = new JoystickButton(mXboxController, XboxController.Button.kRightBumper.value);
-        buttonRB.onTrue(mPositionTogglePinceBrasCommand);
+        //buttonRB.onTrue()
 
         JoystickButton buttonB = new JoystickButton(mXboxController, XboxController.Button.kB.value);
         //buttonB.whileTrue(mCordeDecrementCommand);
@@ -184,6 +186,9 @@ public class RobotContainer {
 
         JoystickButton buttonDown = new JoystickButton(mXboxController2, XboxController.Button.kDown.value);
         buttonDown.whileTrue(mPincePositionDecrementExtCommand);
+
+        JoystickButton buttonJoystickLeft = new JoystickButton(mXboxController2, XboxController.Button.kLeftStick.value);
+        buttonJoystickLeft.onTrue(mPositionTogglePinceBrasCommand);
     }
 
     private void configureDefaultCommands() {
@@ -195,7 +200,7 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return null;
+        return new Gauche(mDriveSubsystem);
     }
 
     public void stop() {

@@ -2,20 +2,19 @@ package org.firstinspires.ftc.teamcode.commands.DriveCommand;
 
 import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
 
-import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.hal.DriverStationJNI;
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class DriveDefaultCommand extends Command {
+public class TourneAutoCommand extends Command {
 
     private final DriveSubsystem mDriveSubsystem;
-    private final XboxController mXboxController;
-    private double mX;
-    private double mY;
-    private double mZ;
 
-    public DriveDefaultCommand(DriveSubsystem driveSubsystem, XboxController xboxController) {
+    private final double mAngle;
+
+    public TourneAutoCommand(DriveSubsystem driveSubsystem, double angle) {
         mDriveSubsystem = driveSubsystem;
-        mXboxController = xboxController;
+
+        mAngle = angle;
 
         addRequirements(driveSubsystem);
     }
@@ -23,27 +22,26 @@ public class DriveDefaultCommand extends Command {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
+
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        mX = -mXboxController.getLeftY();
-        mY = mXboxController.getLeftX();
-        mZ = 5 * mXboxController.getRightX();
-
-        mDriveSubsystem.mecanumDrive(mX, mY, mZ);
+        DriverStationJNI.getTelemetry().addData("autonome", "OUI");
+        mDriveSubsystem.mecanumDrive(0, 0, mAngle);
     }
 
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
         mDriveSubsystem.stop();
+        mDriveSubsystem.resetDeplacement();
     }
 
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return false;
+        return (mDriveSubsystem.isAtSetPointz());
     }
 }

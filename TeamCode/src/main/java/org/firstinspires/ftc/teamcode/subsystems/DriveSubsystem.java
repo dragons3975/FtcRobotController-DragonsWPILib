@@ -28,6 +28,8 @@ public class DriveSubsystem extends Subsystem {
     private double m_zRotation = 0; // The robot's rotation rate around the Z axis [-1.0..1.0]. Clockwise is positive.
     private double m_ySpeed = 0;
 
+    private double m_xAuto, m_yAuto;
+
     private double mAngleConsigne;
 
     double Delta_middle_pos, prev_center_encodeur_pos, Delta_left_encodeur_pos, Delta_right_encodeur_pos, prev_left_encodeur_pos, prev_right_encodeur_pos, Delta_perp_pos, Delta_center_encodeur_pos;
@@ -42,18 +44,23 @@ public class DriveSubsystem extends Subsystem {
     double Y, X;
     double YApril, XApril;
 
+    boolean isAutonomous = false;
+
     double deltaX, deltaY;
 
     double current_left_encodeur_pos, current_right_encodeur_pos, current_center_encodeur_pos;
 
     private PIDController mPIDz = new PIDController(Constants.ConstantsDrivePID.kP, Constants.ConstantsDrivePID.kI, Constants.ConstantsDrivePID.kD);
+    private PIDController mPIDxAuto = new PIDController(0.03, 0, 0);
+    private PIDController mPIDyAuto = new PIDController(0.03, 0, 0);
     private VisionSubsystem mVisionSubsystem;
 
     public DriveSubsystem(VisionSubsystem visionSubsystem) {
-        mGyro.reset();
         mVisionSubsystem = visionSubsystem;
         m_robotDrive.setMaxOutput(Constants.ConstantsDrive.kVitesseHaute);
         mPIDz.setTolerance(Constants.ConstantsDrivePID.kToleranceZ);
+        mPIDxAuto.setTolerance(2);
+        mPIDyAuto.setTolerance(2);
         m_frontLeftMotor.setInverted(true);
         m_frontRightMotor.setInverted(false);
         m_rearLeftMotor.setInverted(true);
@@ -66,6 +73,7 @@ public class DriveSubsystem extends Subsystem {
 
     @Override
     public void periodic() {
+        ///////////////
         if (mVisionSubsystem.isDetecting()) {
             XApril = mVisionSubsystem.getPosition().getX() * 2.54;
             YApril = mVisionSubsystem.getPosition().getY() * 2.54;
@@ -95,43 +103,49 @@ public class DriveSubsystem extends Subsystem {
         prev_left_encodeur_pos = current_left_encodeur_pos;
         prev_right_encodeur_pos = current_right_encodeur_pos;
         prev_center_encodeur_pos = current_center_encodeur_pos;
+        //////////////////////////////
+
+        if (isAutonomous) {
+            m_xSpeed = mPIDxAuto.calculate(X, m_xAuto);
+            m_ySpeed = mPIDyAuto.calculate(Y, m_yAuto);
+        }
+
 
         DriverStationJNI.getTelemetry().addData("heading", heading);
         DriverStationJNI.getTelemetry().addData("consigne drive", mAngleConsigne);
         DriverStationJNI.getTelemetry().addData("Y", Y);
         DriverStationJNI.getTelemetry().addData("X", X);
-        DriverStationJNI.getTelemetry().addData("YApril", YApril);
-        DriverStationJNI.getTelemetry().addData("XApril", XApril);
+        DriverStationJNI.getTelemetry().addData("xSpeed", m_xSpeed);
+        DriverStationJNI.getTelemetry().addData("ySpeed", m_ySpeed);
         DriverStationJNI.getTelemetry().addData("gat angle", getAngle());
 
         mAngle = getAngle();
-        //DriverStationJNI.getTelemetry().addData("mGyro angle", mAngle);
-        //DriverStationJNI.getTelemetry().addData("angleConsigne", mAngleConsigne);
         m_zRotation = mPIDz.calculate(mAngle, mAngleConsigne);
         if (Math.abs(m_zRotation) > Constants.MaxSpeeds.kmaxZspeed) {
             m_zRotation = Math.signum(m_zRotation) * Constants.MaxSpeeds.kmaxZspeed;
         }
-        //DriverStationJNI.getTelemetry().addData("m_xSpeed", m_xSpeed);
-        //DriverStationJNI.getTelemetry().addData("m_ySpeed", m_ySpeed);
-        //DriverStationJNI.getTelemetry().addData("m_zRotation", m_zRotation);
 
-        // On inverse volontairement x et y pour avoir le x vers l'avant
-        m_robotDrive.driveCartesian(m_ySpeed, m_xSpeed, m_zRotation);
+        m_robotDrive.driveCartesian(m_xSpeed, m_ySpeed, m_zRotation);
 
-        //DriverStationJNI.getTelemetry().addData("y", getY());
-        //DriverStationJNI.getTelemetry().addData("x", getX());
-        //DriverStationJNI.getTelemetry().addData("isAtSetPointz", isAtSetPointz());
-
-        DriverStationJNI.getTelemetry().addData("center encodeur", m_frontRightMotor.getCurrentPosition());
+        DriverStationJNI.getTelemetry().addData("center encodeur", get_center_encoder_pos());
+        DriverStationJNI.getTelemetry().addData("gauche encodeur", get_left_encoder_pos());
+        DriverStationJNI.getTelemetry().addData("droite encodeur", get_right_encoder_pos());
 
 
     }
 
     public void mecanumDrive(double xSpeed, double ySpeed, double zRotation){
-        mAngleConsigne += zRotation;
-
         m_xSpeed = xSpeed;
         m_ySpeed = ySpeed;
+        mAngleConsigne += zRotation;
+        isAutonomous = false;
+    }
+
+    public void mecanumDrivePID(double distX, double distY) {
+        mAngleConsigne = mAngle;
+        m_xAuto = distX;
+        m_yAuto = distY;
+        isAutonomous = true;
     }
 
     public void testMotor() {
@@ -139,7 +153,7 @@ public class DriveSubsystem extends Subsystem {
     }
 
     public double get_left_encoder_pos() {
-        return m_frontLeftMotor.getCurrentPosition() / Constants.ConstantsDrive.ktachoParCm;
+        return m_frontLeftMotor.getCurrentPosition() / -Constants.ConstantsDrive.ktachoParCm;
     }
 
     public double get_right_encoder_pos() {
@@ -147,7 +161,7 @@ public class DriveSubsystem extends Subsystem {
     }
 
     public double get_center_encoder_pos() {
-        return m_rearLeftMotor.getCurrentPosition() / Constants.ConstantsDrive.ktachoParCm;
+        return m_rearLeftMotor.getCurrentPosition() / -Constants.ConstantsDrive.ktachoParCm;
     }
 
     public Pose2d getCurrentPose() {
@@ -156,13 +170,35 @@ public class DriveSubsystem extends Subsystem {
     public boolean isAtSetPointz() {
         return mPIDz.atSetpoint();
     }
+    public boolean isAtSetPointx() {
+        return mPIDxAuto.atSetpoint();
+    }
+    public boolean isAtSetPointy() {
+        return mPIDyAuto.atSetpoint();
+    }
 
     public void stop () {
+        isAutonomous = false;
         mAngleConsigne = getAngle();
+        m_frontLeftMotor.stopMotor();
+        m_frontRightMotor.stopMotor();
+        m_rearLeftMotor.stopMotor();
+        m_rearRightMotor.stopMotor();
     }
 
     private double getAngle() {
         return MathUtil.inputModulus(-mGyro.getAngle(), -180, 180);
+    }
+
+    public void resetGyro() {
+        mGyro.reset();
+    }
+
+    public void resetDeplacement() {
+        isAutonomous = false;
+        mGyro.reset();
+        X = 0;
+        Y = 0;
     }
 
 }

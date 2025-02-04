@@ -4,21 +4,19 @@ import static java.lang.Math.abs;
 
 import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
 
-import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.hal.DriverStationJNI;
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class AvanceAutoCommand extends Command {
+public class AvanceXAutoCommand extends Command {
 
     private final DriveSubsystem mDriveSubsystem;
 
-    private final double mXSpeed;
     private final double mXDist;
 
-    public AvanceAutoCommand(DriveSubsystem driveSubsystem, double xSpeed, double xDist) {
+    public AvanceXAutoCommand(DriveSubsystem driveSubsystem,double xDist) {
         mDriveSubsystem = driveSubsystem;
 
         mXDist = xDist;
-        mXSpeed = xSpeed;
 
         addRequirements(driveSubsystem);
     }
@@ -26,23 +24,26 @@ public class AvanceAutoCommand extends Command {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        mDriveSubsystem.mecanumDrive(mXSpeed, 0, 0);
+
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
+        DriverStationJNI.getTelemetry().addData("autonome", "OUI");
+        mDriveSubsystem.mecanumDrivePID(mXDist, 0);
     }
 
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
         mDriveSubsystem.stop();
+        mDriveSubsystem.resetDeplacement();
     }
 
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return (abs(mDriveSubsystem.getCurrentPose().getX()) > mXDist);
+        return (mDriveSubsystem.isAtSetPointx());
     }
 }

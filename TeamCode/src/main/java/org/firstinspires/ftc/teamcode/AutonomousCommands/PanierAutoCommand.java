@@ -11,7 +11,7 @@ public class PanierAutoCommand extends SequentialCommandGroup {
 
     public PanierAutoCommand(BrasSubsystem brasSubsystem, PinceBrasSubsystem pinceBrasSubsystem) {
 
-        BrasPositionCommandtest leverBras = new BrasPositionCommandtest(brasSubsystem, -450, 0.7);
+        BrasPositionCommandtest leverBras = new BrasPositionCommandtest(brasSubsystem, -450, 0.5);
         PositionMinPinceBrasCommand pinceMin = new PositionMinPinceBrasCommand(pinceBrasSubsystem);
 
 
