@@ -4,32 +4,39 @@ import org.firstinspires.ftc.teamcode.commands.BrasCommand.BrasPositionCommandte
 import org.firstinspires.ftc.teamcode.commands.DriveCommand.AvanceXAutoCommand;
 import org.firstinspires.ftc.teamcode.commands.DriveCommand.AvanceYAutoCommand;
 import org.firstinspires.ftc.teamcode.commands.DriveCommand.TourneAutoCommand;
-import org.firstinspires.ftc.teamcode.commands.PinceBrasCommand.PositionMaxPinceBrasCommand;
 import org.firstinspires.ftc.teamcode.subsystems.BrasSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
-import org.firstinspires.ftc.teamcode.subsystems.PinceBrasSubsystem;
 
-import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
-public class Gauche extends SequentialCommandGroup {
+public class Droit extends SequentialCommandGroup {
 
-    public Gauche(DriveSubsystem driveSubsystem, BrasSubsystem brasSubsystem, PinceBrasSubsystem pinceBrasSubsystem) {
+    public Droit(DriveSubsystem driveSubsystem, BrasSubsystem brasSubsystem) {
         //pas de pid pour le moment donc avec un tiBleuDroiteExtrameout
         //ParallelRaceGroup reculer = new AvanceAutoCommand(driveSubsystem, -1, 0, 0).withTimeout(0.3);
-        AvanceXAutoCommand avance = new AvanceXAutoCommand(driveSubsystem,100);
-        AvanceYAutoCommand tasse = new AvanceYAutoCommand(driveSubsystem, -60);
-        TourneAutoCommand tourne = new TourneAutoCommand(driveSubsystem, 45);
+        AvanceXAutoCommand avance = new AvanceXAutoCommand(driveSubsystem,60);
+        AvanceYAutoCommand tasse = new AvanceYAutoCommand(driveSubsystem, 60);
+        AvanceXAutoCommand avance1 = new AvanceXAutoCommand(driveSubsystem,10);
+        TourneAutoCommand tourne = new TourneAutoCommand(driveSubsystem, 90);
         BrasPositionCommandtest panier = new BrasPositionCommandtest(brasSubsystem, -500, 0.5);
-        PositionMaxPinceBrasCommand pinceMax = new PositionMaxPinceBrasCommand(pinceBrasSubsystem);
 
         addCommands(
-                avance
-                //tasse,
-                //tourne,
-                //panier,
-                //pinceMax
+                avance,
+                new WaitCommand(0.2),
+                panier
+//                tasse,
+//                new WaitCommand(0.2),
+//                avance1,
+//                new WaitCommand(0.2),
+//                tourne,
+//                new WaitCommand(0.2),
+//                avance1,
+//                new WaitCommand(0.2),
+//                tourne,
+//                new WaitCommand(0.2),
+//                avance
+
         );
     }
 

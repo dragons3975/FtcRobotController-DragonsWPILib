@@ -51,16 +51,16 @@ public class DriveSubsystem extends Subsystem {
     double current_left_encodeur_pos, current_right_encodeur_pos, current_center_encodeur_pos;
 
     private PIDController mPIDz = new PIDController(Constants.ConstantsDrivePID.kP, Constants.ConstantsDrivePID.kI, Constants.ConstantsDrivePID.kD);
-    private PIDController mPIDxAuto = new PIDController(0.03, 0, 0);
-    private PIDController mPIDyAuto = new PIDController(0.03, 0, 0);
+    private PIDController mPIDxAuto = new PIDController(0.05, 0, 0);
+    private PIDController mPIDyAuto = new PIDController(0.05, 0, 0);
     private VisionSubsystem mVisionSubsystem;
 
     public DriveSubsystem(VisionSubsystem visionSubsystem) {
         mVisionSubsystem = visionSubsystem;
         m_robotDrive.setMaxOutput(Constants.ConstantsDrive.kVitesseHaute);
         mPIDz.setTolerance(Constants.ConstantsDrivePID.kToleranceZ);
-        mPIDxAuto.setTolerance(2);
-        mPIDyAuto.setTolerance(2);
+        mPIDxAuto.setTolerance(0.01);
+        mPIDyAuto.setTolerance(0.01);
         m_frontLeftMotor.setInverted(true);
         m_frontRightMotor.setInverted(false);
         m_rearLeftMotor.setInverted(true);
@@ -150,6 +150,10 @@ public class DriveSubsystem extends Subsystem {
 
     public void testMotor() {
         m_rearRightMotor.set(1);
+    }
+
+    public void setRotation(double angle) {
+        mAngleConsigne = angle;
     }
 
     public double get_left_encoder_pos() {

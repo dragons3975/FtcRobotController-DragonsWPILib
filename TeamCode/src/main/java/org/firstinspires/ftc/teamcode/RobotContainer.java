@@ -104,7 +104,7 @@ public class RobotContainer {
     private final PincePositionDefaultExtCommand mPincePositionDefaultCommand = new PincePositionDefaultExtCommand(mPinceExtensionSubsystem, mXboxController2);
     private final PositionTogglePinceBrasCommand mPositionTogglePinceBrasCommand = new PositionTogglePinceBrasCommand(mPinceBrasSubsystem);
     private final GrimpeAutoCommand mGrimpeAutoCommand = new GrimpeAutoCommand(mGrimpeurSubsystem, mGrimpeurCordeSubsystem);
-    private final PanierAutoCommand mPanierAutoCommand = new PanierAutoCommand(mBrasSubsystem, mPinceBrasSubsystem);
+    private final PanierAutoCommand mPanierAutoCommand = new PanierAutoCommand(mBrasSubsystem, mPinceBrasSubsystem, mPinceExtensionSubsystem);
 
     private final PincePositionIncrementExtCommand mPincePositionDecrementExtCommand = new PincePositionIncrementExtCommand(mPinceExtensionSubsystem, 0.04);
     private final PincePositionIncrementExtCommand mPincePositionIncrementExtCommand = new PincePositionIncrementExtCommand(mPinceExtensionSubsystem, -0.04);
@@ -200,7 +200,7 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return new Gauche(mDriveSubsystem);
+        return new Gauche(mDriveSubsystem, mBrasSubsystem, mPinceBrasSubsystem);
     }
 
     public void stop() {

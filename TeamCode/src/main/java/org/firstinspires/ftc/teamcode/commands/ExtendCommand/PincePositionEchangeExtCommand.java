@@ -1,25 +1,25 @@
-package org.firstinspires.ftc.teamcode.commands.PinceBrasCommand;
+package org.firstinspires.ftc.teamcode.commands.ExtendCommand;
 
-import org.firstinspires.ftc.teamcode.subsystems.PinceBrasSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.PinceExtensionSubsystem;
 
 import edu.wpi.first.wpilibj2.command.Command;
 
+public class PincePositionEchangeExtCommand extends Command {
 
-public class ClosePinceBrasCommand extends Command {
+    private final PinceExtensionSubsystem mPinceExtensionSubsystem;
 
-    private final PinceBrasSubsystem mPinceBrasSubsystem;
+    public PincePositionEchangeExtCommand(PinceExtensionSubsystem pinceExtensionSubsystem) {
 
-    public ClosePinceBrasCommand(PinceBrasSubsystem pinceBrasSubsystem) {
+        mPinceExtensionSubsystem = pinceExtensionSubsystem;
 
-        mPinceBrasSubsystem = pinceBrasSubsystem;
 
-        addRequirements(pinceBrasSubsystem);
+        addRequirements(pinceExtensionSubsystem);
     }
 
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        mPinceBrasSubsystem.FermePince();
+        mPinceExtensionSubsystem.setPositionAngle(0.67);
     }
 
     // Called every time the scheduler runs while the command is scheduled.

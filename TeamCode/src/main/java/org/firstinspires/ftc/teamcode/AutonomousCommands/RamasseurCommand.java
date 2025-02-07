@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.AutonomousCommands;
 //import CalibrationCommand;
 import org.firstinspires.ftc.teamcode.commands.BrasCommand.BrasPositionCommandtest;
 import org.firstinspires.ftc.teamcode.commands.ExtendCommand.ExtendPositionCommand;
+import org.firstinspires.ftc.teamcode.commands.ExtendCommand.PincePositionEchangeExtCommand;
 import org.firstinspires.ftc.teamcode.commands.ExtendCommand.PincePositionMaxExtCommand;
 import org.firstinspires.ftc.teamcode.commands.ExtendCommand.PinceRotationCommand;
 //import ClosePinceExtCommand;
@@ -24,11 +25,11 @@ public class RamasseurCommand extends SequentialCommandGroup {
         //command pour que le bras viennent le chercher + extension subsystem rentre
         PincePositionMaxExtCommand replie = new PincePositionMaxExtCommand(pinceExtensionSubsystem);
         ExtendPositionCommand extendZero = new ExtendPositionCommand(extensionSubsystem, 200);
-        PinceRotationCommand rotationZero = new PinceRotationCommand(pinceExtensionSubsystem, 1);
+        PinceRotationCommand rotationZero = new PinceRotationCommand(pinceExtensionSubsystem, 0.58);
         OpenPinceBrasCommand openPinceBras = new OpenPinceBrasCommand(pinceBrasSubsystem);
-        BrasPositionCommandtest bras1 = new BrasPositionCommandtest(brasSubsystem, -120, 1);
-        BrasPositionCommandtest bras2 = new BrasPositionCommandtest(brasSubsystem, -30, 2);
+        BrasPositionCommandtest bras1 = new BrasPositionCommandtest(brasSubsystem, -150, 1);
         PositionMinPinceBrasCommand pinceBras = new PositionMinPinceBrasCommand(pinceBrasSubsystem);
+        PincePositionEchangeExtCommand positionEchange = new PincePositionEchangeExtCommand(pinceExtensionSubsystem);
 
         addCommands(
                 replie,
@@ -37,9 +38,9 @@ public class RamasseurCommand extends SequentialCommandGroup {
                 new WaitCommand(0.2),
                 rotationZero,
                 openPinceBras,
-                pinceBras
-                //bras1,
-                //bras2
+                pinceBras,
+                bras1,
+                positionEchange
         );
     }
 

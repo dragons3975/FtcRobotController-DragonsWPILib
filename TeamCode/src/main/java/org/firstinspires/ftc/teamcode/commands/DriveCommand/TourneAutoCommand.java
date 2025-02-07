@@ -29,7 +29,7 @@ public class TourneAutoCommand extends Command {
     @Override
     public void execute() {
         DriverStationJNI.getTelemetry().addData("autonome", "OUI");
-        mDriveSubsystem.mecanumDrive(0, 0, mAngle);
+        mDriveSubsystem.setRotation(mAngle);
     }
 
     // Called once the command ends or is interrupted.
