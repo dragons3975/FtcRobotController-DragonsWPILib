@@ -178,7 +178,7 @@ public class RobotContainer {
         buttonJoystickLeft.onTrue(mPositionTogglePinceBrasCommand);
 
         JoystickButton buttonRightStick = new JoystickButton(mXboxController2, XboxController.Button.kRightStick.value);
-        buttonRightStick.onTrue(mSpecimenBarreAutoCommand);
+        //buttonRightStick.onTrue(mSpecimenBarreAutoCommand);
 
         JoystickButton buttonX = new JoystickButton(mXboxController2, XboxController.Button.kX.value);
         buttonX.onTrue(mSpecimenAutoCommand);
@@ -193,8 +193,8 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        //return new Gauche(mDriveSubsystem, mBrasSubsystem, mPinceBrasSubsystem, mPinceExtensionSubsystem, mExtensionSubsystem);
-        return new Droit(mDriveSubsystem, mBrasSubsystem);
+        return new Gauche(mDriveSubsystem, mBrasSubsystem, mPinceBrasSubsystem, mPinceExtensionSubsystem, mExtensionSubsystem);
+        //return new Droit(mDriveSubsystem, mBrasSubsystem);
     }
 
     public void stop() {

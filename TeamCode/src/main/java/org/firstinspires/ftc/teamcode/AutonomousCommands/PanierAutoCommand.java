@@ -9,6 +9,7 @@ import org.firstinspires.ftc.teamcode.subsystems.PinceBrasSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.PinceExtensionSubsystem;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 public class PanierAutoCommand extends SequentialCommandGroup {
 
@@ -24,6 +25,7 @@ public class PanierAutoCommand extends SequentialCommandGroup {
 
         addCommands(
                 ferme,
+                new WaitCommand(0.5),
                 openExt,
                 leverBras,
                 pinceMin,

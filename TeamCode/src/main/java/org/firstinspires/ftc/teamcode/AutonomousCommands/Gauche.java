@@ -33,9 +33,9 @@ public class Gauche extends SequentialCommandGroup {
         PositionMinPinceBrasCommand pinceMin = new PositionMinPinceBrasCommand(pinceBrasSubsystem);
         BrasPositionCommandtest descendBras = new BrasPositionCommandtest(brasSubsystem, -300, 0.5);
         ParallelRaceGroup tourne2 = new TourneAutoCommand(driveSubsystem, 0).withTimeout(2);
-        ParallelRaceGroup avance2 = new AvanceXAutoCommand(driveSubsystem, 57, -48).withTimeout(2.5);
+        ParallelRaceGroup avance2 = new AvanceXAutoCommand(driveSubsystem, 55, -52).withTimeout(2.5);
         //ParallelRaceGroup avance3 = new AvanceXAutoCommand(driveSubsystem, 62, -67).withTimeout(1);
-        ExtendPositionCommand extendre = new ExtendPositionCommand(extensionSubsystem, 2300);
+        ExtendPositionCommand extendre = new ExtendPositionCommand(extensionSubsystem, 2600);
         PinceRotationCommand rotationZero = new PinceRotationCommand(pinceExtensionSubsystem, 0.55);
         PincePositionEchangeExtCommand rotationSol = new PincePositionEchangeExtCommand(pinceExtensionSubsystem, 0.05);
         ClosePinceExtCommand close = new ClosePinceExtCommand(pinceExtensionSubsystem);
@@ -49,6 +49,9 @@ public class Gauche extends SequentialCommandGroup {
         BrasPositionCommandtest descendBras2 = new BrasPositionCommandtest(brasSubsystem, -300, 0.5);
         ParallelRaceGroup tourne4 = new TourneAutoCommand(driveSubsystem, 0).withTimeout(2);
         ParallelRaceGroup avance3 = new AvanceXAutoCommand(driveSubsystem,56, -25).withTimeout(3);
+        ExtendPositionCommand extendZero = new ExtendPositionCommand(extensionSubsystem, 1);
+        PincePositionEchangeExtCommand positionFin = new PincePositionEchangeExtCommand(pinceExtensionSubsystem, 1);
+        BrasPositionCommandtest descendBras3 = new BrasPositionCommandtest(brasSubsystem, -30, 1);
 
         addCommands(
                 avance,
@@ -84,8 +87,10 @@ public class Gauche extends SequentialCommandGroup {
                 new WaitCommand(0.2),
                 descendBras2,
                 tourne4,
-                avance3
-
+                avance3,
+                extendZero,
+                positionFin,
+                descendBras3
         );
     }
 

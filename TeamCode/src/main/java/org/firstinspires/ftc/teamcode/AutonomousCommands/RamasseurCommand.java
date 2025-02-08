@@ -26,11 +26,11 @@ public class RamasseurCommand extends SequentialCommandGroup {
         //command pour que le bras viennent le chercher + extension subsystem rentre
         PincePositionMaxExtCommand replie = new PincePositionMaxExtCommand(pinceExtensionSubsystem);
         ExtendPositionCommand extendZero = new ExtendPositionCommand(extensionSubsystem, 1130);
-        PinceRotationCommand rotationZero = new PinceRotationCommand(pinceExtensionSubsystem, 0.55);
+        PinceRotationCommand rotationZero = new PinceRotationCommand(pinceExtensionSubsystem, 0.43);
         OpenPinceBrasCommand openPinceBras = new OpenPinceBrasCommand(pinceBrasSubsystem);
-        BrasPositionCommandtest bras1 = new BrasPositionCommandtest(brasSubsystem, -150, 1);
+        BrasPositionCommandtest bras1 = new BrasPositionCommandtest(brasSubsystem, -130, 1);
         PositionMinPinceBrasCommand pinceBras = new PositionMinPinceBrasCommand(pinceBrasSubsystem);
-        PincePositionEchangeExtCommand positionEchange = new PincePositionEchangeExtCommand(pinceExtensionSubsystem, 0.67);
+        PincePositionEchangeExtCommand positionEchange = new PincePositionEchangeExtCommand(pinceExtensionSubsystem, 0.79);
         ClosePinceExtCommand close = new ClosePinceExtCommand(pinceExtensionSubsystem);
 
         addCommands(
