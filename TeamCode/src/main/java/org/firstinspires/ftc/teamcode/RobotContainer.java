@@ -1,9 +1,12 @@
 package org.firstinspires.ftc.teamcode;
 
+import org.firstinspires.ftc.teamcode.AutonomousCommands.Droit;
 import org.firstinspires.ftc.teamcode.AutonomousCommands.Gauche;
 import org.firstinspires.ftc.teamcode.AutonomousCommands.GrimpeAutoCommand;
 import org.firstinspires.ftc.teamcode.AutonomousCommands.PanierAutoCommand;
 import org.firstinspires.ftc.teamcode.AutonomousCommands.RamasseurCommand;
+import org.firstinspires.ftc.teamcode.AutonomousCommands.SpecimenAutoCommand;
+import org.firstinspires.ftc.teamcode.AutonomousCommands.SpecimenBarreAutoCommand;
 import org.firstinspires.ftc.teamcode.commands.BrasCommand.BrasPositionCommandtest;
 import org.firstinspires.ftc.teamcode.commands.DriveCommand.DriveTestCommand;
 import org.firstinspires.ftc.teamcode.commands.ExtendCommand.CalibrationCommand;
@@ -112,6 +115,8 @@ public class RobotContainer {
 
     private final DriveTestCommand mDriveTestCommand = new DriveTestCommand(mDriveSubsystem, mXboxController);
 
+    private final SpecimenAutoCommand mSpecimenAutoCommand = new SpecimenAutoCommand(mBrasSubsystem, mExtensionSubsystem, mPinceExtensionSubsystem, mPinceBrasSubsystem);
+    private final SpecimenBarreAutoCommand mSpecimenBarreAutoCommand = new SpecimenBarreAutoCommand(mBrasSubsystem, mExtensionSubsystem, mPinceExtensionSubsystem, mPinceBrasSubsystem);
 
     public RobotContainer() {
         mDriveSubsystem.resetGyro();
@@ -125,46 +130,28 @@ public class RobotContainer {
 
     private void configureButtonBindings() {
         JoystickButton buttonA = new JoystickButton(mXboxController, XboxController.Button.kA.value);
-        //buttonA.whileTrue(mCordeIncrementCommand);
+        buttonA.whileTrue(mCalibrationCommand);
 
-        JoystickButton buttonLB = new JoystickButton(mXboxController, XboxController.Button.kLeftBumper.value);
+        //JoystickButton buttonLB = new JoystickButton(mXboxController, XboxController.Button.kLeftBumper.value);
         //buttonLB.onTrue(mPositionMinPinceBrasCommand);
 
-        JoystickButton buttonRB = new JoystickButton(mXboxController, XboxController.Button.kRightBumper.value);
+        //JoystickButton buttonRB = new JoystickButton(mXboxController, XboxController.Button.kRightBumper.value);
         //buttonRB.onTrue()
 
-        JoystickButton buttonB = new JoystickButton(mXboxController, XboxController.Button.kB.value);
+        //JoystickButton buttonB = new JoystickButton(mXboxController, XboxController.Button.kB.value);
         //buttonB.whileTrue(mCordeDecrementCommand);
 
-        JoystickButton buttonX = new JoystickButton(mXboxController, XboxController.Button.kX.value);
+        //JoystickButton buttonX = new JoystickButton(mXboxController, XboxController.Button.kX.value);
         //buttonX.whileTrue(mDriveTestCommand);
 
-        JoystickButton buttonY = new JoystickButton(mXboxController, XboxController.Button.kY.value);
+        //JoystickButton buttonY = new JoystickButton(mXboxController, XboxController.Button.kY.value);
         //buttonY.onTrue(mPositionMinPinceBrasCommand);
 
         //-// //-// //-// //-// //-// //-// //-// //-// //-// //-// //-// //-// //-// //-// //-// //-// //-//
 
-//        JoystickButton buttonA2 = new JoystickButton(mXboxController2, XboxController.Button.kA.value);
-//        //buttonA2.onTrue(mOpenPinceBrasCommand);
-//        buttonA2.onTrue(mExtendPositionCommandSol);
-//
-//        JoystickButton buttonB2 = new JoystickButton(mXboxController2, XboxController.Button.kB.value);
-//        buttonB2.onTrue(mPincePositionMaxExtCommand);
-//
-//        JoystickButton buttonX2 = new JoystickButton(mXboxController2, XboxController.Button.kX.value);
-//        buttonX2.onTrue(mPincePositionMinExtCommand);
-//
-//        JoystickButton buttonY2 = new JoystickButton(mXboxController2, XboxController.Button.kY.value);
-//        buttonY2.onTrue(mPositionMaxPinceBrasCommand);
-//
-//        JoystickButton buttonLB2 = new JoystickButton(mXboxController2, XboxController.Button.kLeftBumper.value);
-//        buttonLB2.onTrue(mRamasseurCommand);
 
         JoystickButton buttonY2 = new JoystickButton(mXboxController2, XboxController.Button.kY.value);
         buttonY2.onTrue(mTogglePinceExtCommand);
-
-        JoystickButton buttonX2 = new JoystickButton(mXboxController2, XboxController.Button.kX.value);
-        buttonX2.onTrue(mCalibrationCommand);
 
         JoystickButton buttonB2 = new JoystickButton(mXboxController2, XboxController.Button.kB.value);
         buttonB2.onTrue(mTogglePinceBras);
@@ -189,6 +176,12 @@ public class RobotContainer {
 
         JoystickButton buttonJoystickLeft = new JoystickButton(mXboxController2, XboxController.Button.kLeftStick.value);
         buttonJoystickLeft.onTrue(mPositionTogglePinceBrasCommand);
+
+        JoystickButton buttonRightStick = new JoystickButton(mXboxController2, XboxController.Button.kRightStick.value);
+        buttonRightStick.onTrue(mSpecimenBarreAutoCommand);
+
+        JoystickButton buttonX = new JoystickButton(mXboxController2, XboxController.Button.kX.value);
+        buttonX.onTrue(mSpecimenAutoCommand);
     }
 
     private void configureDefaultCommands() {
@@ -200,7 +193,8 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return new Gauche(mDriveSubsystem, mBrasSubsystem, mPinceBrasSubsystem, mPinceExtensionSubsystem, mExtensionSubsystem);
+        //return new Gauche(mDriveSubsystem, mBrasSubsystem, mPinceBrasSubsystem, mPinceExtensionSubsystem, mExtensionSubsystem);
+        return new Droit(mDriveSubsystem, mBrasSubsystem);
     }
 
     public void stop() {
