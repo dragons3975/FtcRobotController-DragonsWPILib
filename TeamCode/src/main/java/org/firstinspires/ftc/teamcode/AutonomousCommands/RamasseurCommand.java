@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.AutonomousCommands;
 
 //import CalibrationCommand;
 import org.firstinspires.ftc.teamcode.commands.BrasCommand.BrasPositionCommandtest;
+import org.firstinspires.ftc.teamcode.commands.ExtendCommand.ClosePinceExtCommand;
 import org.firstinspires.ftc.teamcode.commands.ExtendCommand.ExtendPositionCommand;
 import org.firstinspires.ftc.teamcode.commands.ExtendCommand.PincePositionEchangeExtCommand;
 import org.firstinspires.ftc.teamcode.commands.ExtendCommand.PincePositionMaxExtCommand;
@@ -24,14 +25,16 @@ public class RamasseurCommand extends SequentialCommandGroup {
 
         //command pour que le bras viennent le chercher + extension subsystem rentre
         PincePositionMaxExtCommand replie = new PincePositionMaxExtCommand(pinceExtensionSubsystem);
-        ExtendPositionCommand extendZero = new ExtendPositionCommand(extensionSubsystem, 200);
-        PinceRotationCommand rotationZero = new PinceRotationCommand(pinceExtensionSubsystem, 0.58);
+        ExtendPositionCommand extendZero = new ExtendPositionCommand(extensionSubsystem, 1130);
+        PinceRotationCommand rotationZero = new PinceRotationCommand(pinceExtensionSubsystem, 0.55);
         OpenPinceBrasCommand openPinceBras = new OpenPinceBrasCommand(pinceBrasSubsystem);
         BrasPositionCommandtest bras1 = new BrasPositionCommandtest(brasSubsystem, -150, 1);
         PositionMinPinceBrasCommand pinceBras = new PositionMinPinceBrasCommand(pinceBrasSubsystem);
-        PincePositionEchangeExtCommand positionEchange = new PincePositionEchangeExtCommand(pinceExtensionSubsystem);
+        PincePositionEchangeExtCommand positionEchange = new PincePositionEchangeExtCommand(pinceExtensionSubsystem, 0.67);
+        ClosePinceExtCommand close = new ClosePinceExtCommand(pinceExtensionSubsystem);
 
         addCommands(
+                close,
                 replie,
                 new WaitCommand(0.2),
                 extendZero,

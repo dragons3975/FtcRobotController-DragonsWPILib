@@ -200,7 +200,7 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return new Gauche(mDriveSubsystem, mBrasSubsystem, mPinceBrasSubsystem);
+        return new Gauche(mDriveSubsystem, mBrasSubsystem, mPinceBrasSubsystem, mPinceExtensionSubsystem, mExtensionSubsystem);
     }
 
     public void stop() {

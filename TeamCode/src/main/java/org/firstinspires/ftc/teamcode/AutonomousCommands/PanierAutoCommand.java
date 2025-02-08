@@ -16,7 +16,8 @@ public class PanierAutoCommand extends SequentialCommandGroup {
 
         ClosePinceBrasCommand ferme = new ClosePinceBrasCommand(pinceBrasSubsystem);
         OpenPinceExtCommand openExt = new OpenPinceExtCommand(pinceExtensionSubsystem);
-        BrasPositionCommandtest leverBras = new BrasPositionCommandtest(brasSubsystem, -520, 0.5);
+        BrasPositionCommandtest leverBras = new BrasPositionCommandtest(brasSubsystem, -400, 0.5);
+        BrasPositionCommandtest leverBras2 = new BrasPositionCommandtest(brasSubsystem, -550, 1);
         PositionMinPinceBrasCommand pinceMin = new PositionMinPinceBrasCommand(pinceBrasSubsystem);
 
 
@@ -25,7 +26,8 @@ public class PanierAutoCommand extends SequentialCommandGroup {
                 ferme,
                 openExt,
                 leverBras,
-                pinceMin
+                pinceMin,
+                leverBras2
         );
     }
 

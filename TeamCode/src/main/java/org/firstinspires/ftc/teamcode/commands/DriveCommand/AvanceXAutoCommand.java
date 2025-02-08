@@ -13,10 +13,13 @@ public class AvanceXAutoCommand extends Command {
 
     private final double mXDist;
 
-    public AvanceXAutoCommand(DriveSubsystem driveSubsystem,double xDist) {
+    private final double mYDist;
+
+    public AvanceXAutoCommand(DriveSubsystem driveSubsystem,double xDist, double yDist) {
         mDriveSubsystem = driveSubsystem;
 
         mXDist = xDist;
+        mYDist = yDist;
 
         addRequirements(driveSubsystem);
     }
@@ -24,14 +27,13 @@ public class AvanceXAutoCommand extends Command {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-
+        mDriveSubsystem.mecanumDrivePID(mXDist, mYDist);
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
         DriverStationJNI.getTelemetry().addData("autonome", "OUI");
-        mDriveSubsystem.mecanumDrivePID(mXDist, 0);
     }
 
     // Called once the command ends or is interrupted.
@@ -44,6 +46,6 @@ public class AvanceXAutoCommand extends Command {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return (mDriveSubsystem.isAtSetPointx());
+        return false;
     }
 }

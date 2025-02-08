@@ -15,9 +15,9 @@ public class Droit extends SequentialCommandGroup {
     public Droit(DriveSubsystem driveSubsystem, BrasSubsystem brasSubsystem) {
         //pas de pid pour le moment donc avec un tiBleuDroiteExtrameout
         //ParallelRaceGroup reculer = new AvanceAutoCommand(driveSubsystem, -1, 0, 0).withTimeout(0.3);
-        AvanceXAutoCommand avance = new AvanceXAutoCommand(driveSubsystem,60);
+        AvanceXAutoCommand avance = new AvanceXAutoCommand(driveSubsystem,60, 0);
         AvanceYAutoCommand tasse = new AvanceYAutoCommand(driveSubsystem, 60);
-        AvanceXAutoCommand avance1 = new AvanceXAutoCommand(driveSubsystem,10);
+        AvanceXAutoCommand avance1 = new AvanceXAutoCommand(driveSubsystem,10, 0);
         TourneAutoCommand tourne = new TourneAutoCommand(driveSubsystem, 90);
         BrasPositionCommandtest panier = new BrasPositionCommandtest(brasSubsystem, -500, 0.5);
 

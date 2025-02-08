@@ -22,14 +22,13 @@ public class AvanceYAutoCommand extends Command {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-
+        mDriveSubsystem.mecanumDrivePID(0, myDist);
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
         DriverStationJNI.getTelemetry().addData("autonome", "OUI");
-        mDriveSubsystem.mecanumDrivePID(0, myDist);
     }
 
     // Called once the command ends or is interrupted.
@@ -42,6 +41,6 @@ public class AvanceYAutoCommand extends Command {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return (mDriveSubsystem.isAtSetPointy());
+        return false;
     }
 }

@@ -14,7 +14,7 @@ public class ExtensionSubsystem extends Subsystem {
     private final FtcTouchSensor mFtcTouchSensor = new FtcTouchSensor("touch");
 
 
-    PIDController mPid = new PIDController(0.015, 0, 0);
+    PIDController mPid = new PIDController(0.005, 0, 0);
 
     private int mConsigne = 0;
 
@@ -27,7 +27,7 @@ public class ExtensionSubsystem extends Subsystem {
     private int mTachoCalib = 0;
 
     public ExtensionSubsystem() {
-        mMotorCalib.setInverted(false);
+        mMotorCalib.setInverted(true);
 
         mPid.setTolerance(3);
     }
@@ -44,8 +44,8 @@ public class ExtensionSubsystem extends Subsystem {
         DriverStationJNI.getTelemetry().addData("Extend Position", getCalibratedTacho());
         DriverStationJNI.getTelemetry().addData("Extend consigne", mConsigne);
 
-        if (mConsigne >= 1700) {
-            mConsigne = 1699;
+        if (mConsigne >= 5200) {
+            mConsigne = 5199;
         }
 
         double output = mPid.calculate(getCalibratedTacho(), mConsigne);

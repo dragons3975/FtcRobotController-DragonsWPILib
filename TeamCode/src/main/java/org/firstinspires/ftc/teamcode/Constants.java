@@ -112,7 +112,7 @@ public final class Constants {
         public static final double kI = 0;
         public static final double kD = 0;
 
-        public static final double kToleranceZ = 1.5;
+        public static final double kToleranceZ = 3.5;
 
 
         public static final double kPx = 0.1;

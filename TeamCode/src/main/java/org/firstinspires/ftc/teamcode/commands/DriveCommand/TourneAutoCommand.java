@@ -22,14 +22,13 @@ public class TourneAutoCommand extends Command {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-
+        mDriveSubsystem.setRotation(mAngle);
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
         DriverStationJNI.getTelemetry().addData("autonome", "OUI");
-        mDriveSubsystem.setRotation(mAngle);
     }
 
     // Called once the command ends or is interrupted.
@@ -42,6 +41,6 @@ public class TourneAutoCommand extends Command {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return (mDriveSubsystem.isAtSetPointz());
+        return mDriveSubsystem.isAtSetPointz();
     }
 }

@@ -50,17 +50,15 @@ public class DriveSubsystem extends Subsystem {
 
     double current_left_encodeur_pos, current_right_encodeur_pos, current_center_encodeur_pos;
 
-    private PIDController mPIDz = new PIDController(Constants.ConstantsDrivePID.kP, Constants.ConstantsDrivePID.kI, Constants.ConstantsDrivePID.kD);
-    private PIDController mPIDxAuto = new PIDController(0.05, 0, 0);
-    private PIDController mPIDyAuto = new PIDController(0.05, 0, 0);
+    private PIDController mPIDz = new PIDController(0.03, 0, 0);
+    private PIDController mPIDxAuto = new PIDController(0.03, 0, 0);
+    private PIDController mPIDyAuto = new PIDController(0.03, 0, 0);
     private VisionSubsystem mVisionSubsystem;
 
     public DriveSubsystem(VisionSubsystem visionSubsystem) {
         mVisionSubsystem = visionSubsystem;
         m_robotDrive.setMaxOutput(Constants.ConstantsDrive.kVitesseHaute);
         mPIDz.setTolerance(Constants.ConstantsDrivePID.kToleranceZ);
-        mPIDxAuto.setTolerance(0.01);
-        mPIDyAuto.setTolerance(0.01);
         m_frontLeftMotor.setInverted(true);
         m_frontRightMotor.setInverted(false);
         m_rearLeftMotor.setInverted(true);
@@ -153,6 +151,7 @@ public class DriveSubsystem extends Subsystem {
     }
 
     public void setRotation(double angle) {
+        isAutonomous = false;
         mAngleConsigne = angle;
     }
 
@@ -182,12 +181,11 @@ public class DriveSubsystem extends Subsystem {
     }
 
     public void stop () {
-        isAutonomous = false;
-        mAngleConsigne = getAngle();
-        m_frontLeftMotor.stopMotor();
-        m_frontRightMotor.stopMotor();
-        m_rearLeftMotor.stopMotor();
-        m_rearRightMotor.stopMotor();
+        //mAngleConsigne = getAngle();
+        //m_frontLeftMotor.stopMotor();
+        //m_frontRightMotor.stopMotor();
+        //m_rearLeftMotor.stopMotor();
+        //m_rearRightMotor.stopMotor();
     }
 
     private double getAngle() {
@@ -199,10 +197,14 @@ public class DriveSubsystem extends Subsystem {
     }
 
     public void resetDeplacement() {
-        isAutonomous = false;
-        mGyro.reset();
-        X = 0;
-        Y = 0;
+        //m_yAuto = 0;
+        //m_xAuto = 0;
+        //m_xSpeed = 0;
+        //m_ySpeed = 0;
+        //mGyro.reset();
+        //mAngleConsigne = 0;
+        //X = 0;
+        //Y = 0;
     }
 
 }

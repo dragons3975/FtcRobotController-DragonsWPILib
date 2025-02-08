@@ -105,8 +105,8 @@ public class VisionSubsystem extends Subsystem {
         //aprilTag.setDecimation(3);
 
         // Create the vision portal by using a builder.
-        VisionPortal.Builder builder = new VisionPortal.Builder();
-        builder.setCamera(DriverStationJNI.getHardwareMap().get(WebcamName.class, "Webcam 1"));
+        //VisionPortal.Builder builder = new VisionPortal.Builder();
+        //builder.setCamera(DriverStationJNI.getHardwareMap().get(WebcamName.class, "Webcam 1"));
 
         // Choose a camera resolution. Not all cameras support all resolutions.
         //builder.setCameraResolution(new Size(640, 480));
@@ -123,10 +123,10 @@ public class VisionSubsystem extends Subsystem {
         //builder.setAutoStopLiveView(false);
 
         // Set and enable the processor.
-        builder.addProcessor(aprilTag);
+        //builder.addProcessor(aprilTag);
 
         // Build the Vision Portal, using the above settings.
-        visionPortal = builder.build();
+        //visionPortal = builder.build();
 
         // Disable or re-enable the aprilTag processor at any time.
         //visionPortal.setProcessorEnabled(aprilTag, true);
@@ -183,7 +183,7 @@ public class VisionSubsystem extends Subsystem {
 
     public void close() {
         // Save more CPU resources when camera is no longer needed.
-        visionPortal.close();
+        //visionPortal.close();
     }
 
     public void stopStreaming() {

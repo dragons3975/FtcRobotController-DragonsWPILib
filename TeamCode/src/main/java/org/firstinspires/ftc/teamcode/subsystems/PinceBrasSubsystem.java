@@ -13,7 +13,7 @@ public class  PinceBrasSubsystem extends Subsystem {
     private final FtcServo mServoPincePosition = new FtcServo("PincePositionBras");
 
     private double mAngle = 0.8;
-    private double mPositionAngle = 1;
+    private double mPositionAngle = 0.8;
 
     public PinceBrasSubsystem() {
     }
@@ -39,7 +39,7 @@ public class  PinceBrasSubsystem extends Subsystem {
     }
 
     public void PositionPinceMax() {
-        mPositionAngle = 1;
+        mPositionAngle = 0.8;
     }
 
     public void PositionPinceMin() {
@@ -47,7 +47,7 @@ public class  PinceBrasSubsystem extends Subsystem {
     }
 
     public boolean isPositionMax() {
-        return (mPositionAngle == 1);
+        return (mPositionAngle == 0.8);
     }
 
     public void setPositionAngle(double position) {

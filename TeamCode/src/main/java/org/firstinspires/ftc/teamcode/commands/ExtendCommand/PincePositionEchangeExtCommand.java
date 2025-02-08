@@ -7,10 +7,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class PincePositionEchangeExtCommand extends Command {
 
     private final PinceExtensionSubsystem mPinceExtensionSubsystem;
+    private double mPos;
 
-    public PincePositionEchangeExtCommand(PinceExtensionSubsystem pinceExtensionSubsystem) {
+    public PincePositionEchangeExtCommand(PinceExtensionSubsystem pinceExtensionSubsystem, double pos) {
 
         mPinceExtensionSubsystem = pinceExtensionSubsystem;
+        mPos = pos;
 
 
         addRequirements(pinceExtensionSubsystem);
@@ -19,7 +21,7 @@ public class PincePositionEchangeExtCommand extends Command {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        mPinceExtensionSubsystem.setPositionAngle(0.67);
+        mPinceExtensionSubsystem.setPositionAngle(mPos);
     }
 
     // Called every time the scheduler runs while the command is scheduled.
