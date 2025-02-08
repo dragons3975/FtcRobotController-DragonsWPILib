@@ -48,11 +48,11 @@ public class RobotContainer {
     }
 
     private void configureButtonBindings() {
-        JoystickButton buttonA = new JoystickButton(mXboxController2, XboxController.Button.kA.value);
-        buttonA.onTrue(mPinceOpenCommand);
-
         JoystickButton buttonB = new JoystickButton(mXboxController2, XboxController.Button.kB.value);
-        buttonB.onTrue(mPinceCloseCommand);
+        buttonB.onTrue(mPinceOpenCommand);
+
+        JoystickButton buttonA = new JoystickButton(mXboxController2, XboxController.Button.kA.value);
+        buttonA.onTrue(mPinceCloseCommand);
 
         JoystickButton rightBumper = new JoystickButton(mXboxController2, XboxController.Button.kRightBumper.value);
         rightBumper.whileTrue(mLiftUpCommand);
@@ -68,6 +68,6 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return new BleuDroiteExtra(mDriveSubsystem, mPinceSubsystem, mXboxController2);
+        return new BleuDroiteExtra(mDriveSubsystem, mPinceSubsystem, mXboxController2, mLiftSubsystem);
     }
 }

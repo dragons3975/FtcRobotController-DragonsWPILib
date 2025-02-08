@@ -13,7 +13,7 @@ public class PinceSubsystem extends Subsystem {
     private final FtcServo rightServo = new FtcServo("rightServo");
     private final FtcServo pivotServo = new FtcServo("pivotServo");
 
-    private double mPosition = 1;
+    private double mPosition = -0.70;
 
 
     public PinceSubsystem() {
@@ -29,8 +29,8 @@ public class PinceSubsystem extends Subsystem {
 
     public void IncrementPivotPosition(double increment) {
         mPosition += increment;
-        if (mPosition > 1) {
-            mPosition = 1;
+        if (mPosition > 0.70) {
+            mPosition = 0.70;
         }
         if (mPosition < 0) {
             mPosition = 0;
