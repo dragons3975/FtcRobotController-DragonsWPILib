@@ -40,8 +40,8 @@ public class RobotContainer {
     private void configureButtonBindings() {
         JoystickButton buttonA = new JoystickButton(mXboxController, XboxController.Button.kA.value);
         buttonA.toggleOnTrue(mLanceurPeriodicCommand.withTimeout(10));
-        /*JoystickButton buttonX = new JoystickButton(mXboxController, XboxController.Button.kX.value);
-        buttonX.whileTrue(mRamasseurCommand);*/
+        JoystickButton buttonX = new JoystickButton(mXboxController, XboxController.Button.kX.value);
+        buttonX.toggleOnTrue(mLanceurCommand);
         /*JoystickButton buttonY = new JoystickButton(mXboxController, XboxController.Button.kY.value);
         buttonY.whileTrue(mOmeletCommand);*/
         /*JoystickButton buttonB = new JoystickButton(mXboxController, XboxController.Button.kB.value);
