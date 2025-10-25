@@ -1,23 +1,23 @@
 package org.firstinspires.ftc.teamcode.commands.BrasCommand;
 
-import org.firstinspires.ftc.teamcode.subsystems.TestRecruesSubsystem;
-import org.firstinspires.ftc.teamcode.subsystems.TestSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.LanceurSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.RamasseurSubsystem;
 
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class SushiCommand extends Command {
+public class LanceurCommand extends Command {
 
-    private final TestRecruesSubsystem mTestRecruesSubsystem;
+    private final LanceurSubsystem mLanceurSubsystem;
 
-    public SushiCommand(TestRecruesSubsystem testRecruesSubsystem) {
-        mTestRecruesSubsystem = testRecruesSubsystem;
-        addRequirements(testRecruesSubsystem);
+    public LanceurCommand(LanceurSubsystem LanceurSubsystem) {
+        mLanceurSubsystem = LanceurSubsystem;
+        addRequirements(LanceurSubsystem);
     }
 
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        mTestRecruesSubsystem.start();
+        mLanceurSubsystem.monte();
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -35,7 +35,7 @@ public class SushiCommand extends Command {
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-        mTestRecruesSubsystem.stop();
+        mLanceurSubsystem.stop();
     }
 
 }

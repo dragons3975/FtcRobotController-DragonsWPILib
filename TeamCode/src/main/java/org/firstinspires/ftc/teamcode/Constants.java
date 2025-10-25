@@ -170,6 +170,15 @@ public final class Constants {
         public static final double PositionCOrde = 0;
     }
 
+    public static final class LanceurConstants {
+        public static final int kTicksParTourFll = 360;
+        public static final int kTicksParTourRev = 255;
+
+        //public static final double kPeriodeSec = 0.02;
+        // PerS: (189+198+199+198+198)/5 = 196.4, 1000/196.4 = 0.005
+        public static final double kPeriodeSec = 0.005;
+
+    }
 
     
 }

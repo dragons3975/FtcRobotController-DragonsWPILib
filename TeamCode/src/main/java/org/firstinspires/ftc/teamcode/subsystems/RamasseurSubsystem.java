@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 
 public class RamasseurSubsystem extends Subsystem {
 
-    private final FtcMotor mMotorTest3 = new FtcMotor("ramasseur");
+    private final FtcMotor mMotorTest3 = new FtcMotor("ramasseurtest");
 
     public RamasseurSubsystem() {
     }
@@ -16,11 +16,11 @@ public class RamasseurSubsystem extends Subsystem {
 
     }
 
-    public void start() {
-        mMotorTest3.set(0.5);
+    public void monte() {
+        mMotorTest3.set(1);
     }
-    public void pain() {
-        mMotorTest3.set(-0.5);
+    public void descend() {
+        mMotorTest3.set(-1);
     }
 
     public void stop() {
