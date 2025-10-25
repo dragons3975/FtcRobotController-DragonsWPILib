@@ -4,6 +4,7 @@ import org.firstinspires.ftc.teamcode.commands.BrasCommand.BobCommand;
 import org.firstinspires.ftc.teamcode.commands.BrasCommand.LanceurCommand;
 import org.firstinspires.ftc.teamcode.commands.BrasCommand.LanceurManetteCommand;
 import org.firstinspires.ftc.teamcode.commands.BrasCommand.LanceurPeriodicCommand;
+import org.firstinspires.ftc.teamcode.commands.BrasCommand.LanceurPidTestCommand;
 import org.firstinspires.ftc.teamcode.commands.BrasCommand.OmeletCommand;
 import org.firstinspires.ftc.teamcode.commands.BrasCommand.RamasseurCommand;
 import org.firstinspires.ftc.teamcode.subsystems.LanceurSubsystem;
@@ -24,6 +25,7 @@ public class RobotContainer {
     //private final RamasseurCommand mRamasseurCommand = new RamasseurCommand(mRamasseurSubsystem);
     private final LanceurCommand mLanceurCommand = new LanceurCommand(mLanceurSubsystem);
     private final LanceurPeriodicCommand mLanceurPeriodicCommand = new LanceurPeriodicCommand(mLanceurSubsystem);
+    private final LanceurPidTestCommand mLanceurPidTestCommand = new LanceurPidTestCommand(mLanceurSubsystem);
 
     private final LanceurManetteCommand mLanceurManetteCommand = new LanceurManetteCommand(mLanceurSubsystem, mXboxController);
     //private final OmeletCommand mOmeletCommand = new OmeletCommand(mTestSubsystem);
@@ -39,7 +41,7 @@ public class RobotContainer {
 
     private void configureButtonBindings() {
         JoystickButton buttonA = new JoystickButton(mXboxController, XboxController.Button.kA.value);
-        buttonA.toggleOnTrue(mLanceurPeriodicCommand.withTimeout(10));
+        buttonA.whileTrue(mLanceurPidTestCommand);
         JoystickButton buttonX = new JoystickButton(mXboxController, XboxController.Button.kX.value);
         buttonX.toggleOnTrue(mLanceurCommand);
         /*JoystickButton buttonY = new JoystickButton(mXboxController, XboxController.Button.kY.value);

@@ -6,6 +6,8 @@ import dragons.rev.FtcMotor;
 import edu.wpi.first.hal.DriverStationJNI;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 
+import edu.wpi.first.math.controller.PIDController;
+
 
 public class LanceurSubsystem extends Subsystem {
 
@@ -14,6 +16,11 @@ public class LanceurSubsystem extends Subsystem {
     private int mEncPrec;
     private boolean mPeriodicTestBool = false;
     private int mPeriodicTestNb;
+    private final PIDController pid = new PIDController(Constants.LanceurConstants.kP, 0, 0);
+
+    private double mSetPointVit;
+
+
 
     public LanceurSubsystem() {
         mMotorTest4.setInverted(true);
@@ -42,12 +49,26 @@ public class LanceurSubsystem extends Subsystem {
         DriverStationJNI.getTelemetry().addData("PeriodicBool", mPeriodicTestBool);
         DriverStationJNI.getTelemetry().addData("PeriodicPar10Sec", mPeriodicTestNb);
         DriverStationJNI.getTelemetry().addData("PeriodicParSec", mPeriodicTestNb/10);
+
+        mMotorTest4.set(mMotorTest4.get() + pid.calculate(vitesseEnTourParSec, mSetPointVit));
+
+
+        DriverStationJNI.getTelemetry().addData("pidOutput", pid.calculate(vitesseEnTourParSec, mSetPointVit));
+        DriverStationJNI.getTelemetry().addData("vitAct", mMotorTest4.get());
+        DriverStationJNI.getTelemetry().addData("vitAct", mSetPointVit);
+
+        //motor.set(vitesse actuel + output)
     }
 
     public void monte() {
         mMotorTest4.set(1);
     }
     public void setSpeed(double speed) {
+        mSpeed = speed;
+        mMotorTest4.set(mSpeed);
+    }
+
+    public void setTPS(double speed) {
         mSpeed = speed;
         mMotorTest4.set(mSpeed);
     }
@@ -60,6 +81,10 @@ public class LanceurSubsystem extends Subsystem {
     }
     public void TestPerEnd() {
         mPeriodicTestBool = false;
+    }
+
+    public void pidTest() {
+        mSetPointVit = 1;
     }
 
 }
