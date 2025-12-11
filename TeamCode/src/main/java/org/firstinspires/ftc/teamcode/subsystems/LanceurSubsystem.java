@@ -50,7 +50,9 @@ public class LanceurSubsystem extends Subsystem {
         DriverStationJNI.getTelemetry().addData("PeriodicPar10Sec", mPeriodicTestNb);
         DriverStationJNI.getTelemetry().addData("PeriodicParSec", mPeriodicTestNb/10);
 
-        mMotorTest4.set(mMotorTest4.get() + pid.calculate(vitesseEnTourParSec, mSetPointVit));
+        double output = pid.calculate(vitesseEnTourParSec, mSetPointVit);
+
+        mMotorTest4.set(mMotorTest4.get() + output);
 
 
         DriverStationJNI.getTelemetry().addData("pidOutput", pid.calculate(vitesseEnTourParSec, mSetPointVit));
@@ -69,11 +71,12 @@ public class LanceurSubsystem extends Subsystem {
     }
 
     public void setTPS(double speed) {
-        mSpeed = speed;
-        mMotorTest4.set(mSpeed);
+        mSetPointVit = speed;
+        mMotorTest4.set(mSetPointVit);
     }
 
     public void stop() {
+        mSetPointVit = 0;
         mMotorTest4.stopMotor();
     }
     public void TestPerStart() {

@@ -20,7 +20,7 @@ public class BobCommand extends Command {
     @Override
     public void initialize() {
         mTestRecruesSubsystem.pain();
-        mTestSubsystem.pain();
+       // mTestSubsystem.pain();
     }
 
     // Called every time the scheduler runs while the command is scheduled.

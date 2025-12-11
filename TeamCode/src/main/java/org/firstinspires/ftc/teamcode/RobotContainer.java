@@ -1,34 +1,29 @@
 package org.firstinspires.ftc.teamcode;
 
-import org.firstinspires.ftc.teamcode.commands.BrasCommand.BobCommand;
-import org.firstinspires.ftc.teamcode.commands.BrasCommand.LanceurCommand;
-import org.firstinspires.ftc.teamcode.commands.BrasCommand.LanceurManetteCommand;
-import org.firstinspires.ftc.teamcode.commands.BrasCommand.LanceurPeriodicCommand;
-import org.firstinspires.ftc.teamcode.commands.BrasCommand.LanceurPidTestCommand;
-import org.firstinspires.ftc.teamcode.commands.BrasCommand.OmeletCommand;
-import org.firstinspires.ftc.teamcode.commands.BrasCommand.RamasseurCommand;
-import org.firstinspires.ftc.teamcode.subsystems.LanceurSubsystem;
-import org.firstinspires.ftc.teamcode.subsystems.RamasseurSubsystem;
-import org.firstinspires.ftc.teamcode.subsystems.TestRecruesSubsystem;
-import org.firstinspires.ftc.teamcode.subsystems.TestSubsystem;
+import org.firstinspires.ftc.teamcode.AutonomousCommands.DriveAutonomusCommand;
+import org.firstinspires.ftc.teamcode.commands.BrasCommand.DriveCommand;
+import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 public class RobotContainer {
     private final XboxController mXboxController = new XboxController(Constants.OIConstants.kDriverControllerPort);
-    //private final TestSubsystem mTestSubsystem = new TestSubsystem();
-    private final LanceurSubsystem mLanceurSubsystem = new LanceurSubsystem();
+   // private final TestSubsystem mTestSubsystem = new TestSubsystem();
+    private final DriveSubsystem mDriveSubsystem = new DriveSubsystem();
+   // private final LanceurSubsystem mLanceurSubsystem = new LanceurSubsystem();
     //private inal RamasseurSubsystem mRamasseurSubsystem = new RamasseurSubsystem();
     //private final TestRecruesSubsystem mTestRecruesSubsystem = new TestRecruesSubsystem();
     //private final RamasseurCommand mRamasseurCommand = new RamasseurCommand(mRamasseurSubsystem);
-    private final LanceurCommand mLanceurCommand = new LanceurCommand(mLanceurSubsystem);
-    private final LanceurPeriodicCommand mLanceurPeriodicCommand = new LanceurPeriodicCommand(mLanceurSubsystem);
-    private final LanceurPidTestCommand mLanceurPidTestCommand = new LanceurPidTestCommand(mLanceurSubsystem);
+    //private final LanceurCommand mLanceurCommand = new LanceurCommand(mLanceurSubsystem);
+    //private final LanceurPeriodicCommand mLanceurPeriodicCommand = new LanceurPeriodicCommand(mLanceurSubsystem);
+   // private final LanceurPidTestCommand mLanceurPidTestCommand = new LanceurPidTestCommand(mLanceurSubsystem);
+    private final DriveCommand mDriveCommand = new DriveCommand(mDriveSubsystem, mXboxController);
+    private final DriveAutonomusCommand mDriveAuto50 = new DriveAutonomusCommand(mDriveSubsystem, 50);
+    private final DriveAutonomusCommand mDriveAuto60 = new DriveAutonomusCommand(mDriveSubsystem, 60);
 
-    private final LanceurManetteCommand mLanceurManetteCommand = new LanceurManetteCommand(mLanceurSubsystem, mXboxController);
-    //private final OmeletCommand mOmeletCommand = new OmeletCommand(mTestSubsystem);
+    //private final LanceurManetteCommand mLanceurManetteCommand = new LanceurManetteCommand(mLanceurSubsystem, mXboxController);
+  //  private final OmeletCommand mOmeletCommand = new OmeletCommand(mTestSubsystem);
     //private final BobCommand mBobCommand = new BobCommand(mTestSubsystem);
 
     public RobotContainer() {
@@ -40,22 +35,26 @@ public class RobotContainer {
     }
 
     private void configureButtonBindings() {
-        JoystickButton buttonA = new JoystickButton(mXboxController, XboxController.Button.kA.value);
-        buttonA.whileTrue(mLanceurPidTestCommand);
-        JoystickButton buttonX = new JoystickButton(mXboxController, XboxController.Button.kX.value);
-        buttonX.toggleOnTrue(mLanceurCommand);
+        //JoystickButton buttonA = new JoystickButton(mXboxController, XboxController.Button.kA.value);
+        //buttonA.whileTrue(mLanceurPidTestCommand);
+        //JoystickButton buttonX = new JoystickButton(mXboxController, XboxController.Button.kX.value);
+        //buttonX.toggleOnTrue(mLanceurCommand);
         /*JoystickButton buttonY = new JoystickButton(mXboxController, XboxController.Button.kY.value);
         buttonY.whileTrue(mOmeletCommand);*/
         /*JoystickButton buttonB = new JoystickButton(mXboxController, XboxController.Button.kB.value);
         buttonB.whileTrue(mLanceurCommand);*/
+       // JoystickButton buttonA = new JoystickButton(mXboxController, XboxController.Button.kA.value);
+       // buttonA.whileTrue(mLanceurPidTestCommand);
+
     }
 
     private void configureDefaultCommands() {
-        mLanceurSubsystem.setDefaultCommand(mLanceurManetteCommand);
+       // mLanceurSubsystem.setDefaultCommand(mLanceurManetteCommand);
+        mDriveSubsystem.setDefaultCommand(mDriveCommand);
     }
 
     public Command getAutonomousCommand() {
-        return null;
+        return mDriveAuto50.andThen(mDriveAuto60);
     }
 
     public void stop() {
