@@ -170,6 +170,11 @@ public final class Constants {
         public static final double PositionCOrde = 0;
     }
 
+    public static final class DriveConstants {
+        public static final double kPx = -0.05;
+        public static final double kPy = 0.025;
+    }
+
     public static final class LanceurConstants {
         public static final int kTicksParTourFll = 360;
         public static final int kTicksParTourRev = 255;

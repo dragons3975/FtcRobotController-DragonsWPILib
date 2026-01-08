@@ -25,7 +25,7 @@ public void initialize() {
 // Called every time the scheduler runs while the command is scheduled.
 @Override
 public void execute() {
-    mDriveSubsystem.drive(mXboxController.getLeftX(), -mXboxController.getLeftY(), mXboxController.getRightX());
+    mDriveSubsystem.drive(mXboxController.getLeftX(), mXboxController.getLeftY(), mXboxController.getRightX());
 }
 
 // Returns true when the command should end.

@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
 import org.firstinspires.ftc.teamcode.AutonomousCommands.DriveAutonomusCommand;
+import org.firstinspires.ftc.teamcode.AutonomousCommands.TurnAutonomousCommand;
+import org.firstinspires.ftc.teamcode.commandGroups.MainAutonomousCommand;
 import org.firstinspires.ftc.teamcode.commands.BrasCommand.DriveCommand;
 import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
 
@@ -19,8 +21,8 @@ public class RobotContainer {
     //private final LanceurPeriodicCommand mLanceurPeriodicCommand = new LanceurPeriodicCommand(mLanceurSubsystem);
    // private final LanceurPidTestCommand mLanceurPidTestCommand = new LanceurPidTestCommand(mLanceurSubsystem);
     private final DriveCommand mDriveCommand = new DriveCommand(mDriveSubsystem, mXboxController);
-    private final DriveAutonomusCommand mDriveAuto50 = new DriveAutonomusCommand(mDriveSubsystem, 50);
-    private final DriveAutonomusCommand mDriveAuto60 = new DriveAutonomusCommand(mDriveSubsystem, 60);
+    private final MainAutonomousCommand mAuto = new MainAutonomousCommand(mDriveSubsystem);
+
 
     //private final LanceurManetteCommand mLanceurManetteCommand = new LanceurManetteCommand(mLanceurSubsystem, mXboxController);
   //  private final OmeletCommand mOmeletCommand = new OmeletCommand(mTestSubsystem);
@@ -54,7 +56,7 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return mDriveAuto50.andThen(mDriveAuto60);
+        return mAuto;
     }
 
     public void stop() {

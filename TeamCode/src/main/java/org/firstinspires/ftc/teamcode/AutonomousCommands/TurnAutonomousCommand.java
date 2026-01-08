@@ -2,27 +2,25 @@ package org.firstinspires.ftc.teamcode.AutonomousCommands;
 
 import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
 
-import edu.wpi.first.hal.DriverStationJNI;
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class DriveAutonomusCommand extends Command {
+public class TurnAutonomousCommand extends Command {
 
 private final DriveSubsystem mDriveSubsystem;
-private final double mConsigneY;
-private final double mConsigneX;
+private final double mConsigne;
+private double mAngleInit;
 
-public DriveAutonomusCommand(DriveSubsystem driveSubsystem, double consigneX, double consigneY) {
+public TurnAutonomousCommand(DriveSubsystem driveSubsystem, double consigne) {
     mDriveSubsystem = driveSubsystem;
     addRequirements(driveSubsystem);
-    mConsigneY = consigneY;
-    mConsigneX = consigneX;
+    mConsigne = consigne;
 }
 
 // Called when the command is initially scheduled.
 @Override
 public void initialize() {
-   mDriveSubsystem.setConsigneY( mDriveSubsystem.getDistanceY() + mConsigneY);
-   mDriveSubsystem.setConsigneX( mDriveSubsystem.getDistanceX() + mConsigneX);
+   mAngleInit = mDriveSubsystem.getAngle();
+   mDriveSubsystem.drive(0,0,1);
 }
 
 @Override
@@ -32,11 +30,12 @@ public void execute() {
 // Returns true when the command should end.
 @Override
 public boolean isFinished() {
-    return mDriveSubsystem.isAtSetPointY() && mDriveSubsystem.isAtSetPointX();
+    return (mDriveSubsystem.getAngle() - mAngleInit) >= mConsigne;
 }
 // Called once the command ends or is interrupted.
 @Override
 public void end(boolean interrupted) {
     mDriveSubsystem.stop();
 }
+
 }
