@@ -171,18 +171,21 @@ public final class Constants {
     }
 
     public static final class DriveConstants {
-        public static final double kPx = -0.05;
-        public static final double kPy = 0.025;
+        public static final double kPx = 0.1;
+        public static final double kPy = 0.1;
+        public static final double PIDYTolerance = 1;
+        public static final double PIDXTolerance = 1;
+
+        //calcul de maniere empirique
+        public static final double kRoueOdoTickParCm = 26675/200;
     }
 
     public static final class LanceurConstants {
-        public static final int kTicksParTourFll = 360;
-        public static final int kTicksParTourRev = 255;
 
-        //public static final double kPeriodeSec = 0.02;
-        // PerS: (189+198+199+198+198)/5 = 196.4, 1000/196.4 = 0.005
+        // calcul empirique (189+198+199+198+198)/5 = 196.4, 1000/196.4 = 0.005
         public static final double kPeriodeSec = 0.005;
-        public static final double kP = 0.01;
+        public static final double kP = 0.0005;
+
 
     }
 

@@ -4,90 +4,71 @@ import org.firstinspires.ftc.teamcode.Constants;
 
 import dragons.rev.FtcMotor;
 import edu.wpi.first.hal.DriverStationJNI;
-import edu.wpi.first.wpilibj2.command.Subsystem;
-
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 
 
 public class LanceurSubsystem extends Subsystem {
 
-    private final FtcMotor mMotorTest4 = new FtcMotor("lanceur");
-    private double mSpeed = 0;
-    private int mEncPrec;
-    private boolean mPeriodicTestBool = false;
-    private int mPeriodicTestNb;
-    private final PIDController pid = new PIDController(Constants.LanceurConstants.kP, 0, 0);
+    private final FtcMotor mMotorLanceur = new FtcMotor("lanceur");
+    private int[] mEncPrec = new int[10];
+    private final PIDController mPID = new PIDController(Constants.LanceurConstants.kP, 0, 0);
 
-    private double mSetPointVit;
-
-
-
+    private double mConsigneDeltaMoy;
     public LanceurSubsystem() {
-        mMotorTest4.setInverted(true);
+        mMotorLanceur.setInverted(false);
     }
 
     @Override
     public void periodic() {
-        DriverStationJNI.getTelemetry().addData("Motor lanceur speed", mMotorTest4.get());
-        DriverStationJNI.getTelemetry().addData("Motor lanceur encodeur", mMotorTest4.getCurrentPosition());
 
-        int encAct = mMotorTest4.getCurrentPosition();
+        int encAct = mMotorLanceur.getCurrentPosition();
+        DriverStationJNI.getTelemetry().addData("Motor lanceur encodeur", encAct);
 
-        int deltaEnc = encAct - mEncPrec;
+        for(int i = 0; i <= 8; i++) {
+            mEncPrec[i] = mEncPrec[i+1];
+        }
+        mEncPrec[9] = encAct;
 
-        double vitesseEnTickParSec = deltaEnc/Constants.LanceurConstants.kPeriodeSec;
+        int[] deltaEnc = new int[9];
+        for(int i = 0; i <= 8; i++) {
+            deltaEnc[i] = mEncPrec[i+1] - mEncPrec[i];
+        }
 
-        double vitesseEnTourParSec = vitesseEnTickParSec/(Constants.LanceurConstants.kTicksParTourRev);
+        int deltaMoy = 0;
+        for(int i = 0; i <= 8; i++) {
+            deltaMoy = deltaMoy + deltaEnc[i];
+        }
+        deltaMoy = deltaMoy / 9;
 
-        mEncPrec = encAct;
+        DriverStationJNI.getTelemetry().addData("DeltaMoy", deltaMoy);
 
-        DriverStationJNI.getTelemetry().addData("TickParSec", vitesseEnTickParSec);
-        DriverStationJNI.getTelemetry().addData("TourParSec", vitesseEnTourParSec);
+        DriverStationJNI.getTelemetry().addData("vitAct", mMotorLanceur.get());
 
-        if (mPeriodicTestBool) {mPeriodicTestNb += 1;}
+        double output = mPID.calculate(deltaMoy, mConsigneDeltaMoy);
+        DriverStationJNI.getTelemetry().addData("pidOutput", output);
+       mMotorLanceur.set(mMotorLanceur.get() + output);
 
-        DriverStationJNI.getTelemetry().addData("PeriodicBool", mPeriodicTestBool);
-        DriverStationJNI.getTelemetry().addData("PeriodicPar10Sec", mPeriodicTestNb);
-        DriverStationJNI.getTelemetry().addData("PeriodicParSec", mPeriodicTestNb/10);
+       DriverStationJNI.getTelemetry().addData("IsAtSetSpeed", isAtSetSpeed());
 
-        double output = pid.calculate(vitesseEnTourParSec, mSetPointVit);
-
-        mMotorTest4.set(mMotorTest4.get() + output);
-
-
-        DriverStationJNI.getTelemetry().addData("pidOutput", pid.calculate(vitesseEnTourParSec, mSetPointVit));
-        DriverStationJNI.getTelemetry().addData("vitAct", mMotorTest4.get());
-        DriverStationJNI.getTelemetry().addData("vitAct", mSetPointVit);
-
-        //motor.set(vitesse actuel + output)
     }
 
-    public void monte() {
-        mMotorTest4.set(1);
-    }
-    public void setSpeed(double speed) {
-        mSpeed = speed;
-        mMotorTest4.set(mSpeed);
-    }
 
-    public void setTPS(double speed) {
-        mSetPointVit = speed;
-        mMotorTest4.set(mSetPointVit);
+    public void setDeltaMoyConsigne(double deltaMoy) {
+
+
+        //mConsigneDeltaMoy = deltaMoy;
+
+
+        //Temporaire pour test
+        mConsigneDeltaMoy = deltaMoy;
     }
 
     public void stop() {
-        mSetPointVit = 0;
-        mMotorTest4.stopMotor();
+        mConsigneDeltaMoy = 0;
     }
-    public void TestPerStart() {
-        mPeriodicTestBool = true;
-    }
-    public void TestPerEnd() {
-        mPeriodicTestBool = false;
-    }
-
-    public void pidTest() {
-        mSetPointVit = 1;
+    public boolean isAtSetSpeed(){
+        return mPID.atSetpoint();
     }
 
 }

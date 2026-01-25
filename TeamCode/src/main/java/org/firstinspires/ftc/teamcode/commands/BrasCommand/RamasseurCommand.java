@@ -17,7 +17,7 @@ public class RamasseurCommand extends Command {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        mRamasseurSubsystem.monte();
+        mRamasseurSubsystem.ramasse();
     }
 
     // Called every time the scheduler runs while the command is scheduled.

@@ -1,30 +1,27 @@
 package org.firstinspires.ftc.teamcode.commands.BrasCommand;
 
-import org.firstinspires.ftc.teamcode.subsystems.LanceurSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.RamasseurSubsystem;
 
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class LanceurManetteCommand extends Command {
+public class RejetteCommand extends Command {
 
-    private final LanceurSubsystem mLanceurSubsystem;
-    private final XboxController mXboxController;
+    private final RamasseurSubsystem mRamasseurSubsystem;
 
-    public LanceurManetteCommand(LanceurSubsystem lanceurSubsystem, XboxController xboxController) {
-        mLanceurSubsystem = lanceurSubsystem;
-        mXboxController = xboxController;
-        addRequirements(lanceurSubsystem);
+    public RejetteCommand(RamasseurSubsystem ramasseurSubsystem) {
+        mRamasseurSubsystem = ramasseurSubsystem;
+        addRequirements(ramasseurSubsystem);
     }
 
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
+        mRamasseurSubsystem.rejette();
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        mLanceurSubsystem.setSpeed(mXboxController.getLeftY());
     }
 
     // Returns true when the command should end.
@@ -37,7 +34,7 @@ public class LanceurManetteCommand extends Command {
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-        mLanceurSubsystem.stop();
+        mRamasseurSubsystem.stop();
     }
 
 }

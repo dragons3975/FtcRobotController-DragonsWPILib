@@ -1,30 +1,32 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
 import dragons.rev.FtcMotor;
+import edu.wpi.first.hal.DriverStationJNI;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 
 
 public class RamasseurSubsystem extends Subsystem {
 
-    private final FtcMotor mMotorTest3 = new FtcMotor("ramasseurtest");
+    private final FtcMotor mMotorRamasseur = new FtcMotor("ramasseur");
 
     public RamasseurSubsystem() {
+        mMotorRamasseur.setInverted(true);
     }
 
     @Override
     public void periodic() {
-
+        DriverStationJNI.getTelemetry().addData("Motor lanceur encodeur", mMotorRamasseur.getCurrentPosition());
     }
 
-    public void monte() {
-        mMotorTest3.set(1);
+    public void ramasse() {
+        mMotorRamasseur.set(1);
     }
-    public void descend() {
-        mMotorTest3.set(-1);
+    public void rejette() {
+        mMotorRamasseur.set(-1);
     }
 
     public void stop() {
-        mMotorTest3.stopMotor();
+        mMotorRamasseur.stopMotor();
     }
 
 }
