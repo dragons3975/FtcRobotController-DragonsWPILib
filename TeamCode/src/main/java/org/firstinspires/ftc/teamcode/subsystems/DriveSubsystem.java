@@ -18,8 +18,8 @@ public class DriveSubsystem extends Subsystem {
     private final FtcMotor m_frontRightMotor = new FtcMotor("fright");
     private final FtcMotor m_rearLeftMotor = new FtcMotor("rleft");
     private final FtcMotor m_rearRightMotor = new FtcMotor("rright");
-    //private final FtcGyro m_gyro = new FtcGyro(RevHubOrientationOnRobot.LogoFacingDirection.UP, RevHubOrientationOnRobot.UsbFacingDirection.UP);
-    private final MecanumDrive m_robotDrive = new MecanumDrive(m_frontLeftMotor, m_frontRightMotor, m_rearLeftMotor, m_rearRightMotor);
+    private final FtcGyro m_gyro = new FtcGyro(RevHubOrientationOnRobot.LogoFacingDirection.LEFT, RevHubOrientationOnRobot.UsbFacingDirection.DOWN);
+    private final MecanumDrive m_robotDrive = new MecanumDrive(m_frontLeftMotor, m_rearLeftMotor, m_frontRightMotor, m_rearRightMotor);
     private final PIDController mPIDx = new PIDController(Constants.DriveConstants.kPx, 0, 0);
     private final PIDController mPIDy = new PIDController(Constants.DriveConstants.kPy, 0, 0);
     private double mYConsigne;
@@ -30,10 +30,10 @@ public class DriveSubsystem extends Subsystem {
     private double m_ySpeed = 0;
     private boolean mIsPIDActivated = false;
     public DriveSubsystem() {
-        m_frontLeftMotor.setInverted(false);
+        m_frontLeftMotor.setInverted(true);
         m_frontRightMotor.setInverted(false);
         m_rearLeftMotor.setInverted(true);
-        m_rearRightMotor.setInverted(true);
+        m_rearRightMotor.setInverted(false);
         m_robotDrive.setMaxOutput(0.7);
         mPIDx.setTolerance(Constants.DriveConstants.PIDXTolerance);
         mPIDy.setTolerance(Constants.DriveConstants.PIDYTolerance);
@@ -63,6 +63,7 @@ public class DriveSubsystem extends Subsystem {
 
 
 
+
     }
 
     public void drive(double x, double y, double z) {
@@ -78,15 +79,15 @@ public class DriveSubsystem extends Subsystem {
 
     public double getDistanceX(){
         // encodeur arrière branché sur le port rright
-        return -m_rearRightMotor.getCurrentPosition()/ Constants.DriveConstants.kRoueOdoTickParCm;
+        return m_rearRightMotor.getCurrentPosition()/ Constants.DriveConstants.kRoueOdoTickParCm;
     }
 
     public double getDistanceY(){
-        return (double)(m_frontRightMotor.getCurrentPosition() - m_frontLeftMotor.getCurrentPosition())/2/Constants.DriveConstants.kRoueOdoTickParCm;
+        return (double)(m_frontRightMotor.getCurrentPosition() + m_frontLeftMotor.getCurrentPosition())/2/Constants.DriveConstants.kRoueOdoTickParCm;
     }
 
     public double getAngle() {
-        return 0;//m_gyro.getAngle();
+        return m_gyro.getAngle();
     }
     public void setConsigneY(double consigneY){
        mYConsigne = consigneY;

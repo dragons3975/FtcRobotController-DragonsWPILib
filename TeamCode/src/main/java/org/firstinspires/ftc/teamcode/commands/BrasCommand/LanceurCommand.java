@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.commands.BrasCommand;
 import org.firstinspires.ftc.teamcode.subsystems.LanceurSubsystem;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 public class LanceurCommand extends Command {
 
@@ -16,7 +17,7 @@ public class LanceurCommand extends Command {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        mLanceurSubsystem.setDeltaMoyConsigne(38);
+        mLanceurSubsystem.setDeltaMoyConsigne(37);
     }
 
 
@@ -28,6 +29,10 @@ public class LanceurCommand extends Command {
 
     @Override
     public void end(boolean interrupted) {
+        if (interrupted)
+        {
+            new WaitCommand(2).andThen(new StopLanceurCommand(mLanceurSubsystem)).schedule();
+        }
     }
 
 }

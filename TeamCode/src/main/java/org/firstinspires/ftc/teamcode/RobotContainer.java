@@ -1,10 +1,12 @@
 package org.firstinspires.ftc.teamcode;
 
+import org.firstinspires.ftc.teamcode.commandGroups.LanceAutonomousCommand;
 import org.firstinspires.ftc.teamcode.commandGroups.MainAutonomousCommand;
 import org.firstinspires.ftc.teamcode.commands.BrasCommand.DriveCommand;
 import org.firstinspires.ftc.teamcode.commands.BrasCommand.LanceurCommand;
 import org.firstinspires.ftc.teamcode.commands.BrasCommand.RamasseurCommand;
 import org.firstinspires.ftc.teamcode.commands.BrasCommand.RejetteCommand;
+import org.firstinspires.ftc.teamcode.commands.BrasCommand.StopLanceurCommand;
 import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.LanceurSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.RamasseurSubsystem;
@@ -15,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 public class RobotContainer {
     private final XboxController mXboxController = new XboxController(Constants.OIConstants.kDriverControllerPort);
+    private final XboxController mXboxController2 = new XboxController(Constants.OIConstants.kDriverControllerPort2);
     private final DriveSubsystem mDriveSubsystem = new DriveSubsystem();
     private final RamasseurSubsystem mRamasseurSubsystem = new RamasseurSubsystem();
     private final LanceurSubsystem mLanceurSubsystem = new LanceurSubsystem();
@@ -23,6 +26,9 @@ public class RobotContainer {
     private final RejetteCommand mRejetteCommand = new RejetteCommand(mRamasseurSubsystem);
     private final LanceurCommand mLanceurCommand = new LanceurCommand(mLanceurSubsystem);
     private final MainAutonomousCommand mAuto = new MainAutonomousCommand(mDriveSubsystem, mRamasseurSubsystem, mLanceurSubsystem);
+    private final LanceAutonomousCommand mAutoLance = new LanceAutonomousCommand( mRamasseurSubsystem, mLanceurSubsystem);
+    private final StopLanceurCommand mStopLanceurCommand = new StopLanceurCommand(mLanceurSubsystem);
+
 
     public RobotContainer() {
         configureButtonBindings();
@@ -37,10 +43,8 @@ public class RobotContainer {
         buttonY.whileTrue(mRamasseurCommand);
         JoystickButton buttonX = new JoystickButton(mXboxController, XboxController.Button.kX.value);
         buttonX.whileTrue(mRejetteCommand);
-        JoystickButton buttonB = new JoystickButton(mXboxController, XboxController.Button.kB.value);
-        buttonB.whileTrue(mLanceurCommand);
         JoystickButton buttonA = new JoystickButton(mXboxController, XboxController.Button.kA.value);
-        buttonA.toggleOnTrue(mAuto);
+        buttonA.toggleOnTrue(mAutoLance);
 
 
 

@@ -6,26 +6,24 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 public class TurnAutonomousCommand extends Command {
 
-private final DriveSubsystem mDriveSubsystem;
-private final double mConsigne;
+private DriveSubsystem mDriveSubsystem;
+private double mConsigne;
 private double mAngleInit;
 
 public TurnAutonomousCommand(DriveSubsystem driveSubsystem, double consigne) {
     mDriveSubsystem = driveSubsystem;
-    addRequirements(driveSubsystem);
     mConsigne = consigne;
+
+    addRequirements(driveSubsystem);
 }
 
 // Called when the command is initially scheduled.
 @Override
 public void initialize() {
    mAngleInit = mDriveSubsystem.getAngle();
-   mDriveSubsystem.drive(0,0,1);
+   mDriveSubsystem.drive(0,0,0.5);
 }
 
-@Override
-public void execute() {
-}
 
 // Returns true when the command should end.
 @Override

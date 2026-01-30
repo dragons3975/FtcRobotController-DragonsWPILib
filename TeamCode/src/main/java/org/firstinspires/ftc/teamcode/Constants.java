@@ -184,7 +184,7 @@ public final class Constants {
 
         // calcul empirique (189+198+199+198+198)/5 = 196.4, 1000/196.4 = 0.005
         public static final double kPeriodeSec = 0.005;
-        public static final double kP = 0.0005;
+        public static final double kP = 0.00025;
 
 
     }

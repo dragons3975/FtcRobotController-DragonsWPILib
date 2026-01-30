@@ -17,7 +17,10 @@ public DriveCommand(DriveSubsystem driveSubsystem, XboxController xboxController
     addRequirements(driveSubsystem);
 }
 
-// Called when the command is initially scheduled.
+    //public DriveCommand(DriveSubsystem driveSubsystem) {
+    //}
+
+    // Called when the command is initially scheduled.
 @Override
 public void initialize() {
 }
